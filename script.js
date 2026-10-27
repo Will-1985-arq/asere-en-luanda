@@ -1,6 +1,17 @@
 /* ================= STATE & INITIAL DATA ================= */
         const SUPABASE_URL = 'https://gurqlrykdcdnqhnsuyhm.supabase.co';
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_vJA7pquZf7anlnm8nGwsRQ_FOGFuHQ-';
+        const CLASSIFIED_EDIT_STORAGE_KEY = 'community-classified-edit-credentials';
+        let activeClassifiedEdit = null;
+        let classifiedEditCredentials = {};
+        try {
+            const savedCredentials = JSON.parse(readLocalStorage(CLASSIFIED_EDIT_STORAGE_KEY, '{}') || '{}');
+            if (savedCredentials && typeof savedCredentials === 'object' && !Array.isArray(savedCredentials)) {
+                classifiedEditCredentials = savedCredentials;
+            }
+        } catch {
+            classifiedEditCredentials = {};
+        }
 
         function readLocalStorage(key, fallback = null) {
             try {
@@ -230,6 +241,9 @@
                 modal_img_help: "Elige una imagen JPG, PNG o WebP de hasta 200 KB. Si no seleccionas una, usaremos una imagen ilustrativa.",
                 modal_field_desc: "Descripción Detallada *",
                 ad_contact_consent: "Acepto que mi teléfono y los datos de este anuncio se publiquen y sean visibles públicamente.",
+                btn_edit_classified: "Editar anuncio (una vez, en los primeros 5 minutos)",
+                btn_save_classified_edits: "Guardar corrección",
+                btn_publish_classified: "Publicar Anuncio",
                 btn_cancel: "Cancelar",
                 btn_submit_ad: "Publicar Anuncio",
 
@@ -440,6 +454,9 @@
                 modal_img_help: "Escolha uma imagem JPG, PNG ou WebP de até 200 KB. Se não selecionar nenhuma, usaremos uma imagem ilustrativa.",
                 modal_field_desc: "Descrição detalhada *",
                 ad_contact_consent: "Aceito que o meu telefone e os dados deste anúncio sejam publicados e fiquem visíveis publicamente.",
+                btn_edit_classified: "Editar anúncio (uma vez, nos primeiros 5 minutos)",
+                btn_save_classified_edits: "Guardar correção",
+                btn_publish_classified: "Publicar Anúncio",
                 event_month_oct: "OUT",
                 event_month_nov: "NOV",
                 event_month_dec: "DEZ",
@@ -767,6 +784,11 @@
                 renderClassifieds();
                 renderHomeFeaturedAds();
                 renderDetail();
+                const requestedEditId = new URLSearchParams(window.location.search).get('edit');
+                if (requestedEditId) {
+                    window.history.replaceState({}, '', window.location.pathname);
+                    beginClassifiedEdit(requestedEditId);
+                }
             } catch (error) {
                 console.error('No se pudieron cargar los anuncios compartidos:', error);
                 showToast(currentLang === 'es'
@@ -846,6 +868,52 @@
                 '"': '&quot;',
                 "'": '&#39;'
             })[character]);
+        }
+
+        function getClassifiedEditCredential(id) {
+            const credential = classifiedEditCredentials[String(id)];
+            const expiresAt = credential ? Date.parse(credential.expiresAt) : NaN;
+            if (!credential || !Number.isFinite(expiresAt) || Date.now() >= expiresAt) {
+                if (credential) {
+                    delete classifiedEditCredentials[String(id)];
+                    writeLocalStorage(CLASSIFIED_EDIT_STORAGE_KEY, JSON.stringify(classifiedEditCredentials));
+                }
+                return null;
+            }
+            return credential;
+        }
+
+        function storeClassifiedEditCredential(id, token, expiresAt) {
+            classifiedEditCredentials[String(id)] = { token, expiresAt };
+            return writeLocalStorage(CLASSIFIED_EDIT_STORAGE_KEY, JSON.stringify(classifiedEditCredentials));
+        }
+
+        function removeClassifiedEditCredential(id) {
+            delete classifiedEditCredentials[String(id)];
+            writeLocalStorage(CLASSIFIED_EDIT_STORAGE_KEY, JSON.stringify(classifiedEditCredentials));
+        }
+
+        function beginClassifiedEdit(id) {
+            const credential = getClassifiedEditCredential(id);
+            const ad = classifiedsData.find(item => String(item.id) === String(id));
+            const form = document.querySelector('#ad-modal form');
+            if (!credential || !ad || !form) {
+                showToast(currentLang === 'es'
+                    ? 'El plazo para editar este anuncio terminó o ya se utilizó.'
+                    : 'O prazo para editar este anúncio terminou ou já foi utilizado.', true);
+                return;
+            }
+
+            activeClassifiedEdit = { id: String(id), token: credential.token };
+            form.reset();
+            document.getElementById('ad-title').value = ad.title;
+            document.getElementById('ad-category').value = ad.category;
+            document.getElementById('ad-price').value = ad.price;
+            document.getElementById('ad-contact').value = ad.contact;
+            document.getElementById('ad-location').value = ad.location;
+            document.getElementById('ad-description').value = ad.description;
+            document.getElementById('ad-contact-consent').checked = true;
+            openModal();
         }
 
         function renderDetail() {
@@ -949,6 +1017,10 @@
                 const fallbackImage = getFallbackClassifiedImage(ad);
                 const contactDigits = String(ad.contact || '').replace(/\D/g, '');
                 const whatsappUrl = `https://wa.me/${contactDigits}?text=${encodeURIComponent('Hola! Vi tu anuncio en @sere en Luanda: ' + ad.title)}`;
+                const editCredential = getClassifiedEditCredential(ad.id);
+                const editButton = editCredential
+                    ? `<a href="revolicango.html?edit=${encodeURIComponent(ad.id)}" class="inline-flex items-center gap-2 border border-brand-navy text-brand-navy font-bold px-5 py-3 rounded-lg mt-8 hover:bg-slate-50">${escapeHtml(labels.btn_edit_classified)}</a>`
+                    : '';
                 container.innerHTML = `
                     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
                         <a href="revolicango.html?category=${encodeURIComponent(ad.category)}" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
@@ -966,6 +1038,7 @@
                             <a href="${whatsappUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-emerald-700 text-white font-bold px-5 py-3 rounded-lg mt-8 hover:bg-emerald-800">
                                 <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>${escapeHtml(labels.detail_contact)}: ${escapeHtml(ad.contact)}
                             </a>
+                            ${editButton}
                         </article>
                     </div>
                 `;
@@ -983,11 +1056,20 @@
 
         /* ================= MODAL & FORM HANDLERS ================= */
         function openModal() {
+            const form = document.querySelector('#ad-modal form');
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (!activeClassifiedEdit) {
+                form.reset();
+                submitButton.textContent = translations[currentLang].btn_publish_classified;
+            } else {
+                submitButton.textContent = translations[currentLang].btn_save_classified_edits;
+            }
             document.getElementById('ad-modal').classList.remove('hidden');
         }
 
         function closeModal() {
             document.getElementById('ad-modal').classList.add('hidden');
+            activeClassifiedEdit = null;
         }
 
         async function uploadClassifiedImage(file) {
@@ -1040,6 +1122,9 @@
             const location = document.getElementById('ad-location').value.trim() || 'Luanda, Angola';
             const imageFile = document.getElementById('ad-image').files[0] || null;
             const description = document.getElementById('ad-description').value.trim();
+            const existingAd = activeClassifiedEdit
+                ? classifiedsData.find(item => String(item.id) === activeClassifiedEdit.id)
+                : null;
 
             if (title.length > 100 || price.length > 80 || contact.length > 30
                 || location.length > 100 || description.length > 2000) {
@@ -1066,8 +1151,23 @@
 
             submitButton.disabled = true;
             try {
-                const imageUrl = imageFile ? await uploadClassifiedImage(imageFile) : '';
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/classifieds`, {
+                const imageUrl = imageFile ? await uploadClassifiedImage(imageFile) : existingAd?.image || '';
+                const payload = {
+                    title,
+                    category,
+                    price,
+                    contact,
+                    location,
+                    image_url: imageUrl,
+                    description
+                };
+                const isEditing = Boolean(activeClassifiedEdit);
+                const editToken = isEditing ? activeClassifiedEdit.token : crypto.randomUUID();
+                const endpoint = isEditing ? 'edit_classified_once' : 'publish_classified';
+                const requestBody = isEditing
+                    ? { p_classified_id: activeClassifiedEdit.id, p_data: payload, p_edit_token: editToken }
+                    : { p_data: payload, p_edit_token: editToken };
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${endpoint}`, {
                     method: 'POST',
                     headers: {
                         apikey: SUPABASE_PUBLISHABLE_KEY,
@@ -1075,42 +1175,51 @@
                         'Content-Type': 'application/json',
                         Prefer: 'return=representation'
                     },
-                    body: JSON.stringify({
-                        title,
-                        category,
-                        price,
-                        contact,
-                        location,
-                        image_url: imageUrl,
-                        description,
-                        status: 'approved'
-                    })
+                    body: JSON.stringify(requestBody)
                 });
                 if (!response.ok) {
                     const details = await response.text();
                     throw new Error(`Supabase (${response.status}): ${details}`);
                 }
 
-                const [createdAd] = await response.json();
+                const result = await response.json();
+                let editCredentialStored = false;
                 const newAd = {
-                    id: createdAd.id,
-                    title: createdAd.title,
-                    category: createdAd.category,
-                    price: createdAd.price || (currentLang === 'es' ? 'Consultar' : 'A consultar'),
-                    contact: createdAd.contact,
-                    location: createdAd.location,
-                    date: new Date(createdAd.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt'),
-                    image: createdAd.image_url,
-                    description: createdAd.description
+                    id: result.id,
+                    title: result.title,
+                    category: result.category,
+                    price: result.price || (currentLang === 'es' ? 'Consultar' : 'A consultar'),
+                    contact: result.contact,
+                    location: result.location,
+                    date: new Date(result.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt'),
+                    image: result.image_url,
+                    description: result.description
                 };
-                classifiedsData.unshift(newAd);
+                if (isEditing) {
+                    const index = classifiedsData.findIndex(item => String(item.id) === String(result.id));
+                    if (index >= 0) classifiedsData[index] = newAd;
+                    removeClassifiedEditCredential(result.id);
+                    activeClassifiedEdit = null;
+                } else {
+                    classifiedsData.unshift(newAd);
+                    editCredentialStored = storeClassifiedEditCredential(result.id, editToken, result.edit_expires_at);
+                }
                 renderClassifieds();
                 renderHomeFeaturedAds();
+                renderDetail();
                 closeModal();
                 form.reset();
-                showToast(currentLang === 'es'
-                    ? '¡Anuncio publicado! Ya está visible para todos.'
-                    : 'Anúncio publicado! Já está visível para todos.');
+                showToast(isEditing
+                    ? currentLang === 'es'
+                        ? 'Corrección guardada. Ya utilizaste tu única edición.'
+                        : 'Correção guardada. Já utilizou a sua única edição.'
+                    : editCredentialStored
+                        ? currentLang === 'es'
+                            ? '¡Anuncio publicado! Abre su ficha para editarlo una vez durante los próximos 5 minutos.'
+                            : 'Anúncio publicado! Abra a ficha para editá-lo uma vez nos próximos 5 minutos.'
+                        : currentLang === 'es'
+                            ? 'Anuncio publicado, pero este navegador no pudo guardar el acceso de edición.'
+                            : 'Anúncio publicado, mas este navegador não conseguiu guardar o acesso de edição.');
             } catch (error) {
                 console.error('No se pudo enviar el anuncio:', error);
                 showToast(currentLang === 'es'
