@@ -1,4 +1,7 @@
 /* ================= STATE & INITIAL DATA ================= */
+        const SUPABASE_URL = 'https://gurqlrykdcdnqhnsuyhm.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_vJA7pquZf7anlnm8nGwsRQ_FOGFuHQ-';
+
         function readLocalStorage(key, fallback = null) {
             try {
                 return localStorage.getItem(key) ?? fallback;
@@ -20,84 +23,7 @@
         let currentLang = savedLanguage === 'pt' ? 'pt' : 'es';
         let currentCategory = 'all';
 
-        // Sample initial classifieds database
-        const classifiedsData = [
-            {
-                id: 1,
-                title: 'Toyota Rav4 2018 Automático Impecable',
-                category: 'Vehículos',
-                price: '18.500.000 Kz',
-                contact: '+244 936 962 161',
-                location: 'Miramar, Luanda',
-                date: 'Hoy',
-                image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80',
-                description: 'Mantenimiento al día en concesionario, aire acondicionado funcionando perfecto, motor impecable.'
-            },
-            {
-                id: 2,
-                title: 'Apartamento T2 Amueblado con Vista al Mar',
-                category: 'Inmobiliaria',
-                price: '450.000 Kz / mes',
-                contact: '+244 936 962 161',
-                location: 'Talatona, Luanda',
-                date: 'Ayer',
-                image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80',
-                description: 'Excelente apartamento listo para entrar a vivir. Incluye seguridad 24h, agua y energía constante.'
-            },
-            {
-                id: 3,
-                title: 'iPhone 14 Pro Max 256GB Libre de Fábrica',
-                category: 'Tecnología',
-                price: '650.000 Kz',
-                contact: '+244 936 962 161',
-                location: 'Maianga, Luanda',
-                date: '01 Oct',
-                image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80',
-                description: 'Condición de batería 92%, con caja y accesorios originales incluidos.'
-            },
-            {
-                id: 4,
-                title: 'Clases Particulares de Idioma Español e Inglés',
-                category: 'Servicios',
-                price: 'A convenir',
-                contact: '+244 936 962 161',
-                location: 'A domicilio o Luanda centro',
-                date: '30 Sep',
-                image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
-                description: 'Profesor universitario con amplia experiencia. Clases personalizadas para adultos o niños.'
-            },
-            {
-                id: 5,
-                title: 'Generador Eléctrico Silencioso 7.5 KVA',
-                category: 'Electrodomésticos',
-                price: '820.000 Kz',
-                contact: '+244 936 962 161',
-                location: 'Viana, Luanda',
-                date: '29 Sep',
-                image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80',
-                description: 'Poco uso, arranque eléctrico automático, ideal para residencias u oficinas.'
-            },
-            {
-                id: 6,
-                title: 'Se busca Chef o Cocinero especialista en Comida Criolla',
-                category: 'Empleos',
-                price: 'Salario Competitivo',
-                contact: '+244 936 962 161',
-                location: 'Luanda Sul',
-                date: '28 Sep',
-                image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80',
-                description: 'Restaurante gastronómico busca personal dinámico para incorporación inmediata.'
-            }
-        ];
-
-        let userClassifieds = [];
-        try {
-            const storedClassifieds = JSON.parse(readLocalStorage('community-classifieds', '[]') || '[]');
-            if (Array.isArray(storedClassifieds)) userClassifieds = storedClassifieds;
-        } catch {
-            userClassifieds = [];
-        }
-        classifiedsData.unshift(...userClassifieds);
+        const classifiedsData = [];
         /* ================= I18N DICTIONARY ================= */
         const translations = {
             es: {
@@ -304,6 +230,7 @@
                 modal_field_img: "URL de Imagen (Opcional)",
                 modal_img_help: "Si dejas este campo vacío, se asignará una imagen ilustrativa automáticamente.",
                 modal_field_desc: "Descripción Detallada *",
+                ad_contact_consent: "Acepto que mi teléfono y los datos de este anuncio se publiquen y sean visibles públicamente.",
                 btn_cancel: "Cancelar",
                 btn_submit_ad: "Publicar Anuncio",
 
@@ -514,6 +441,7 @@
                 modal_field_img: "URL da Imagem (Opcional)",
                 modal_img_help: "Se deixar este campo vazio, será atribuída uma imagem ilustrativa automaticamente.",
                 modal_field_desc: "Descrição detalhada *",
+                ad_contact_consent: "Aceito que o meu telefone e os dados deste anúncio sejam publicados e fiquem visíveis publicamente.",
                 event_month_oct: "OUT",
                 event_month_nov: "NOV",
                 event_month_dec: "DEZ",
@@ -803,6 +731,53 @@
             container.innerHTML = featured.map(ad => createAdCardHTML(ad)).join('');
         }
 
+        async function loadSharedClassifieds() {
+            const query = new URLSearchParams({
+                select: 'id,title,category,price,contact,location,image_url,description,created_at',
+                status: 'eq.approved',
+                order: 'created_at.desc',
+                limit: '200'
+            });
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/classifieds?${query}`, {
+                    headers: {
+                        apikey: SUPABASE_PUBLISHABLE_KEY,
+                        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+                    }
+                });
+                if (!response.ok) {
+                    const details = await response.text();
+                    throw new Error(`Supabase (${response.status}): ${details}`);
+                }
+
+                const rows = await response.json();
+                const sharedAds = rows.map(row => ({
+                    id: row.id,
+                    title: row.title,
+                    category: row.category,
+                    price: row.price || (currentLang === 'es' ? 'Consultar' : 'A consultar'),
+                    contact: row.contact,
+                    location: row.location,
+                    date: row.created_at
+                        ? new Date(row.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt')
+                        : '',
+                    image: row.image_url,
+                    description: row.description
+                }));
+
+                classifiedsData.splice(0, classifiedsData.length, ...sharedAds);
+                renderClassifieds();
+                renderHomeFeaturedAds();
+                renderDetail();
+            } catch (error) {
+                console.error('No se pudieron cargar los anuncios compartidos:', error);
+                showToast(currentLang === 'es'
+                    ? 'No se pudieron cargar los anuncios. Inténtalo de nuevo más tarde.'
+                    : 'Não foi possível carregar os anúncios. Tente novamente mais tarde.', true);
+            }
+        }
+
         const classifiedImagePools = {
             vehicles: ['https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=900&q=80'],
             housing: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80'],
@@ -838,9 +813,6 @@
 
             if (!imagePool.includes(ad.fallbackImage)) {
                 ad.fallbackImage = imagePool[Math.floor(Math.random() * imagePool.length)];
-                if (userClassifieds.some(item => String(item.id) === String(ad.id))) {
-                    writeLocalStorage('community-classifieds', JSON.stringify(userClassifieds));
-                }
             }
             return ad.fallbackImage;
         }
@@ -1021,53 +993,99 @@
             document.getElementById('ad-modal').classList.add('hidden');
         }
 
-        function handleAdSubmit(e) {
+        async function handleAdSubmit(e) {
             e.preventDefault();
 
-            const title = document.getElementById('ad-title').value;
+            const form = e.currentTarget;
+            const submitButton = form.querySelector('button[type="submit"]');
+            const title = document.getElementById('ad-title').value.trim();
             const category = document.getElementById('ad-category').value;
-            const price = document.getElementById('ad-price').value || (currentLang === 'es' ? 'Consultar' : 'A consultar');
-            const contact = document.getElementById('ad-contact').value;
-            const location = document.getElementById('ad-location').value || 'Luanda, Angola';
-            const image = document.getElementById('ad-image').value;
-            const description = document.getElementById('ad-description').value;
+            const price = document.getElementById('ad-price').value.trim();
+            const contact = document.getElementById('ad-contact').value.trim();
+            const location = document.getElementById('ad-location').value.trim() || 'Luanda, Angola';
+            const imageUrl = document.getElementById('ad-image').value.trim();
+            const description = document.getElementById('ad-description').value.trim();
 
-            const newAd = {
-                id: Date.now(),
-                title,
-                category,
-                price,
-                contact,
-                location,
-                date: currentLang === 'es' ? 'Ahora' : 'Agora',
-                image,
-                description
-            };
-
-            // Add to top of list
-            userClassifieds.unshift(newAd);
-            classifiedsData.unshift(newAd);
-            const savedLocally = writeLocalStorage('community-classifieds', JSON.stringify(userClassifieds));
-
-            // Close modal and reset form
-            closeModal();
-            e.target.reset();
-
-            // Notify user
-            if (!savedLocally) {
-                renderClassifieds();
-                renderHomeFeaturedAds();
+            if (title.length > 100 || price.length > 80 || contact.length > 30
+                || location.length > 100 || description.length > 2000) {
                 showToast(currentLang === 'es'
-                    ? 'No se pudo guardar el anuncio en este dispositivo.'
-                    : 'Não foi possível guardar o anúncio neste dispositivo.');
+                    ? 'Revisa la longitud de los campos e inténtalo de nuevo.'
+                    : 'Verifique o tamanho dos campos e tente novamente.', true);
                 return;
             }
 
-            renderClassifieds();
-            renderHomeFeaturedAds();
-            showToast(currentLang === 'es'
-                ? 'Anuncio guardado en este dispositivo; no es visible para otros visitantes.'
-                : 'Anúncio guardado neste dispositivo; não fica visível para outros visitantes.');
+            if (!/^[+\d][\d\s().-]{6,29}$/.test(contact)) {
+                showToast(currentLang === 'es'
+                    ? 'Introduce un teléfono o WhatsApp válido.'
+                    : 'Introduza um telefone ou WhatsApp válido.', true);
+                return;
+            }
+
+            if (imageUrl) {
+                try {
+                    if (new URL(imageUrl).protocol !== 'https:') throw new Error('HTTPS required');
+                } catch {
+                    showToast(currentLang === 'es'
+                        ? 'La imagen debe tener una URL HTTPS válida.'
+                        : 'A imagem deve ter um URL HTTPS válido.', true);
+                    return;
+                }
+            }
+
+            submitButton.disabled = true;
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/classifieds`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPABASE_PUBLISHABLE_KEY,
+                        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+                        'Content-Type': 'application/json',
+                        Prefer: 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        title,
+                        category,
+                        price,
+                        contact,
+                        location,
+                        image_url: imageUrl,
+                        description,
+                        status: 'approved'
+                    })
+                });
+                if (!response.ok) {
+                    const details = await response.text();
+                    throw new Error(`Supabase (${response.status}): ${details}`);
+                }
+
+                const [createdAd] = await response.json();
+                const newAd = {
+                    id: createdAd.id,
+                    title: createdAd.title,
+                    category: createdAd.category,
+                    price: createdAd.price || (currentLang === 'es' ? 'Consultar' : 'A consultar'),
+                    contact: createdAd.contact,
+                    location: createdAd.location,
+                    date: new Date(createdAd.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt'),
+                    image: createdAd.image_url,
+                    description: createdAd.description
+                };
+                classifiedsData.unshift(newAd);
+                renderClassifieds();
+                renderHomeFeaturedAds();
+                closeModal();
+                form.reset();
+                showToast(currentLang === 'es'
+                    ? '¡Anuncio publicado! Ya está visible para todos.'
+                    : 'Anúncio publicado! Já está visível para todos.');
+            } catch (error) {
+                console.error('No se pudo enviar el anuncio:', error);
+                showToast(currentLang === 'es'
+                    ? 'No se pudo enviar el anuncio. Inténtalo de nuevo más tarde.'
+                    : 'Não foi possível enviar o anúncio. Tente novamente mais tarde.', true);
+            } finally {
+                submitButton.disabled = false;
+            }
         }
 
         function handleContactSubmit(e) {
@@ -1087,10 +1105,14 @@
             window.location.href = whatsappUrl;
         }
 
-        function showToast(message) {
+        function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             const msgElem = document.getElementById('toast-message');
+            const icon = document.getElementById('toast-icon');
             msgElem.textContent = message;
+            icon.className = isError
+                ? 'fa-solid fa-circle-exclamation text-rose-400 text-lg'
+                : 'fa-solid fa-circle-check text-emerald-400 text-lg';
 
             toast.classList.remove('translate-y-20', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
@@ -1105,6 +1127,7 @@
             setLanguage(currentLang);
             renderClassifieds();
             renderHomeFeaturedAds();
+            loadSharedClassifieds();
             const requestedCategory = new URLSearchParams(window.location.search).get('category');
             if (requestedCategory) selectCategory(requestedCategory);
             const requestedParams = new URLSearchParams(window.location.search);

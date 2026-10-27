@@ -217,6 +217,11 @@
                     <textarea id="ad-description" rows="4" required placeholder="Describe el estado del producto, especificaciones o condiciones del servicio..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta"></textarea>
                 </div>
 
+                <label class="flex items-start gap-2 text-xs text-slate-600">
+                    <input id="ad-contact-consent" type="checkbox" required class="mt-0.5">
+                    <span data-i18n="ad_contact_consent">Acepto que mi teléfono y los datos del anuncio sean visibles públicamente si se aprueba.</span>
+                </label>
+
                 <div class="pt-2 flex gap-3">
                     <button type="button" onclick="closeModal()" class="w-1/2 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs uppercase" data-i18n="btn_cancel">Cancelar</button>
                     <button type="submit" class="w-1/2 badge-gradient text-white font-bold py-3 rounded-xl shadow-lg text-xs uppercase" data-i18n="btn_submit_ad">Publicar Anuncio</button>
