@@ -46,7 +46,6 @@
                 ad_price_placeholder: "Ej: 150.000 Kz o Consultar",
                 ad_contact_placeholder: "+244 936 962 161",
                 ad_location_placeholder: "Ej: Miramar, Talatona, Maianga",
-                ad_image_placeholder: "https://ejemplo.com/imagen.jpg",
                 ad_description_placeholder: "Describe el estado del producto, especificaciones o condiciones del servicio...",
                 detail_back: "Volver a la lista",
                 detail_category: "Categoría",
@@ -227,8 +226,8 @@
                 modal_field_price: "Precio (AOA o USD)",
                 modal_field_phone: "Teléfono / WhatsApp de Contacto *",
                 modal_field_loc: "Municipio / Zona en Luanda",
-                modal_field_img: "URL de Imagen (Opcional)",
-                modal_img_help: "Si dejas este campo vacío, se asignará una imagen ilustrativa automáticamente.",
+                modal_field_img: "Imagen desde tu dispositivo (Opcional)",
+                modal_img_help: "Elige una imagen JPG, PNG o WebP de hasta 200 KB. Si no seleccionas una, usaremos una imagen ilustrativa.",
                 modal_field_desc: "Descripción Detallada *",
                 ad_contact_consent: "Acepto que mi teléfono y los datos de este anuncio se publiquen y sean visibles públicamente.",
                 btn_cancel: "Cancelar",
@@ -260,7 +259,6 @@
                 ad_price_placeholder: "Ex.: 150.000 Kz ou consultar",
                 ad_contact_placeholder: "+244 936 962 161",
                 ad_location_placeholder: "Ex.: Miramar, Talatona, Maianga",
-                ad_image_placeholder: "https://exemplo.com/imagem.jpg",
                 ad_description_placeholder: "Descreva o estado do produto, especificações ou condições do serviço...",
                 detail_back: "Voltar à lista",
                 detail_category: "Categoria",
@@ -438,8 +436,8 @@
                 modal_field_price: "Preço (AOA ou USD)",
                 modal_field_phone: "Telefone / WhatsApp de Contacto *",
                 modal_field_loc: "Município / Zona em Luanda",
-                modal_field_img: "URL da Imagem (Opcional)",
-                modal_img_help: "Se deixar este campo vazio, será atribuída uma imagem ilustrativa automaticamente.",
+                modal_field_img: "Imagem do seu dispositivo (Opcional)",
+                modal_img_help: "Escolha uma imagem JPG, PNG ou WebP de até 200 KB. Se não selecionar nenhuma, usaremos uma imagem ilustrativa.",
                 modal_field_desc: "Descrição detalhada *",
                 ad_contact_consent: "Aceito que o meu telefone e os dados deste anúncio sejam publicados e fiquem visíveis publicamente.",
                 event_month_oct: "OUT",
@@ -624,7 +622,6 @@
                 'ad-price': 'ad_price_placeholder',
                 'ad-contact': 'ad_contact_placeholder',
                 'ad-location': 'ad_location_placeholder',
-                'ad-image': 'ad_image_placeholder',
                 'ad-description': 'ad_description_placeholder'
             };
             Object.entries(placeholderKeys).forEach(([id, key]) => {
@@ -993,6 +990,44 @@
             document.getElementById('ad-modal').classList.add('hidden');
         }
 
+        async function uploadClassifiedImage(file) {
+            const extensions = {
+                'image/jpeg': 'jpg',
+                'image/png': 'png',
+                'image/webp': 'webp'
+            };
+            const extension = extensions[file.type];
+            if (!extension) {
+                throw new Error(currentLang === 'es'
+                    ? 'Elige una imagen JPG, PNG o WebP.'
+                    : 'Escolha uma imagem JPG, PNG ou WebP.');
+            }
+            if (file.size > 200 * 1024) {
+                throw new Error(currentLang === 'es'
+                    ? 'La imagen no puede superar los 200 KB.'
+                    : 'A imagem não pode exceder 200 KB.');
+            }
+
+            const path = `${crypto.randomUUID()}.${extension}`;
+            const response = await fetch(`${SUPABASE_URL}/storage/v1/object/classified-images/${path}`, {
+                method: 'POST',
+                headers: {
+                    apikey: SUPABASE_PUBLISHABLE_KEY,
+                    Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+                    'Content-Type': file.type,
+                    'x-upsert': 'false',
+                    'cache-control': '3600'
+                },
+                body: file
+            });
+            if (!response.ok) {
+                const details = await response.text();
+                throw new Error(`Supabase Storage (${response.status}): ${details}`);
+            }
+
+            return `${SUPABASE_URL}/storage/v1/object/public/classified-images/${path}`;
+        }
+
         async function handleAdSubmit(e) {
             e.preventDefault();
 
@@ -1003,7 +1038,7 @@
             const price = document.getElementById('ad-price').value.trim();
             const contact = document.getElementById('ad-contact').value.trim();
             const location = document.getElementById('ad-location').value.trim() || 'Luanda, Angola';
-            const imageUrl = document.getElementById('ad-image').value.trim();
+            const imageFile = document.getElementById('ad-image').files[0] || null;
             const description = document.getElementById('ad-description').value.trim();
 
             if (title.length > 100 || price.length > 80 || contact.length > 30
@@ -1021,19 +1056,17 @@
                 return;
             }
 
-            if (imageUrl) {
-                try {
-                    if (new URL(imageUrl).protocol !== 'https:') throw new Error('HTTPS required');
-                } catch {
-                    showToast(currentLang === 'es'
-                        ? 'La imagen debe tener una URL HTTPS válida.'
-                        : 'A imagem deve ter um URL HTTPS válido.', true);
-                    return;
-                }
+            if (imageFile && (!['image/jpeg', 'image/png', 'image/webp'].includes(imageFile.type)
+                || imageFile.size > 200 * 1024)) {
+                showToast(currentLang === 'es'
+                    ? 'Elige una imagen JPG, PNG o WebP de hasta 200 KB.'
+                    : 'Escolha uma imagem JPG, PNG ou WebP de até 200 KB.', true);
+                return;
             }
 
             submitButton.disabled = true;
             try {
+                const imageUrl = imageFile ? await uploadClassifiedImage(imageFile) : '';
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/classifieds`, {
                     method: 'POST',
                     headers: {
@@ -1081,8 +1114,12 @@
             } catch (error) {
                 console.error('No se pudo enviar el anuncio:', error);
                 showToast(currentLang === 'es'
-                    ? 'No se pudo enviar el anuncio. Inténtalo de nuevo más tarde.'
-                    : 'Não foi possível enviar o anúncio. Tente novamente mais tarde.', true);
+                    ? error.message.startsWith('Supabase')
+                        ? 'No se pudo completar la publicación. Revisa la configuración del almacenamiento.'
+                        : error.message
+                    : error.message.startsWith('Supabase')
+                        ? 'Não foi possível concluir a publicação. Verifique a configuração do armazenamento.'
+                        : error.message, true);
             } finally {
                 submitButton.disabled = false;
             }
