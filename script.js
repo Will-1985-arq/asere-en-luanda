@@ -238,7 +238,7 @@
                 modal_field_phone: "Teléfono / WhatsApp de Contacto *",
                 modal_field_loc: "Municipio / Zona en Luanda",
                 modal_field_img: "Imagen desde tu dispositivo (Opcional)",
-                modal_img_help: "Hasta 3 imágenes JPG, PNG o WebP, de 200 KB cada una. Al editar, si no eliges nuevas, se conservan las anteriores.",
+                modal_img_help: "Hasta 10 imágenes JPG, PNG o WebP, de 2 MB cada una. Al editar, si no eliges nuevas, se conservan las anteriores.",
                 modal_field_desc: "Descripción Detallada *",
                 ad_contact_consent: "Acepto que mi teléfono y los datos de este anuncio se publiquen y sean visibles públicamente.",
                 btn_edit_classified: "Editar anuncio (una vez, en los primeros 5 minutos)",
@@ -451,7 +451,7 @@
                 modal_field_phone: "Telefone / WhatsApp de Contacto *",
                 modal_field_loc: "Município / Zona em Luanda",
                 modal_field_img: "Imagem do seu dispositivo (Opcional)",
-                modal_img_help: "Até 3 imagens JPG, PNG ou WebP, com 200 KB cada. Ao editar, se não escolher novas, as anteriores serão mantidas.",
+                modal_img_help: "Até 10 imagens JPG, PNG ou WebP, com 2 MB cada. Ao editar, se não escolher novas, as anteriores serão mantidas.",
                 modal_field_desc: "Descrição detalhada *",
                 ad_contact_consent: "Aceito que o meu telefone e os dados deste anúncio sejam publicados e fiquem visíveis publicamente.",
                 btn_edit_classified: "Editar anúncio (uma vez, nos primeiros 5 minutos)",
@@ -1083,6 +1083,7 @@
         }
 
         async function uploadClassifiedImage(file) {
+            const maxImageSizeBytes = 2 * 1024 * 1024;
             const extensions = {
                 'image/jpeg': 'jpg',
                 'image/png': 'png',
@@ -1094,10 +1095,10 @@
                     ? 'Elige una imagen JPG, PNG o WebP.'
                     : 'Escolha uma imagem JPG, PNG ou WebP.');
             }
-            if (file.size > 200 * 1024) {
+            if (file.size > maxImageSizeBytes) {
                 throw new Error(currentLang === 'es'
-                    ? 'La imagen no puede superar los 200 KB.'
-                    : 'A imagem não pode exceder 200 KB.');
+                    ? 'La imagen no puede superar los 2 MB.'
+                    : 'A imagem não pode exceder 2 MB.');
             }
 
             const path = `${crypto.randomUUID()}.${extension}`;
@@ -1151,18 +1152,18 @@
                 return;
             }
 
-            if (imageFiles.length > 3) {
+            if (imageFiles.length > 10) {
                 showToast(currentLang === 'es'
-                    ? 'Puedes elegir como máximo 3 imágenes por anuncio.'
-                    : 'Pode escolher no máximo 3 imagens por anúncio.', true);
+                    ? 'Puedes elegir como máximo 10 imágenes por anuncio.'
+                    : 'Pode escolher no máximo 10 imagens por anúncio.', true);
                 return;
             }
 
             if (imageFiles.some(file => !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)
-                || file.size > 200 * 1024)) {
+                || file.size > 2 * 1024 * 1024)) {
                 showToast(currentLang === 'es'
-                    ? 'Cada imagen debe ser JPG, PNG o WebP y pesar hasta 200 KB.'
-                    : 'Cada imagem deve ser JPG, PNG ou WebP e ter até 200 KB.', true);
+                    ? 'Cada imagen debe ser JPG, PNG o WebP y pesar hasta 2 MB.'
+                    : 'Cada imagem deve ser JPG, PNG ou WebP e ter até 2 MB.', true);
                 return;
             }
 
