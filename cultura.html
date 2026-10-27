@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultura | @sere en Luanda</title>
+    <!-- Google Fonts: Plus Jakarta Sans & Playfair Display for elegant tropical aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+<!-- HEADER & NAVBAR -->
+    <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- LOGO -->
+                <a href="javascript:void(0)" onclick="navigateTo('inicio')" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-2xl bg-brand-navy flex items-center justify-center text-white shadow-lg shadow-brand-navy/20 group-hover:scale-105 transition-transform">
+                        <span class="font-serif font-bold text-2xl text-brand-gold">@</span>
+                    </div>
+                    <div>
+                        <div class="font-serif font-extrabold text-xl tracking-tight text-brand-navy flex items-center gap-1">
+                            @sere <span class="text-brand-terracotta text-sm font-sans font-medium px-2 py-0.5 bg-brand-terracotta/10 rounded-full border border-brand-terracotta/20">en Luanda</span>
+                        </div>
+                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider" data-i18n="tagline">Cuba y Angola unidas</p>
+                    </div>
+                </a>
+
+                <!-- DESKTOP NAVIGATION LINKS -->
+                <nav class="hidden lg:flex items-center space-x-1 xl:space-x-2">
+                    <button onclick="navigateTo('inicio')" id="nav-inicio" class="nav-btn px-3 py-2 text-sm font-semibold text-brand-navy hover:text-brand-terracotta rounded-lg transition-colors" data-i18n="nav_home">Inicio</button>
+                    <button onclick="navigateTo('quienes-somos')" id="nav-quienes-somos" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_about">Quienes Somos</button>
+                    <button onclick="navigateTo('noticias')" id="nav-noticias" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_news">Noticias</button>
+                    <button onclick="navigateTo('eventos')" id="nav-eventos" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_events">Eventos</button>
+                    <button onclick="navigateTo('cultura')" id="nav-cultura" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_culture">Cultura</button>
+                    <button onclick="navigateTo('revolicango')" id="nav-revolicango" class="nav-btn px-3.5 py-2 text-sm font-bold text-brand-terracotta bg-brand-terracotta/10 hover:bg-brand-terracotta hover:text-white rounded-xl transition-all shadow-sm" data-i18n="nav_revolicango">RevolicAngo</button>
+                    <button onclick="navigateTo('contactos')" id="nav-contactos" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_contact">Contactos</button>
+                </nav>
+
+                <!-- RIGHT CONTROLS: LANGUAGE & POST AD BUTTON -->
+                <div class="hidden lg:flex items-center gap-3">
+                    <!-- LANGUAGE TOGGLE -->
+                    <div class="inline-flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200">
+                        <button onclick="setLanguage('es')" id="lang-es" class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all bg-white text-brand-navy shadow-sm">ES</button>
+                        <button onclick="setLanguage('pt')" id="lang-pt" class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all text-slate-500 hover:text-brand-navy">PT</button>
+                    </div>
+
+                    <!-- POST AD ACTION -->
+                    <button onclick="openModal()" class="badge-gradient hover:opacity-95 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-md shadow-brand-terracotta/30 flex items-center gap-2 transform active:scale-95 transition-all">
+                        <i class="fa-solid fa-circle-plus text-base"></i>
+                        <span data-i18n="btn_publish">Publicar Anuncio</span>
+                    </button>
+                </div>
+
+                <!-- MOBILE MENU BUTTON -->
+                <div class="flex lg:hidden items-center gap-2">
+                    <div class="inline-flex items-center p-1 bg-slate-100 rounded-lg">
+                        <button onclick="setLanguage('es')" id="lang-es-mob" class="px-2 py-0.5 text-xs font-bold rounded bg-white text-brand-navy">ES</button>
+                        <button onclick="setLanguage('pt')" id="lang-pt-mob" class="px-2 py-0.5 text-xs font-bold rounded text-slate-500">PT</button>
+                    </div>
+                    <button onclick="toggleMobileMenu()" class="p-2 rounded-xl text-brand-navy hover:bg-slate-100 focus:outline-none">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MOBILE DROPDOWN MENU -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-2 shadow-xl">
+            <button onclick="navigateTo('inicio'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_home">Inicio</button>
+            <button onclick="navigateTo('quienes-somos'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_about">Quienes Somos</button>
+            <button onclick="navigateTo('noticias'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_news">Noticias</button>
+            <button onclick="navigateTo('eventos'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_events">Eventos</button>
+            <button onclick="navigateTo('cultura'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_culture">Cultura</button>
+            <button onclick="navigateTo('revolicango'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-bold text-brand-terracotta bg-brand-terracotta/10" data-i18n="nav_revolicango">RevolicAngo (Clasificados)</button>
+            <button onclick="navigateTo('contactos'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_contact">Contactos</button>
+            <div class="pt-2">
+                <button onclick="openModal(); toggleMobileMenu()" class="w-full badge-gradient text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <span data-i18n="btn_publish">Publicar Anuncio</span>
+                </button>
+            </div>
+        </div>
+    </header>
+<main class="flex-grow">
+<section id="page-cultura" class="view-page">
+            <!-- CULTURA HERO HEADER -->
+            <div class="bg-brand-navy text-white py-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2">
+                    <span class="bg-brand-gold/20 text-brand-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Patrimonio e Identidad</span>
+                    <h1 class="font-serif text-3xl sm:text-4xl font-extrabold" data-i18n="culture_header">Cultura, Argot y Tradición</h1>
+                    <p class="text-slate-300 text-sm sm:text-base font-light" data-i18n="culture_subheader">Explora la historia, tradiciones y las manifestaciones artísticas que hermanan a Cuba y Angola.</p>
+                </div>
+            </div>
+
+            <!-- CULTURA SUB-NAVIGATION (SUB-PÁGINAS: Historia, Tradiciones y Folklor, Arte) -->
+            <div class="bg-white border-b border-slate-200 sticky top-20 z-30 shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center gap-3 overflow-x-auto py-3.5 custom-scrollbar text-sm font-bold">
+                        <button onclick="selectCultureTab('historia')" id="cultura-tab-historia" class="cultura-tab-btn px-5 py-2.5 rounded-xl bg-brand-navy text-white shrink-0 transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-landmark text-brand-gold"></i>
+                            <span data-i18n="culture_tab_historia">Historia</span>
+                        </button>
+                        <button onclick="selectCultureTab('tradiciones')" id="cultura-tab-tradiciones" class="cultura-tab-btn px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-masks-theater text-brand-terracotta"></i>
+                            <span data-i18n="culture_tab_tradiciones">Tradiciones y Folklor</span>
+                        </button>
+                        <button onclick="selectCultureTab('arte')" id="cultura-tab-arte" class="cultura-tab-btn px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-palette text-brand-green"></i>
+                            <span data-i18n="culture_tab_arte">Arte</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB-PAGE CONTENT CONTAINER -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                
+                <!-- SUB-PAGE 1: HISTORIA -->
+                <div id="subpage-historia" class="culture-subview space-y-10">
+                    <a href="detalle.html?tipo=cultura&id=historia" class="flex items-center gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                        <span class="w-14 h-14 rounded-xl bg-brand-navy/10 text-brand-navy flex items-center justify-center text-2xl shrink-0"><i class="fa-solid fa-landmark" aria-hidden="true"></i></span>
+                        <span>
+                            <span class="block text-xs font-bold uppercase text-brand-terracotta" data-i18n="historia_badge">Lazos Indisolubles</span>
+                            <span class="block font-serif text-2xl font-bold text-brand-navy hover:text-brand-terracotta" data-i18n="historia_title">Historia compartida entre Cuba y Angola</span>
+                        </span>
+                    </a>
+                </div>
+
+                <!-- SUB-PAGE 2: TRADICIONES Y FOLKLOR -->
+                <div id="subpage-tradiciones" class="culture-subview hidden space-y-10">
+                    <div class="space-y-4">
+                        <h2 class="font-serif text-3xl font-bold text-brand-navy" data-i18n="tradiciones_title">Tradiciones, Festividades y Folclore</h2>
+                    </div>
+
+                    <!-- TRADITIONS CARDS GRID -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <a href="detalle.html?tipo=cultura&id=trad-gastro" class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                            <span class="flex items-center gap-4"><span class="w-12 h-12 rounded-xl bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center text-xl"><i class="fa-solid fa-utensils" aria-hidden="true"></i></span><span class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta" data-i18n="trad_gastro_title">Sazones Criollos & Muamba</span></span>
+                        </a>
+
+                        <a href="detalle.html?tipo=cultura&id=trad-domino" class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                            <span class="flex items-center gap-4"><span class="w-12 h-12 rounded-xl bg-brand-navy/10 text-brand-navy flex items-center justify-center text-xl"><i class="fa-solid fa-dice" aria-hidden="true"></i></span><span class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta" data-i18n="trad_domino_title">El Dominó y las Kizombadas</span></span>
+                        </a>
+
+                        <a href="detalle.html?tipo=cultura&id=trad-carnaval" class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                            <span class="flex items-center gap-4"><span class="w-12 h-12 rounded-xl bg-brand-green/10 text-brand-green flex items-center justify-center text-xl"><i class="fa-solid fa-drum" aria-hidden="true"></i></span><span class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta" data-i18n="trad_carnaval_title">Carnaval de Luanda & Comparsas</span></span>
+                        </a>
+                    </div>
+
+                    <!-- GLOSARIO INTEGRADO -->
+                    <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-brand-terracotta text-white flex items-center justify-center">
+                                <i class="fa-solid fa-comments text-lg"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-2xl font-bold text-brand-navy" data-i18n="glossary_title">Glosario Cubano - Angolano</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                            <a href="detalle.html?tipo=cultura&id=glossary-1" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>Asere</span><span class="text-brand-terracotta mx-2">↔</span><span>Kamba</span></a>
+                            <a href="detalle.html?tipo=cultura&id=glossary-2" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>¿Qué bolá?</span><span class="text-brand-terracotta mx-2">↔</span><span>Mambo cómo 'stá?</span></a>
+                            <a href="detalle.html?tipo=cultura&id=glossary-3" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>Tremendo ambiente</span><span class="text-brand-terracotta mx-2">↔</span><span>Tá a bater!</span></a>
+                            <a href="detalle.html?tipo=cultura&id=glossary-4" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>Fiesta</span><span class="text-brand-terracotta mx-2">↔</span><span>Kizombada</span></a>
+                            <a href="detalle.html?tipo=cultura&id=glossary-5" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>Guagua</span><span class="text-brand-terracotta mx-2">↔</span><span>Candongueiro</span></a>
+                            <a href="detalle.html?tipo=cultura&id=glossary-6" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>Resolver</span><span class="text-brand-terracotta mx-2">↔</span><span>Desrascar</span></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-PAGE 3: ARTE (Con sub-categorías: Literatura, Música, Cine, Artes Visuales y Plásticas, Danza, Teatro) -->
+                <div id="subpage-arte" class="culture-subview hidden space-y-8">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="font-serif text-3xl font-bold text-brand-navy" data-i18n="arte_title">Arte y Expresiones Creativas</h2>
+                        </div>
+                    </div>
+
+                    <!-- CATEGORÍAS DE ARTE (PILLS DE FILTRADO INTERACTIVO) -->
+                    <div class="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar text-xs font-bold">
+                        <button onclick="filterArtCategory('all')" id="art-cat-all" class="art-pill px-4 py-2 rounded-xl bg-brand-navy text-white shrink-0 transition-all" data-i18n="art_cat_all">Todas las Artes</button>
+                        <button onclick="filterArtCategory('literatura')" id="art-cat-literatura" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all"><i class="fa-solid fa-book-open mr-1.5 text-brand-terracotta"></i><span data-i18n="art_cat_lit">Literatura</span></button>
+                        <button onclick="filterArtCategory('musica')" id="art-cat-musica" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all"><i class="fa-solid fa-music mr-1.5 text-brand-navy"></i><span data-i18n="art_cat_mus">Música</span></button>
+                        <button onclick="filterArtCategory('cine')" id="art-cat-cine" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all"><i class="fa-solid fa-film mr-1.5 text-brand-gold"></i><span data-i18n="art_cat_cine">Cine</span></button>
+                        <button onclick="filterArtCategory('visuales')" id="art-cat-visuales" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all"><i class="fa-solid fa-paint-brush mr-1.5 text-brand-green"></i><span data-i18n="art_cat_vis">Artes Visuales y Plásticas</span></button>
+                        <button onclick="filterArtCategory('danza')" id="art-cat-danza" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all"><i class="fa-solid fa-child-reaching mr-1.5 text-brand-terracotta"></i><span data-i18n="art_cat_danza">Danza</span></button>
+                        <button onclick="filterArtCategory('teatro')" id="art-cat-teatro" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all"><i class="fa-solid fa-masks-theater mr-1.5 text-brand-navy"></i><span data-i18n="art_cat_teatro">Teatro</span></button>
+                    </div>
+
+                    <!-- ART ITEMS GRID -->
+                    <div id="art-items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <!-- LITERATURA -->
+                        <a href="detalle.html?tipo=cultura&id=art-literature" class="art-card block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta" data-art-cat="literatura">
+                            <div class="flex items-center justify-between"><span class="bg-brand-terracotta/10 text-brand-terracotta text-[10px] font-extrabold px-3 py-1 rounded-full uppercase" data-i18n="art_cat_lit">Literatura</span><i class="fa-solid fa-book-open text-brand-terracotta text-lg" aria-hidden="true"></i></div>
+                            <h3 class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta mt-4" data-i18n="art_lit_title">Poesía y Narrativa Afro-Caribeña</h3>
+                        </a>
+
+                        <!-- MÚSICA -->
+                        <a href="detalle.html?tipo=cultura&id=art-music" class="art-card block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta" data-art-cat="musica">
+                            <div class="flex items-center justify-between"><span class="bg-brand-navy/10 text-brand-navy text-[10px] font-extrabold px-3 py-1 rounded-full uppercase" data-i18n="art_cat_mus">Música</span><i class="fa-solid fa-music text-brand-navy text-lg" aria-hidden="true"></i></div>
+                            <h3 class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta mt-4" data-i18n="art_mus_title">Fusión de Son, Timba, Semba y Kizomba</h3>
+                        </a>
+
+                        <!-- CINE -->
+                        <a href="detalle.html?tipo=cultura&id=art-cinema" class="art-card block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta" data-art-cat="cine">
+                            <div class="flex items-center justify-between"><span class="bg-brand-gold/20 text-yellow-800 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase" data-i18n="art_cat_cine">Cine</span><i class="fa-solid fa-film text-brand-gold text-lg" aria-hidden="true"></i></div>
+                            <h3 class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta mt-4" data-i18n="art_cine_title">Muestras de Documentales y Cine Debate</h3>
+                        </a>
+
+                        <!-- ARTES VISUALES Y PLÁSTICAS -->
+                        <a href="detalle.html?tipo=cultura&id=art-visual" class="art-card block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta" data-art-cat="visuales">
+                            <div class="flex items-center justify-between"><span class="bg-brand-green/10 text-brand-green text-[10px] font-extrabold px-3 py-1 rounded-full uppercase" data-i18n="art_cat_vis">Artes Visuales y Plásticas</span><i class="fa-solid fa-paint-brush text-brand-green text-lg" aria-hidden="true"></i></div>
+                            <h3 class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta mt-4" data-i18n="art_vis_title">Pintura, Escultura y Muralismo Urbano</h3>
+                        </a>
+
+                        <!-- DANZA -->
+                        <a href="detalle.html?tipo=cultura&id=art-dance" class="art-card block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta" data-art-cat="danza">
+                            <div class="flex items-center justify-between"><span class="bg-brand-terracotta/10 text-brand-terracotta text-[10px] font-extrabold px-3 py-1 rounded-full uppercase" data-i18n="art_cat_danza">Danza</span><i class="fa-solid fa-child-reaching text-brand-terracotta text-lg" aria-hidden="true"></i></div>
+                            <h3 class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta mt-4" data-i18n="art_danza_title">Rueda de Casino y Danzas Tradicionales</h3>
+                        </a>
+
+                        <!-- TEATRO -->
+                        <a href="detalle.html?tipo=cultura&id=art-theatre" class="art-card block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta" data-art-cat="teatro">
+                            <div class="flex items-center justify-between"><span class="bg-brand-navy/10 text-brand-navy text-[10px] font-extrabold px-3 py-1 rounded-full uppercase" data-i18n="art_cat_teatro">Teatro</span><i class="fa-solid fa-masks-theater text-brand-navy text-lg" aria-hidden="true"></i></div>
+                            <h3 class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta mt-4" data-i18n="art_teatro_title">Teatro Comunitario y Performance</h3>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+</main>
+<!-- MODAL: PUBLICAR ANUNCIO (REVOLICANGO) -->
+    <div id="ad-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
+            <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-xl text-brand-navy" data-i18n="modal_title">Publicar Anuncio en RevolicAngo</h3>
+                        <p class="text-xs text-slate-500" data-i18n="modal_sub">Llega a toda la comunidad de Luanda de forma rápida.</p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-lg">
+                    &times;
+                </button>
+            </div>
+
+            <form onsubmit="handleAdSubmit(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="modal_field_title">Título del Anuncio *</label>
+                    <input type="text" id="ad-title" required placeholder="Ej: Venta de Toyota Corolla en excelente estado" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="modal_field_cat">Categoría *</label>
+                        <select id="ad-category" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta font-medium">
+                            <option value="Vehículos" data-i18n="cat_vehiculos">Vehículos</option>
+                            <option value="Inmobiliaria" data-i18n="cat_inmobiliaria">Inmobiliaria</option>
+                            <option value="Tecnología" data-i18n="cat_tecnologia">Tecnología</option>
+                            <option value="Empleos" data-i18n="cat_empleos">Empleos</option>
+                            <option value="Ropa y Accesorios" data-i18n="cat_ropa">Ropa y Accesorios</option>
+                            <option value="Servicios" data-i18n="cat_servicios">Servicios</option>
+                            <option value="Electrodomésticos" data-i18n="cat_electro">Electrodomésticos</option>
+                            <option value="Hogar" data-i18n="cat_hogar">Hogar</option>
+                            <option value="General" data-i18n="cat_general" selected>General</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="modal_field_price">Precio (AOA o USD)</label>
+                        <input type="text" id="ad-price" placeholder="Ej: 150.000 Kz o Consultar" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="modal_field_phone">Teléfono / WhatsApp de Contacto *</label>
+                        <input type="text" id="ad-contact" required placeholder="+244 936 962 161" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="modal_field_loc">Municipio / Zona en Luanda</label>
+                        <input type="text" id="ad-location" placeholder="Ej: Miramar, Talatona, Maianga" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="modal_field_img">URL de Imagen (Opcional)</label>
+                    <input type="url" id="ad-image" placeholder="https://ejemplo.com/imagen.jpg" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta">
+                    <p class="text-[11px] text-slate-400 mt-1" data-i18n="modal_img_help">Si dejas este campo vacío, se asignará una imagen ilustrativa automáticamente.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1" data-i18n="modal_field_desc">Descripción Detallada *</label>
+                    <textarea id="ad-description" rows="4" required placeholder="Describe el estado del producto, especificaciones o condiciones del servicio..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta"></textarea>
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button type="button" onclick="closeModal()" class="w-1/2 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs uppercase" data-i18n="btn_cancel">Cancelar</button>
+                    <button type="submit" class="w-1/2 badge-gradient text-white font-bold py-3 rounded-xl shadow-lg text-xs uppercase" data-i18n="btn_submit_ad">Publicar Anuncio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION BOX -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-brand-navy text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700">
+            <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+            <span id="toast-message" class="text-xs font-bold">¡Operación completada con éxito!</span>
+        </div>
+    </div>
+<!-- FOOTER -->
+    <footer class="bg-brand-navy text-white border-t border-slate-800 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="font-serif font-bold text-2xl text-brand-gold">@sere</span>
+                        <span class="text-brand-terracotta text-xs font-bold px-2 py-0.5 bg-white/10 rounded-full">en Luanda</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed" data-i18n="footer_about">
+                        Comunidad y directorio informativo para unir lazos culturales y comerciales en Angola.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold uppercase text-brand-gold tracking-wider mb-4" data-i18n="footer_links">Navegación</h4>
+                    <ul class="space-y-2 text-xs text-slate-300 font-medium">
+                        <li><a href="javascript:void(0)" onclick="navigateTo('inicio')" class="hover:text-brand-terracotta transition-colors" data-i18n="nav_home">Inicio</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('quienes-somos')" class="hover:text-brand-terracotta transition-colors" data-i18n="nav_about">Quienes Somos</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('cultura')" class="hover:text-brand-terracotta transition-colors" data-i18n="nav_culture">Cultura y Arte</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('revolicango')" class="hover:text-brand-terracotta transition-colors" data-i18n="nav_revolicango">RevolicAngo</a></li>
+                        <li><a href="javascript:void(0)" onclick="navigateTo('contactos')" class="hover:text-brand-terracotta transition-colors" data-i18n="nav_contact">Contactos</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold uppercase text-brand-gold tracking-wider mb-4" data-i18n="footer_subpages">Categorías RevolicAngo</h4>
+                    <ul class="space-y-2 text-xs text-slate-300 font-medium">
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Veh%C3%ADculos'" class="hover:text-brand-terracotta">Vehículos</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Inmobiliaria'" class="hover:text-brand-terracotta">Inmobiliaria</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Tecnolog%C3%ADa'" class="hover:text-brand-terracotta">Tecnología</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Empleos'" class="hover:text-brand-terracotta">Empleos</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold uppercase text-brand-gold tracking-wider mb-4" data-i18n="footer_contact">Contacto Directo</h4>
+                    <p class="text-xs text-slate-300 font-semibold mb-2"><i class="fa-solid fa-phone text-brand-terracotta mr-2"></i> +244 936 962 161</p>
+                    <p class="text-xs text-slate-300 font-semibold mb-4"><i class="fa-solid fa-location-dot text-brand-terracotta mr-2"></i> Luanda, Angola</p>
+                    <a href="https://wa.me/244936962161" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition-colors">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp +244 936 962 161
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-500 gap-2">
+                <div>&copy; 2026 @sere en Luanda. Todos los derechos reservados.</div>
+                <div class="flex gap-4">
+                    <span data-i18n="footer_tag">Unidad, Cultura y Hermandad</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+<script src="script.js" defer></script>
+</body>
+</html>
