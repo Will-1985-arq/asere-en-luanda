@@ -238,7 +238,7 @@
                 modal_field_phone: "Teléfono / WhatsApp de Contacto *",
                 modal_field_loc: "Municipio / Zona en Luanda",
                 modal_field_img: "Imagen desde tu dispositivo (Opcional)",
-                modal_img_help: "Elige una imagen JPG, PNG o WebP de hasta 200 KB. Si no seleccionas una, usaremos una imagen ilustrativa.",
+                modal_img_help: "Hasta 3 imágenes JPG, PNG o WebP, de 200 KB cada una. Al editar, si no eliges nuevas, se conservan las anteriores.",
                 modal_field_desc: "Descripción Detallada *",
                 ad_contact_consent: "Acepto que mi teléfono y los datos de este anuncio se publiquen y sean visibles públicamente.",
                 btn_edit_classified: "Editar anuncio (una vez, en los primeros 5 minutos)",
@@ -451,7 +451,7 @@
                 modal_field_phone: "Telefone / WhatsApp de Contacto *",
                 modal_field_loc: "Município / Zona em Luanda",
                 modal_field_img: "Imagem do seu dispositivo (Opcional)",
-                modal_img_help: "Escolha uma imagem JPG, PNG ou WebP de até 200 KB. Se não selecionar nenhuma, usaremos uma imagem ilustrativa.",
+                modal_img_help: "Até 3 imagens JPG, PNG ou WebP, com 200 KB cada. Ao editar, se não escolher novas, as anteriores serão mantidas.",
                 modal_field_desc: "Descrição detalhada *",
                 ad_contact_consent: "Aceito que o meu telefone e os dados deste anúncio sejam publicados e fiquem visíveis publicamente.",
                 btn_edit_classified: "Editar anúncio (uma vez, nos primeiros 5 minutos)",
@@ -747,7 +747,7 @@
 
         async function loadSharedClassifieds() {
             const query = new URLSearchParams({
-                select: 'id,title,category,price,contact,location,image_url,description,created_at',
+                select: 'id,title,category,price,contact,location,image_url,image_urls,description,created_at',
                 status: 'eq.approved',
                 order: 'created_at.desc',
                 limit: '200'
@@ -776,7 +776,9 @@
                     date: row.created_at
                         ? new Date(row.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt')
                         : '',
-                    image: row.image_url,
+                    images: Array.isArray(row.image_urls) && row.image_urls.length
+                        ? row.image_urls
+                        : row.image_url ? [row.image_url] : [],
                     description: row.description
                 }));
 
@@ -837,8 +839,9 @@
         }
 
         function getClassifiedImage(ad) {
-            return typeof ad.image === 'string' && /^https?:\/\//i.test(ad.image)
-                ? ad.image
+            const image = Array.isArray(ad.images) ? ad.images[0] : ad.image;
+            return typeof image === 'string' && /^https?:\/\//i.test(image)
+                ? image
                 : getFallbackClassifiedImage(ad);
         }
 
@@ -1013,8 +1016,15 @@
                 const title = escapeHtml(ad.title);
                 const category = escapeHtml(ad.category);
                 const description = escapeHtml(ad.description);
-                const imageUrl = getClassifiedImage(ad);
+                const imageUrls = Array.isArray(ad.images) && ad.images.length
+                    ? ad.images
+                    : ad.image ? [ad.image] : [];
                 const fallbackImage = getFallbackClassifiedImage(ad);
+                const galleryImages = (imageUrls.length ? imageUrls : [getClassifiedImage(ad)])
+                    .slice(0, 3)
+                    .map((image, index) => `
+                        <img src="${escapeHtml(image)}" data-fallback="${escapeHtml(fallbackImage)}" alt="${escapeHtml(ad.title)}${imageUrls.length > 1 ? ` - ${index + 1}` : ''}" class="w-full ${index === 0 ? 'max-h-[28rem]' : 'h-36'} object-cover rounded-xl" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.fallback">
+                    `).join('');
                 const contactDigits = String(ad.contact || '').replace(/\D/g, '');
                 const whatsappUrl = `https://wa.me/${contactDigits}?text=${encodeURIComponent('Hola! Vi tu anuncio en @sere en Luanda: ' + ad.title)}`;
                 const editCredential = getClassifiedEditCredential(ad.id);
@@ -1025,7 +1035,7 @@
                     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
                         <a href="revolicango.html?category=${encodeURIComponent(ad.category)}" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
                         <article class="mt-8">
-                            <img src="${escapeHtml(imageUrl)}" data-fallback="${escapeHtml(fallbackImage)}" alt="${title}" class="w-full max-h-[28rem] object-cover rounded-xl mb-8" onerror="this.onerror=null;this.src=this.dataset.fallback">
+                            <div class="grid grid-cols-1 ${imageUrls.length > 1 ? 'sm:grid-cols-2' : ''} gap-3 mb-8" data-fallback="${escapeHtml(fallbackImage)}" onerror="this.onerror=null;this.src=this.dataset.fallback">${galleryImages}</div>
                             <p class="text-sm font-bold text-brand-terracotta uppercase">${category}</p>
                             <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-navy mt-2">${title}</h1>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-y border-slate-200 py-5 my-7 text-sm">
@@ -1120,7 +1130,7 @@
             const price = document.getElementById('ad-price').value.trim();
             const contact = document.getElementById('ad-contact').value.trim();
             const location = document.getElementById('ad-location').value.trim() || 'Luanda, Angola';
-            const imageFile = document.getElementById('ad-image').files[0] || null;
+            const imageFiles = Array.from(document.getElementById('ad-image').files || []);
             const description = document.getElementById('ad-description').value.trim();
             const existingAd = activeClassifiedEdit
                 ? classifiedsData.find(item => String(item.id) === activeClassifiedEdit.id)
@@ -1141,24 +1151,34 @@
                 return;
             }
 
-            if (imageFile && (!['image/jpeg', 'image/png', 'image/webp'].includes(imageFile.type)
-                || imageFile.size > 200 * 1024)) {
+            if (imageFiles.length > 3) {
                 showToast(currentLang === 'es'
-                    ? 'Elige una imagen JPG, PNG o WebP de hasta 200 KB.'
-                    : 'Escolha uma imagem JPG, PNG ou WebP de até 200 KB.', true);
+                    ? 'Puedes elegir como máximo 3 imágenes por anuncio.'
+                    : 'Pode escolher no máximo 3 imagens por anúncio.', true);
+                return;
+            }
+
+            if (imageFiles.some(file => !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)
+                || file.size > 200 * 1024)) {
+                showToast(currentLang === 'es'
+                    ? 'Cada imagen debe ser JPG, PNG o WebP y pesar hasta 200 KB.'
+                    : 'Cada imagem deve ser JPG, PNG ou WebP e ter até 200 KB.', true);
                 return;
             }
 
             submitButton.disabled = true;
             try {
-                const imageUrl = imageFile ? await uploadClassifiedImage(imageFile) : existingAd?.image || '';
+                const imageUrls = imageFiles.length
+                    ? await Promise.all(imageFiles.map(uploadClassifiedImage))
+                    : existingAd?.images || (existingAd?.image ? [existingAd.image] : []);
                 const payload = {
                     title,
                     category,
                     price,
                     contact,
                     location,
-                    image_url: imageUrl,
+                    image_urls: imageUrls,
+                    image_url: imageUrls[0] || '',
                     description
                 };
                 const isEditing = Boolean(activeClassifiedEdit);
@@ -1192,7 +1212,9 @@
                     contact: result.contact,
                     location: result.location,
                     date: new Date(result.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt'),
-                    image: result.image_url,
+                    images: Array.isArray(result.image_urls) && result.image_urls.length
+                        ? result.image_urls
+                        : result.image_url ? [result.image_url] : [],
                     description: result.description
                 };
                 if (isEditing) {
