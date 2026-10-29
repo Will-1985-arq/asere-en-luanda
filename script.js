@@ -129,6 +129,15 @@
                 news_4_body_2: "Durante las discusiones previas, varios representantes estatales recalcaron el impacto negativo de estas medidas sobre los ciudadanos cubanos, así como la vigencia de disposiciones con alcance extraterritorial. En respuesta a la decisión adoptada, el mandatario Miguel Díaz-Canel señaló mediante su perfil en redes sociales que la comunidad internacional ratificó su rechazo a dicho cerco económico a pesar de los intentos de coerción por parte de Washington.",
                 news_4_image_alt: "Imagen de Granma que acompaña la noticia sobre la votación en la ONU",
                 news_source_link: "Consultar el artículo original en el periódico Granma",
+                news_5_title: "La salud como puente solidario: El impacto de la Feria de la Salud en la UGS",
+                news_5_summary: "La Feria de la Salud de la Universidad Gregório Semedo, el 30 de octubre, reunirá consultas gratuitas, prevención del cáncer de mama y actividades culturales para la comunidad de Luanda.",
+                news_5_body_1: "La celebración de la Feria de la Salud en la Universidad Gregório Semedo (UGS), prevista para este 30 de octubre, trasciende el ámbito puramente académico para convertirse en un ejercicio de responsabilidad social y hermandad comunitaria en Luanda. En el marco del Octubre Rosa, la iniciativa sitúa la prevención y el diagnóstico temprano del cáncer de mama en el centro de la conversación pública, un desafío de salud global que exige la movilización de toda la sociedad.",
+                news_5_body_2: "Para la comunidad angolana y la amplia representación de residentes extranjeros —con una destacada y solidaria presencia de profesionales de la salud cubanos—, este evento representa un espacio de encuentro y bienestar accesible. La participación de médicos cubanos reafirma una larga tradición de cooperación internacionalista y humanista, poniendo la experiencia médica al servicio de diversos sectores de la población luandense de forma totalmente gratuita.",
+                news_5_schedule_intro: "El impacto de la feria se despliega en dos tiempos fundamentales:",
+                news_5_schedule_1: "Prevención y atención directa: de 9:00 a 15:00, consultas médicas gratuitas ofrecerán orientación clínica esencial para el bienestar familiar.",
+                news_5_schedule_2: "Sensibilización cultural y artística: a partir de las 17:00, la música y el teatro servirán para concienciar y recordar que la prevención es un acto de amor y vida.",
+                news_5_body_3: "Integrar a familias, estudiantes y profesionales en un mismo propósito fortalece el tejido social de Luanda y demuestra que la salud comunitaria se construye con educación, solidaridad y el compromiso activo de todos.",
+                news_5_image_alt: "Cartel de la Feria de la Salud en la Universidad Gregório Semedo",
                 btn_read_more: "Leer más",
 
                 events_header: "Eventos y agenda cultural",
@@ -352,6 +361,15 @@
                 news_4_body_2: "Durante os debates, vários representantes dos Estados destacaram o impacto negativo destas medidas sobre os cidadãos cubanos, bem como a vigência de disposições com alcance extraterritorial. Em resposta à decisão, o Presidente Miguel Díaz-Canel afirmou nas redes sociais que a comunidade internacional voltou a rejeitar o cerco económico, apesar das tentativas de coerção por parte de Washington.",
                 news_4_image_alt: "Imagem do Granma que acompanha a notícia sobre a votação na ONU",
                 news_source_link: "Consultar o artigo original no jornal Granma",
+                news_5_title: "A saúde como ponte solidária: o impacto da Feira da Saúde na UGS",
+                news_5_summary: "A Feira da Saúde da Universidade Gregório Semedo, a 30 de outubro, reunirá consultas gratuitas, prevenção do cancro da mama e atividades culturais para a comunidade de Luanda.",
+                news_5_body_1: "A realização da Feira da Saúde na Universidade Gregório Semedo (UGS), prevista para 30 de outubro, vai além do âmbito académico e torna-se um exercício de responsabilidade social e fraternidade comunitária em Luanda. No âmbito do Outubro Rosa, a iniciativa coloca a prevenção e o diagnóstico precoce do cancro da mama no centro da conversa pública, um desafio global de saúde que exige a mobilização de toda a sociedade.",
+                news_5_body_2: "Para a comunidade angolana e os muitos residentes estrangeiros — incluindo uma presença solidária de profissionais de saúde cubanos —, este evento representa um espaço acessível de encontro e bem-estar. A participação de médicos cubanos reafirma uma longa tradição de cooperação internacionalista e humanista, colocando a experiência médica ao serviço de diversos setores da população de Luanda, totalmente gratuita.",
+                news_5_schedule_intro: "O impacto da feira desenrola-se em dois momentos fundamentais:",
+                news_5_schedule_1: "Prevenção e atendimento direto: das 9h às 15h, consultas médicas gratuitas oferecerão orientação clínica essencial para o bem-estar das famílias.",
+                news_5_schedule_2: "Sensibilização cultural e artística: a partir das 17h, a música e o teatro serão usados para sensibilizar e lembrar que a prevenção é um ato de amor e de vida.",
+                news_5_body_3: "Reunir famílias, estudantes e profissionais em torno de um objetivo comum fortalece o tecido social de Luanda e demonstra que a saúde comunitária se constrói com educação, solidariedade e o compromisso ativo de todos.",
+                news_5_image_alt: "Cartaz da Feira da Saúde na Universidade Gregório Semedo",
                 btn_read_more: "Ler mais",
 
                 events_header: "Eventos & Agenda Cultural",
@@ -489,7 +507,8 @@
             { id: 'news-1', categoryKey: 'cat_consular', titleKey: 'news_1_title', bodyKey: 'news_1_body', date: '02 Oct 2026', readingMinutes: 3 },
             { id: 'news-2', categoryKey: 'cat_health', titleKey: 'news_2_title', bodyKey: 'news_2_body', date: '28 Sep 2026', readingMinutes: 4 },
             { id: 'news-3', categoryKey: 'cat_entrepreneur', titleKey: 'news_3_title', bodyKey: 'news_3_body', date: '20 Sep 2026', readingMinutes: 2 },
-            { id: 'news-4', categoryKey: 'cat_international', titleKey: 'news_4_title', bodyKeys: ['news_4_body_1', 'news_4_body_2'], date: '28 Oct 2026', readingMinutes: 2, sourceUrl: 'https://www.granma.cu/cuba-no-es-una-amenaza/2026-10-28/el-mundo-ha-vuelto-a-pronunciarse-mayoritariamente-contra-el-bloqueo-a-cuba-28-10-2026-11-10-18' }
+            { id: 'news-4', categoryKey: 'cat_international', titleKey: 'news_4_title', bodyKeys: ['news_4_body_1', 'news_4_body_2'], date: '28 Oct 2026', readingMinutes: 2, sourceUrl: 'https://www.granma.cu/cuba-no-es-una-amenaza/2026-10-28/el-mundo-ha-vuelto-a-pronunciarse-mayoritariamente-contra-el-bloqueo-a-cuba-28-10-2026-11-10-18' },
+            { id: 'news-5', categoryKey: 'cat_health', titleKey: 'news_5_title', summaryKey: 'news_5_summary', bodyKeys: ['news_5_body_1', 'news_5_body_2', 'news_5_body_3'], listIntroKey: 'news_5_schedule_intro', listKeys: ['news_5_schedule_1', 'news_5_schedule_2'], listAfterParagraphs: 2, date: '29 Oct 2026', readingMinutes: 3, image: 'feria-saude-ugs.jpg', imageAltKey: 'news_5_image_alt' }
         ];
 
         const eventArticles = [
@@ -958,6 +977,19 @@
                 const paragraphs = (article.bodyKeys || [article.bodyKey])
                     .map(key => labels[key] || translations.es[key])
                     .filter(Boolean);
+                const listAfterParagraphs = article.listKeys
+                    ? Math.min(article.listAfterParagraphs ?? paragraphs.length, paragraphs.length)
+                    : paragraphs.length;
+                const renderParagraphs = items => items
+                    .map(paragraph => `<p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(paragraph)}</p>`)
+                    .join('');
+                const schedule = article.listKeys
+                    ? `<p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(labels[article.listIntroKey] || translations.es[article.listIntroKey])}</p>
+                       <ul class="list-disc space-y-3 pl-6 text-lg text-slate-700 leading-relaxed">${article.listKeys.map(key => `<li>${escapeHtml(labels[key] || translations.es[key])}</li>`).join('')}</ul>`
+                    : '';
+                const image = article.image
+                    ? `<img src="${escapeHtml(article.image)}" alt="${escapeHtml(labels[article.imageAltKey] || translations.es[article.imageAltKey])}" class="w-full max-h-[28rem] object-cover rounded-2xl mb-7" loading="lazy" decoding="async">`
+                    : '';
                 container.innerHTML = `
                     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
                         <a href="noticias.html" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
@@ -969,7 +1001,10 @@
                             </div>
                             <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-navy mt-5">${escapeHtml(title)}</h1>
                             <div class="border-t border-slate-200 mt-8 pt-6">
-                                ${paragraphs.map(paragraph => `<p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(paragraph)}</p>`).join('')}
+                                ${image}
+                                ${renderParagraphs(paragraphs.slice(0, listAfterParagraphs))}
+                                ${schedule}
+                                ${renderParagraphs(paragraphs.slice(listAfterParagraphs))}
                                 ${article.sourceUrl ? `<a href="${escapeHtml(article.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="inline-block mt-5 text-sm font-bold text-brand-terracotta hover:text-brand-navy">${escapeHtml(labels.news_source_link || translations.es.news_source_link)}</a>` : ''}
                             </div>
                         </article>
