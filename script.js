@@ -125,9 +125,10 @@
                 news_3_body: "Emprendedores culinarios destacan con recetas tradicionales como el lechón asado, congrí y tostones, recibidos con entusiasmo local.",
                 news_4_title: "El mundo vuelve a pronunciarse mayoritariamente contra el bloqueo a Cuba",
                 news_4_summary: "La ONU volvió a pronunciarse mayoritariamente a favor de poner fin al bloqueo contra Cuba, en una votación de especial interés para las comunidades cubana y angolana.",
-                news_4_body: "La Asamblea General de las Naciones Unidas aprobó una resolución que reclama el fin del bloqueo contra Cuba, con 130 votos a favor, 17 en contra y 25 abstenciones. El resultado reafirma el respaldo mayoritario de los Estados miembros, pese a las presiones denunciadas durante la votación.",
+                news_4_body_1: "La Asamblea General de la ONU respaldó una vez más una resolución para exigir la conclusión de las sanciones económicas, comerciales y financieras aplicadas por la administración estadounidense contra la isla. La iniciativa obtuvo un amplio apoyo internacional con 130 votos favorables, superando ampliamente a los 17 sufragios en contra y las 25 abstenciones registradas.",
+                news_4_body_2: "Durante las discusiones previas, varios representantes estatales recalcaron el impacto negativo de estas medidas sobre los ciudadanos cubanos, así como la vigencia de disposiciones con alcance extraterritorial. En respuesta a la decisión adoptada, el mandatario Miguel Díaz-Canel señaló mediante su perfil en redes sociales que la comunidad internacional ratificó su rechazo a dicho cerco económico a pesar de los intentos de coerción por parte de Washington.",
                 news_4_image_alt: "Imagen de Granma que acompaña la noticia sobre la votación en la ONU",
-                news_source_link: "Leer la noticia original en Granma",
+                news_source_link: "Consultar el artículo original en el periódico Granma",
                 btn_read_more: "Leer más",
 
                 events_header: "Eventos y agenda cultural",
@@ -347,9 +348,10 @@
                 news_3_body: "Empreendedores culinários destacam-se com receitas tradicionais como leitão assado, congrí e tostones, acolhidos com entusiasmo.",
                 news_4_title: "O mundo volta a pronunciar-se maioritariamente contra o bloqueio a Cuba",
                 news_4_summary: "A ONU voltou a pronunciar-se maioritariamente a favor do fim do bloqueio contra Cuba, numa votação de especial interesse para as comunidades cubana e angolana.",
-                news_4_body: "A Assembleia Geral das Nações Unidas aprovou uma resolução que pede o fim do bloqueio contra Cuba, com 130 votos a favor, 17 contra e 25 abstenções. O resultado reafirma o apoio maioritário dos Estados-membros, apesar das pressões denunciadas durante a votação.",
+                news_4_body_1: "A Assembleia Geral da ONU voltou a apoiar uma resolução para exigir o fim das sanções económicas, comerciais e financeiras impostas pela administração dos Estados Unidos contra a ilha. A iniciativa obteve amplo apoio internacional, com 130 votos a favor, superando os 17 votos contra e as 25 abstenções registadas.",
+                news_4_body_2: "Durante os debates, vários representantes dos Estados destacaram o impacto negativo destas medidas sobre os cidadãos cubanos, bem como a vigência de disposições com alcance extraterritorial. Em resposta à decisão, o Presidente Miguel Díaz-Canel afirmou nas redes sociais que a comunidade internacional voltou a rejeitar o cerco económico, apesar das tentativas de coerção por parte de Washington.",
                 news_4_image_alt: "Imagem do Granma que acompanha a notícia sobre a votação na ONU",
-                news_source_link: "Ler a notícia original no Granma",
+                news_source_link: "Consultar o artigo original no jornal Granma",
                 btn_read_more: "Ler mais",
 
                 events_header: "Eventos & Agenda Cultural",
@@ -487,7 +489,7 @@
             { id: 'news-1', categoryKey: 'cat_consular', titleKey: 'news_1_title', bodyKey: 'news_1_body', date: '02 Oct 2026', readingMinutes: 3 },
             { id: 'news-2', categoryKey: 'cat_health', titleKey: 'news_2_title', bodyKey: 'news_2_body', date: '28 Sep 2026', readingMinutes: 4 },
             { id: 'news-3', categoryKey: 'cat_entrepreneur', titleKey: 'news_3_title', bodyKey: 'news_3_body', date: '20 Sep 2026', readingMinutes: 2 },
-            { id: 'news-4', categoryKey: 'cat_international', titleKey: 'news_4_title', bodyKey: 'news_4_body', date: '28 Oct 2026', readingMinutes: 2, sourceUrl: 'https://www.granma.cu/cuba-no-es-una-amenaza/2026-10-28/el-mundo-ha-vuelto-a-pronunciarse-mayoritariamente-contra-el-bloqueo-a-cuba-28-10-2026-11-10-18' }
+            { id: 'news-4', categoryKey: 'cat_international', titleKey: 'news_4_title', bodyKeys: ['news_4_body_1', 'news_4_body_2'], date: '28 Oct 2026', readingMinutes: 2, sourceUrl: 'https://www.granma.cu/cuba-no-es-una-amenaza/2026-10-28/el-mundo-ha-vuelto-a-pronunciarse-mayoritariamente-contra-el-bloqueo-a-cuba-28-10-2026-11-10-18' }
         ];
 
         const eventArticles = [
@@ -953,7 +955,9 @@
             if (article) {
                 const title = labels[article.titleKey] || translations.es[article.titleKey];
                 const category = labels[article.categoryKey] || translations.es[article.categoryKey];
-                const description = labels[article.bodyKey] || translations.es[article.bodyKey];
+                const paragraphs = (article.bodyKeys || [article.bodyKey])
+                    .map(key => labels[key] || translations.es[key])
+                    .filter(Boolean);
                 container.innerHTML = `
                     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
                         <a href="noticias.html" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
@@ -965,7 +969,7 @@
                             </div>
                             <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-navy mt-5">${escapeHtml(title)}</h1>
                             <div class="border-t border-slate-200 mt-8 pt-6">
-                                <p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(description)}</p>
+                                ${paragraphs.map(paragraph => `<p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(paragraph)}</p>`).join('')}
                                 ${article.sourceUrl ? `<a href="${escapeHtml(article.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="inline-block mt-5 text-sm font-bold text-brand-terracotta hover:text-brand-navy">${escapeHtml(labels.news_source_link || translations.es.news_source_link)}</a>` : ''}
                             </div>
                         </article>
