@@ -116,12 +116,18 @@
                 cat_consular: "Consular & Vuelos",
                 cat_health: "Salud & Bienestar",
                 cat_entrepreneur: "Emprendimiento",
+                cat_international: "Internacional",
                 news_1_title: "Actualizaciones en itinerarios de vuelos Luanda - La Habana",
                 news_1_body: "Conoce los horarios actualizados y recomendaciones para los trayectos directos y escalas entre Luanda y La Habana para esta temporada.",
                 news_2_title: "Jornada Médica de Orientación en Luanda",
                 news_2_body: "Especialistas de la salud ofrecen charlas preventivas sobre la temporada de lluvias en Angola y cuidados de nutrición familiar.",
                 news_3_title: "Éxito en la feria de gastronomía caribeña en Talatona",
                 news_3_body: "Emprendedores culinarios destacan con recetas tradicionales como el lechón asado, congrí y tostones, recibidos con entusiasmo local.",
+                news_4_title: "El mundo vuelve a pronunciarse mayoritariamente contra el bloqueo a Cuba",
+                news_4_summary: "La ONU volvió a pronunciarse mayoritariamente a favor de poner fin al bloqueo contra Cuba, en una votación de especial interés para las comunidades cubana y angolana.",
+                news_4_body: "La Asamblea General de las Naciones Unidas aprobó una resolución que reclama el fin del bloqueo contra Cuba, con 130 votos a favor, 17 en contra y 25 abstenciones. El resultado reafirma el respaldo mayoritario de los Estados miembros, pese a las presiones denunciadas durante la votación.",
+                news_4_image_alt: "Imagen de Granma que acompaña la noticia sobre la votación en la ONU",
+                news_source_link: "Leer la noticia original en Granma",
                 btn_read_more: "Leer más",
 
                 events_header: "Eventos y agenda cultural",
@@ -332,12 +338,18 @@
                 cat_consular: "Consular & Voos",
                 cat_health: "Saúde & Bem-estar",
                 cat_entrepreneur: "Empreendedorismo",
+                cat_international: "Internacional",
                 news_1_title: "Atualizações nos itinerários de voos Luanda - Havana",
                 news_1_body: "Conheça os horários atualizados e recomendações para os trajetos diretos e escalas entre Luanda e Havana para esta temporada.",
                 news_2_title: "Jornada Médica de Orientação em Luanda",
                 news_2_body: "Especialistas de saúde oferecem palestras preventivas sobre a época de chuvas em Angola e cuidados de nutrição familiar.",
                 news_3_title: "Sucesso na feira de gastronomia caribenha em Talatona",
                 news_3_body: "Empreendedores culinários destacam-se com receitas tradicionais como leitão assado, congrí e tostones, acolhidos com entusiasmo.",
+                news_4_title: "O mundo volta a pronunciar-se maioritariamente contra o bloqueio a Cuba",
+                news_4_summary: "A ONU voltou a pronunciar-se maioritariamente a favor do fim do bloqueio contra Cuba, numa votação de especial interesse para as comunidades cubana e angolana.",
+                news_4_body: "A Assembleia Geral das Nações Unidas aprovou uma resolução que pede o fim do bloqueio contra Cuba, com 130 votos a favor, 17 contra e 25 abstenções. O resultado reafirma o apoio maioritário dos Estados-membros, apesar das pressões denunciadas durante a votação.",
+                news_4_image_alt: "Imagem do Granma que acompanha a notícia sobre a votação na ONU",
+                news_source_link: "Ler a notícia original no Granma",
                 btn_read_more: "Ler mais",
 
                 events_header: "Eventos & Agenda Cultural",
@@ -474,7 +486,8 @@
         const newsArticles = [
             { id: 'news-1', categoryKey: 'cat_consular', titleKey: 'news_1_title', bodyKey: 'news_1_body', date: '02 Oct 2026', readingMinutes: 3 },
             { id: 'news-2', categoryKey: 'cat_health', titleKey: 'news_2_title', bodyKey: 'news_2_body', date: '28 Sep 2026', readingMinutes: 4 },
-            { id: 'news-3', categoryKey: 'cat_entrepreneur', titleKey: 'news_3_title', bodyKey: 'news_3_body', date: '20 Sep 2026', readingMinutes: 2 }
+            { id: 'news-3', categoryKey: 'cat_entrepreneur', titleKey: 'news_3_title', bodyKey: 'news_3_body', date: '20 Sep 2026', readingMinutes: 2 },
+            { id: 'news-4', categoryKey: 'cat_international', titleKey: 'news_4_title', bodyKey: 'news_4_body', date: '28 Oct 2026', readingMinutes: 2, sourceUrl: 'https://www.granma.cu/cuba-no-es-una-amenaza/2026-10-28/el-mundo-ha-vuelto-a-pronunciarse-mayoritariamente-contra-el-bloqueo-a-cuba-28-10-2026-11-10-18' }
         ];
 
         const eventArticles = [
@@ -620,6 +633,11 @@
             document.querySelectorAll('[data-i18n]').forEach(elem => {
                 const key = elem.getAttribute('data-i18n');
                 if (localizedTexts[key]) elem.textContent = localizedTexts[key];
+            });
+
+            document.querySelectorAll('[data-i18n-alt]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n-alt');
+                if (localizedTexts[key]) elem.setAttribute('alt', localizedTexts[key]);
             });
 
             document.querySelectorAll('label:not([for])').forEach((label, index) => {
@@ -948,6 +966,7 @@
                             <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-navy mt-5">${escapeHtml(title)}</h1>
                             <div class="border-t border-slate-200 mt-8 pt-6">
                                 <p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(description)}</p>
+                                ${article.sourceUrl ? `<a href="${escapeHtml(article.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="inline-block mt-5 text-sm font-bold text-brand-terracotta hover:text-brand-navy">${escapeHtml(labels.news_source_link || translations.es.news_source_link)}</a>` : ''}
                             </div>
                         </article>
                     </div>
