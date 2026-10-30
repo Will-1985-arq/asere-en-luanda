@@ -38,7 +38,6 @@
                 <nav class="hidden lg:flex items-center space-x-1 xl:space-x-2">
                     <button onclick="navigateTo('inicio')" id="nav-inicio" class="nav-btn px-3 py-2 text-sm font-semibold text-brand-navy hover:text-brand-terracotta rounded-lg transition-colors" data-i18n="nav_home">Inicio</button>
                     <button onclick="navigateTo('quienes-somos')" id="nav-quienes-somos" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_about">Quienes Somos</button>
-                    <button onclick="navigateTo('noticias')" id="nav-noticias" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_news">Noticias</button>
                     <button onclick="navigateTo('eventos')" id="nav-eventos" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_events">Eventos</button>
                     <button onclick="navigateTo('cultura')" id="nav-cultura" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-navy rounded-lg transition-colors" data-i18n="nav_culture">Cultura</button>
                     <button onclick="navigateTo('revolicango')" id="nav-revolicango" class="nav-btn px-3.5 py-2 text-sm font-bold text-brand-terracotta bg-brand-terracotta/10 hover:bg-brand-terracotta hover:text-white rounded-xl transition-all shadow-sm" data-i18n="nav_revolicango">RevolicAngo</button>
@@ -78,7 +77,6 @@
         <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-2 shadow-xl">
             <button onclick="navigateTo('inicio'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_home">Inicio</button>
             <button onclick="navigateTo('quienes-somos'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_about">Quienes Somos</button>
-            <button onclick="navigateTo('noticias'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_news">Noticias</button>
             <button onclick="navigateTo('eventos'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_events">Eventos</button>
             <button onclick="navigateTo('cultura'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-semibold text-slate-800 hover:bg-slate-50" data-i18n="nav_culture">Cultura</button>
             <button onclick="navigateTo('revolicango'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-base font-bold text-brand-terracotta bg-brand-terracotta/10" data-i18n="nav_revolicango">RevolicAngo (Clasificados)</button>
@@ -181,21 +179,11 @@
                 </div>
 
                 <!-- QUICK CULTURE & NEWS HIGHLIGHTS -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 gap-8">
                     <!-- Event spotlight -->
                     <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
                         <h3 class="font-serif text-2xl font-bold text-brand-navy"><a href="detalle.html?tipo=evento&id=home-event" class="hover:text-brand-terracotta transition-colors" data-i18n="home_event_title">Noche de Timba y Semba en Miramar</a></h3>
                         <button onclick="navigateTo('eventos')" class="w-full py-2.5 rounded-xl border border-slate-200 font-bold text-xs uppercase tracking-wider text-brand-navy hover:bg-slate-50 transition-colors" data-i18n="see_agenda">Ver Agenda Cultural Completa</button>
-                    </div>
-
-                    <!-- News spotlight -->
-                    <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-                        <div class="flex items-center justify-between">
-                            <span class="bg-brand-terracotta/10 text-brand-terracotta px-3 py-1 rounded-full text-xs font-bold uppercase" data-i18n="home_news_tag">Noticias Recientes</span>
-                            <i class="fa-solid fa-newspaper text-brand-navy text-2xl"></i>
-                        </div>
-                        <h3 class="font-serif text-2xl font-bold text-brand-navy"><a href="detalle.html?tipo=noticia&id=news-1" class="hover:text-brand-terracotta transition-colors" data-i18n="home_news_title">Guía Consular y Trámites para la Comunidad</a></h3>
-                        <a href="noticias.html" class="block w-full py-2.5 rounded-xl border border-slate-200 font-bold text-xs uppercase tracking-wider text-brand-navy text-center hover:bg-slate-50 transition-colors" data-i18n="read_news">Leer Sección de Noticias</a>
                     </div>
                 </div>
 

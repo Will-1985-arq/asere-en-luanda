@@ -548,7 +548,6 @@
             const pageFiles = {
                 inicio: 'index.html',
                 'quienes-somos': 'quienes-somos.html',
-                noticias: 'noticias.html',
                 eventos: 'eventos.html',
                 cultura: 'cultura.html',
                 revolicango: 'revolicango.html',
@@ -564,7 +563,6 @@
             const pageFiles = {
                 inicio: 'index.html',
                 'quienes-somos': 'quienes-somos.html',
-                noticias: 'noticias.html',
                 eventos: 'eventos.html',
                 cultura: 'cultura.html',
                 revolicango: 'revolicango.html',
@@ -994,7 +992,7 @@
                     : '';
                 container.innerHTML = `
                     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-                        <a href="noticias.html" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
+                        <a href="index.html" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_home)}</a>
                         <article class="mt-8">
                             <div class="flex flex-wrap items-center gap-3 text-sm text-slate-600">
                                 <span class="bg-brand-navy/10 text-brand-navy px-3 py-1 rounded-full font-bold">${escapeHtml(category)}</span>
