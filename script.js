@@ -2,6 +2,8 @@
         const SUPABASE_URL = 'https://gurqlrykdcdnqhnsuyhm.supabase.co';
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_vJA7pquZf7anlnm8nGwsRQ_FOGFuHQ-';
         const CLASSIFIED_EDIT_STORAGE_KEY = 'community-classified-edit-credentials';
+        const MAX_CLASSIFIED_IMAGE_INPUT_SIZE_BYTES = 20 * 1024 * 1024;
+        const MAX_CLASSIFIED_IMAGE_STORAGE_SIZE_BYTES = 100 * 1024;
         let activeClassifiedEdit = null;
         let classifiedEditCredentials = {};
         try {
@@ -254,7 +256,7 @@
                 modal_field_phone: "Teléfono / WhatsApp de Contacto *",
                 modal_field_loc: "Municipio / Zona en Luanda",
                 modal_field_img: "Imagen desde tu dispositivo (Opcional)",
-                modal_img_help: "Hasta 10 imágenes JPG, PNG o WebP, de 2 MB cada una. Al editar, si no eliges nuevas, se conservan las anteriores.",
+                modal_img_help: "Hasta 10 imágenes JPG, PNG o WebP de hasta 20 MB cada una. Se comprimen a un máximo de 100 KB antes de subirlas. Al editar, si no eliges nuevas, se conservan las anteriores.",
                 modal_field_desc: "Descripción Detallada *",
                 ad_contact_consent: "Acepto que mi teléfono y los datos de este anuncio se publiquen y sean visibles públicamente.",
                 btn_edit_classified: "Editar anuncio (una vez, en los primeros 5 minutos)",
@@ -483,7 +485,7 @@
                 modal_field_phone: "Telefone / WhatsApp de Contacto *",
                 modal_field_loc: "Município / Zona em Luanda",
                 modal_field_img: "Imagem do seu dispositivo (Opcional)",
-                modal_img_help: "Até 10 imagens JPG, PNG ou WebP, com 2 MB cada. Ao editar, se não escolher novas, as anteriores serão mantidas.",
+                modal_img_help: "Até 10 imagens JPG, PNG ou WebP de até 20 MB cada. São comprimidas para no máximo 100 KB antes do envio. Ao editar, se não escolher novas, as anteriores serão mantidas.",
                 modal_field_desc: "Descrição detalhada *",
                 ad_contact_consent: "Aceito que o meu telefone e os dados deste anúncio sejam publicados e fiquem visíveis publicamente.",
                 btn_edit_classified: "Editar anúncio (uma vez, nos primeiros 5 minutos)",
@@ -1141,22 +1143,52 @@
         }
 
         async function uploadClassifiedImage(file) {
-            const maxImageSizeBytes = 2 * 1024 * 1024;
-            const extensions = {
-                'image/jpeg': 'jpg',
-                'image/png': 'png',
-                'image/webp': 'webp'
-            };
-            const extension = extensions[file.type];
-            if (!extension) {
+            if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
                 throw new Error(currentLang === 'es'
                     ? 'Elige una imagen JPG, PNG o WebP.'
                     : 'Escolha uma imagem JPG, PNG ou WebP.');
             }
-            if (file.size > maxImageSizeBytes) {
+            if (file.size > MAX_CLASSIFIED_IMAGE_INPUT_SIZE_BYTES) {
                 throw new Error(currentLang === 'es'
-                    ? 'La imagen no puede superar los 2 MB.'
-                    : 'A imagem não pode exceder 2 MB.');
+                    ? 'La imagen original no puede superar los 20 MB.'
+                    : 'A imagem original não pode exceder 20 MB.');
+            }
+
+            if (typeof window.imageCompression !== 'function') {
+                throw new Error(currentLang === 'es'
+                    ? 'No se pudo cargar el compresor de imágenes. Recarga la página e inténtalo de nuevo.'
+                    : 'Não foi possível carregar o compressor de imagens. Atualize a página e tente novamente.');
+            }
+
+            const compressionPlans = [
+                { maxSizeMB: 0.09, maxWidthOrHeight: 1024, initialQuality: 0.8 },
+                { maxSizeMB: 0.07, maxWidthOrHeight: 768, initialQuality: 0.7 },
+                { maxSizeMB: 0.05, maxWidthOrHeight: 512, initialQuality: 0.6 },
+                { maxSizeMB: 0.03, maxWidthOrHeight: 384, initialQuality: 0.5 }
+            ];
+            let compressedFile;
+            for (const plan of compressionPlans) {
+                compressedFile = await window.imageCompression(file, {
+                    ...plan,
+                    useWebWorker: true,
+                    fileType: 'image/jpeg',
+                    maxIteration: 15
+                });
+                if (compressedFile.size <= MAX_CLASSIFIED_IMAGE_STORAGE_SIZE_BYTES) break;
+            }
+
+            if (!compressedFile || compressedFile.size > MAX_CLASSIFIED_IMAGE_STORAGE_SIZE_BYTES) {
+                throw new Error(currentLang === 'es'
+                    ? 'No se pudo reducir la imagen a 100 KB. Prueba con otra imagen.'
+                    : 'Não foi possível reduzir a imagem para 100 KB. Tente outra imagem.');
+            }
+
+            const extensions = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+            const extension = extensions[compressedFile.type];
+            if (!extension) {
+                throw new Error(currentLang === 'es'
+                    ? 'El formato de la imagen comprimida no es compatible.'
+                    : 'O formato da imagem comprimida não é compatível.');
             }
 
             const path = `${crypto.randomUUID()}.${extension}`;
@@ -1165,11 +1197,11 @@
                 headers: {
                     apikey: SUPABASE_PUBLISHABLE_KEY,
                     Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
-                    'Content-Type': file.type,
+                    'Content-Type': compressedFile.type,
                     'x-upsert': 'false',
                     'cache-control': '3600'
                 },
-                body: file
+                body: compressedFile
             });
             if (!response.ok) {
                 const details = await response.text();
@@ -1218,18 +1250,24 @@
             }
 
             if (imageFiles.some(file => !['image/jpeg', 'image/png', 'image/webp'].includes(file.type)
-                || file.size > 2 * 1024 * 1024)) {
+                || file.size > MAX_CLASSIFIED_IMAGE_INPUT_SIZE_BYTES)) {
                 showToast(currentLang === 'es'
-                    ? 'Cada imagen debe ser JPG, PNG o WebP y pesar hasta 2 MB.'
-                    : 'Cada imagem deve ser JPG, PNG ou WebP e ter até 2 MB.', true);
+                    ? 'Cada imagen debe ser JPG, PNG o WebP y pesar hasta 20 MB antes de comprimirla.'
+                    : 'Cada imagem deve ser JPG, PNG ou WebP e ter até 20 MB antes da compressão.', true);
                 return;
             }
 
             submitButton.disabled = true;
             try {
-                const imageUrls = imageFiles.length
-                    ? await Promise.all(imageFiles.map(uploadClassifiedImage))
-                    : existingAd?.images || (existingAd?.image ? [existingAd.image] : []);
+                let imageUrls;
+                if (imageFiles.length) {
+                    imageUrls = [];
+                    for (const imageFile of imageFiles) {
+                        imageUrls.push(await uploadClassifiedImage(imageFile));
+                    }
+                } else {
+                    imageUrls = existingAd?.images || (existingAd?.image ? [existingAd.image] : []);
+                }
                 const payload = {
                     title,
                     category,
