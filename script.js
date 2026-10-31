@@ -5,6 +5,7 @@
         const MAX_CLASSIFIED_IMAGE_INPUT_SIZE_BYTES = 20 * 1024 * 1024;
         const MAX_CLASSIFIED_IMAGE_STORAGE_SIZE_BYTES = 100 * 1024;
         let activeClassifiedEdit = null;
+        let classifiedGalleryReturnFocus = null;
         let classifiedEditCredentials = {};
         try {
             const savedCredentials = JSON.parse(readLocalStorage(CLASSIFIED_EDIT_STORAGE_KEY, '{}') || '{}');
@@ -890,16 +891,107 @@
             const fallbackImage = getFallbackClassifiedImage(ad);
 
             return `
-                <a href="${detailUrl}" class="block bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all group overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all group overflow-hidden">
                     <div class="h-48 bg-slate-100 overflow-hidden">
-                        <img src="${escapeHtml(image)}" data-fallback="${escapeHtml(fallbackImage)}" alt="${escapeHtml(ad.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.fallback">
+                        <img src="${escapeHtml(image)}" data-fallback="${escapeHtml(fallbackImage)}" data-classified-id="${escapeHtml(ad.id)}" data-image-index="0" alt="${escapeHtml(ad.title)}" role="button" tabindex="0" aria-label="${escapeHtml(currentLang === 'es' ? `Ampliar imágenes de ${ad.title}` : `Ampliar imagens de ${ad.title}`)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-zoom-in" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.fallback">
                     </div>
                     <div class="p-5 flex items-center justify-between gap-4">
-                        <h3 class="font-serif font-bold text-lg text-brand-navy group-hover:text-brand-terracotta transition-colors">${escapeHtml(ad.title)}</h3>
-                        <i class="fa-solid fa-arrow-right text-brand-terracotta shrink-0" aria-hidden="true"></i>
+                        <a href="${detailUrl}" class="flex items-center justify-between gap-4 w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                            <h3 class="font-serif font-bold text-lg text-brand-navy group-hover:text-brand-terracotta transition-colors">${escapeHtml(ad.title)}</h3>
+                            <i class="fa-solid fa-arrow-right text-brand-terracotta shrink-0" aria-hidden="true"></i>
+                        </a>
                     </div>
-                </a>
+                </article>
             `;
+        }
+
+        function createClassifiedGallery() {
+            if (document.getElementById('classified-image-gallery')) return;
+
+            const gallery = document.createElement('div');
+            gallery.id = 'classified-image-gallery';
+            gallery.className = 'fixed inset-0 z-[100] hidden bg-black text-white';
+            gallery.setAttribute('role', 'dialog');
+            gallery.setAttribute('aria-modal', 'true');
+            gallery.setAttribute('aria-label', currentLang === 'es' ? 'Galería de imágenes del anuncio' : 'Galeria de imagens do anúncio');
+            gallery.innerHTML = `
+                <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between bg-gradient-to-b from-black/75 to-transparent px-4 py-4 sm:px-6">
+                    <p id="classified-gallery-counter" class="text-sm font-semibold" aria-live="polite"></p>
+                    <button id="classified-gallery-close" type="button" class="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-2xl hover:bg-white/25 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white" aria-label="${escapeHtml(currentLang === 'es' ? 'Cerrar galería' : 'Fechar galeria')}">&times;</button>
+                </div>
+                <div id="classified-gallery-slides" class="flex h-full w-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain scroll-smooth touch-pan-x">
+                </div>
+                <button id="classified-gallery-previous" type="button" class="absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-3xl hover:bg-black/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white sm:flex" aria-label="${escapeHtml(currentLang === 'es' ? 'Imagen anterior' : 'Imagem anterior')}">&#8249;</button>
+                <button id="classified-gallery-next" type="button" class="absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-3xl hover:bg-black/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white sm:flex" aria-label="${escapeHtml(currentLang === 'es' ? 'Imagen siguiente' : 'Próxima imagem')}">&#8250;</button>
+            `;
+            document.body.appendChild(gallery);
+
+            const slides = gallery.querySelector('#classified-gallery-slides');
+            const updateGalleryCounter = () => {
+                const count = slides.children.length;
+                const current = count ? Math.round(slides.scrollLeft / slides.clientWidth) + 1 : 0;
+                gallery.querySelector('#classified-gallery-counter').textContent = count
+                    ? `${current} / ${count}`
+                    : '';
+            };
+            const scrollToSlide = offset => {
+                const current = Math.round(slides.scrollLeft / slides.clientWidth);
+                const next = Math.max(0, Math.min(slides.children.length - 1, current + offset));
+                if (!slides.children[next]) return;
+                slides.scrollTo({ left: slides.children[next].offsetLeft, behavior: 'instant' });
+                updateGalleryCounter();
+            };
+
+            slides.addEventListener('scroll', updateGalleryCounter, { passive: true });
+            gallery.querySelector('#classified-gallery-close').addEventListener('click', closeClassifiedGallery);
+            gallery.querySelector('#classified-gallery-previous').addEventListener('click', () => scrollToSlide(-1));
+            gallery.querySelector('#classified-gallery-next').addEventListener('click', () => scrollToSlide(1));
+            gallery.addEventListener('click', event => {
+                if (event.target === gallery) closeClassifiedGallery();
+            });
+            gallery.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeClassifiedGallery();
+                if (event.key === 'ArrowLeft') scrollToSlide(-1);
+                if (event.key === 'ArrowRight') scrollToSlide(1);
+            });
+        }
+
+        function openClassifiedGallery(classifiedId, imageIndex = 0, trigger = null) {
+            const ad = classifiedsData.find(item => String(item.id) === String(classifiedId));
+            if (!ad) return;
+
+            classifiedGalleryReturnFocus = trigger;
+            createClassifiedGallery();
+            const gallery = document.getElementById('classified-image-gallery');
+            const slides = gallery.querySelector('#classified-gallery-slides');
+            const fallbackImage = getFallbackClassifiedImage(ad);
+            const images = (Array.isArray(ad.images) && ad.images.length ? ad.images : [getClassifiedImage(ad)])
+                .filter(image => typeof image === 'string' && /^https?:\/\//i.test(image));
+
+            slides.innerHTML = images.map((image, index) => `
+                <div class="flex h-full w-full flex-none snap-start items-center justify-center px-3 py-20 sm:px-16">
+                    <img src="${escapeHtml(image)}" data-fallback="${escapeHtml(fallbackImage)}" alt="${escapeHtml(ad.title)}${images.length > 1 ? ` - ${index + 1}` : ''}" class="max-h-full max-w-full select-none object-contain" draggable="false" onerror="this.onerror=null;this.src=this.dataset.fallback">
+                </div>
+            `).join('');
+            gallery.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            const startIndex = Math.max(0, Math.min(images.length - 1, Number(imageIndex) || 0));
+            slides.style.scrollBehavior = 'auto';
+            slides.scrollLeft = startIndex * slides.clientWidth;
+            slides.style.scrollBehavior = '';
+            gallery.querySelector('#classified-gallery-counter').textContent = images.length
+                ? `${startIndex + 1} / ${images.length}`
+                : '';
+            gallery.querySelector('#classified-gallery-close').focus();
+        }
+
+        function closeClassifiedGallery() {
+            const gallery = document.getElementById('classified-image-gallery');
+            if (!gallery) return;
+            gallery.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            if (classifiedGalleryReturnFocus?.isConnected) classifiedGalleryReturnFocus.focus();
+            classifiedGalleryReturnFocus = null;
         }
 
         function escapeHtml(value) {
@@ -1078,10 +1170,10 @@
                     ? ad.images
                     : ad.image ? [ad.image] : [];
                 const fallbackImage = getFallbackClassifiedImage(ad);
-                const galleryImages = (imageUrls.length ? imageUrls : [getClassifiedImage(ad)])
-                    .slice(0, 3)
+                const galleryImageUrls = imageUrls.length ? imageUrls : [getClassifiedImage(ad)];
+                const galleryImages = galleryImageUrls
                     .map((image, index) => `
-                        <img src="${escapeHtml(image)}" data-fallback="${escapeHtml(fallbackImage)}" alt="${escapeHtml(ad.title)}${imageUrls.length > 1 ? ` - ${index + 1}` : ''}" class="w-full ${index === 0 ? 'max-h-[28rem]' : 'h-36'} object-cover rounded-xl" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.fallback">
+                        <img src="${escapeHtml(image)}" data-fallback="${escapeHtml(fallbackImage)}" data-classified-id="${escapeHtml(ad.id)}" data-image-index="${index}" alt="${escapeHtml(ad.title)}${galleryImageUrls.length > 1 ? ` - ${index + 1}` : ''}" role="button" tabindex="0" aria-label="${escapeHtml(currentLang === 'es' ? `Ampliar imagen ${index + 1} de ${galleryImageUrls.length} de ${ad.title}` : `Ampliar imagem ${index + 1} de ${galleryImageUrls.length} de ${ad.title}`)}" class="w-full h-48 sm:h-56 object-cover rounded-xl cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.fallback">
                     `).join('');
                 const contactDigits = String(ad.contact || '').replace(/\D/g, '');
                 const whatsappUrl = `https://wa.me/${contactDigits}?text=${encodeURIComponent('Hola! Vi tu anuncio en @sere en Luanda: ' + ad.title)}`;
@@ -1093,7 +1185,7 @@
                     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
                         <a href="revolicango.html?category=${encodeURIComponent(ad.category)}" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
                         <article class="mt-8">
-                            <div class="grid grid-cols-1 ${imageUrls.length > 1 ? 'sm:grid-cols-2' : ''} gap-3 mb-8" data-fallback="${escapeHtml(fallbackImage)}" onerror="this.onerror=null;this.src=this.dataset.fallback">${galleryImages}</div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">${galleryImages}</div>
                             <p class="text-sm font-bold text-brand-terracotta uppercase">${category}</p>
                             <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-navy mt-2">${title}</h1>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-y border-slate-200 py-5 my-7 text-sm">
@@ -1387,6 +1479,18 @@
         }
 
         window.onload = function() {
+            document.addEventListener('click', event => {
+                const image = event.target.closest('img[data-classified-id][data-image-index]');
+                if (!image) return;
+                event.preventDefault();
+                openClassifiedGallery(image.dataset.classifiedId, image.dataset.imageIndex, image);
+            });
+            document.addEventListener('keydown', event => {
+                const image = event.target.closest('img[data-classified-id][data-image-index]');
+                if (!image || !['Enter', ' '].includes(event.key)) return;
+                event.preventDefault();
+                openClassifiedGallery(image.dataset.classifiedId, image.dataset.imageIndex, image);
+            });
             setLanguage(currentLang);
             renderClassifieds();
             renderHomeFeaturedAds();
