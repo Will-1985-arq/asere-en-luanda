@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://will-1985-arq.github.io/asere-en-luanda/sitemap.xml
