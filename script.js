@@ -893,7 +893,9 @@
             return `
                 <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all group overflow-hidden">
                     <div class="h-48 bg-slate-100 overflow-hidden">
-                        <img src="${escapeHtml(image)}" data-fallback="${escapeHtml(fallbackImage)}" data-classified-id="${escapeHtml(ad.id)}" data-image-index="0" alt="${escapeHtml(ad.title)}" role="button" tabindex="0" aria-label="${escapeHtml(currentLang === 'es' ? `Ampliar imágenes de ${ad.title}` : `Ampliar imagens de ${ad.title}`)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-zoom-in" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.fallback">
+                        <a href="${detailUrl}" aria-label="${escapeHtml(currentLang === 'es' ? `Ver anuncio: ${ad.title}` : `Ver anúncio: ${ad.title}`)}">
+                            <img src="${escapeHtml(image)}" data-fallback="${escapeHtml(fallbackImage)}" alt="${escapeHtml(ad.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.src=this.dataset.fallback">
+                        </a>
                     </div>
                     <div class="p-5 flex items-center justify-between gap-4">
                         <a href="${detailUrl}" class="flex items-center justify-between gap-4 w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
