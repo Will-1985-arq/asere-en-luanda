@@ -694,6 +694,7 @@
             renderClassifieds();
             renderHomeFeaturedAds();
             renderDetail();
+            loadClassifiedRatingBoard();
         }
 
         /* ================= MOBILE MENU TOGGLE ================= */
@@ -1052,6 +1053,300 @@
             openModal();
         }
 
+        function opinionSubmittedKey(targetType, targetId) {
+            return `public-opinion-submitted:${targetType}:${targetId}`;
+        }
+
+        function getOpinionVoterKey() {
+            const storageKey = 'public-opinion-voter-key';
+            let voterKey = readLocalStorage(storageKey);
+            if (voterKey && /^[0-9a-f-]{36}$/i.test(voterKey)) return voterKey;
+
+            voterKey = crypto.randomUUID();
+            if (!writeLocalStorage(storageKey, voterKey)) {
+                throw new Error(currentLang === 'es'
+                    ? 'Activa el almacenamiento del navegador para enviar una opinión.'
+                    : 'Ative o armazenamento do navegador para enviar uma opinião.');
+            }
+            return voterKey;
+        }
+
+        function publicOpinionSectionHTML(targetType, targetId, withRating = false) {
+            const isSpanish = currentLang === 'es';
+            const alreadySent = withRating
+                && readLocalStorage(opinionSubmittedKey(targetType, targetId)) === 'true';
+            const disabledAttribute = alreadySent ? 'disabled' : '';
+            const ratingChoices = withRating
+                ? `<fieldset class="mt-4">
+                       <legend class="text-sm font-semibold text-slate-700">${isSpanish ? 'Tu puntuación (1 = peor, 5 = mejor)' : 'A sua pontuação (1 = pior, 5 = melhor)'}</legend>
+                       <div class="mt-2 flex flex-wrap gap-2">
+                           ${[1, 2, 3, 4, 5].map(value => `
+                               <label class="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 hover:bg-amber-50 has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50">
+                                   <input type="radio" name="opinion-rating" value="${value}" required ${disabledAttribute} class="accent-amber-500">
+                                   <span class="text-amber-500" aria-hidden="true">${'★'.repeat(value)}</span>
+                                   <span class="text-xs text-slate-600">${value}</span>
+                               </label>
+                           `).join('')}
+                       </div>
+                   </fieldset>`
+                : '';
+            const aliasLabel = isSpanish ? 'Alias (opcional)' : 'Nome/apelido (opcional)';
+            const submitLabel = isSpanish ? 'Enviar opinión para revisión' : 'Enviar opinião para revisão';
+
+            return `
+                <section id="public-opinions" class="mt-10 border-t border-slate-200 pt-8" data-opinion-target-type="${escapeHtml(targetType)}" data-opinion-target-id="${escapeHtml(targetId)}">
+                    <h2 class="font-serif text-2xl font-bold text-brand-navy">${isSpanish ? 'Opiniones de la comunidad' : 'Opiniões da comunidade'}</h2>
+                    ${withRating ? `
+                        <div id="opinion-rating-summary" class="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-5" aria-live="polite">
+                            <p class="text-slate-600">${isSpanish ? 'Cargando puntuaciones…' : 'A carregar pontuações…'}</p>
+                        </div>
+                    ` : ''}
+                    <div class="mt-5">
+                        <h3 class="font-semibold text-brand-navy">${isSpanish ? 'Deja tu opinión' : 'Deixe a sua opinião'}</h3>
+                        <p class="mt-1 text-sm text-slate-600">${isSpanish ? 'Tu comentario se mostrará cuando sea aprobado por el equipo.' : 'O seu comentário será mostrado depois de aprovado pela equipa.'}</p>
+                        <form data-opinion-form class="mt-4 space-y-3">
+                            <label class="block text-sm font-medium text-slate-700">
+                                ${aliasLabel}
+                                <input name="alias" maxlength="50" autocomplete="nickname" ${disabledAttribute} class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-brand-terracotta focus:outline-none focus:ring-2 focus:ring-brand-terracotta/20">
+                            </label>
+                            <label class="block text-sm font-medium text-slate-700">
+                                ${isSpanish ? 'Comentario' : 'Comentário'}
+                                <textarea name="comment" rows="4" minlength="2" maxlength="1000" required ${disabledAttribute} class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:border-brand-terracotta focus:outline-none focus:ring-2 focus:ring-brand-terracotta/20" placeholder="${isSpanish ? 'Comparte tu opinión…' : 'Partilhe a sua opinião…'}"></textarea>
+                            </label>
+                            ${ratingChoices}
+                            <button type="submit" ${disabledAttribute} class="rounded-lg bg-brand-navy px-5 py-3 font-bold text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta disabled:cursor-not-allowed disabled:opacity-60">${submitLabel}</button>
+                            <p data-opinion-form-status class="text-sm text-slate-600" role="status">${alreadySent ? (isSpanish ? 'Ya enviaste una opinión para esta publicación desde este navegador.' : 'Já enviou uma opinião sobre esta publicação neste navegador.') : ''}</p>
+                        </form>
+                    </div>
+                    <div class="mt-8">
+                        <h3 class="font-serif text-xl font-bold text-brand-navy">${isSpanish ? 'Opiniones publicadas' : 'Opiniões publicadas'}</h3>
+                        <p data-opinion-list-status class="mt-2 text-sm text-slate-600" role="status">${isSpanish ? 'Cargando opiniones…' : 'A carregar opiniões…'}</p>
+                        <div data-opinion-list class="mt-4 space-y-4"></div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function formatOpinionStars(rating) {
+            const numericRating = Number(rating) || 0;
+            return `<span class="text-amber-500" aria-label="${numericRating} ${currentLang === 'es' ? 'de 5 estrellas' : 'de 5 estrelas'}">${'★'.repeat(numericRating)}${'☆'.repeat(5 - numericRating)}</span>`;
+        }
+
+        function renderPublicOpinions(section, result) {
+            const isSpanish = currentLang === 'es';
+            const opinionList = section.querySelector('[data-opinion-list]');
+            const listStatus = section.querySelector('[data-opinion-list-status]');
+            const opinions = Array.isArray(result.opinions) ? result.opinions : [];
+
+            listStatus.textContent = opinions.length
+                ? `${result.opinion_count} ${isSpanish ? 'opiniones aprobadas' : 'opiniões aprovadas'}${result.opinion_count > opinions.length ? (isSpanish ? ' (se muestran las 50 más recientes)' : ' (a mostrar as 50 mais recentes)') : ''}`
+                : (isSpanish ? 'Todavía no hay opiniones aprobadas.' : 'Ainda não há opiniões aprovadas.');
+            opinionList.innerHTML = opinions.map(opinion => `
+                <article class="rounded-xl border border-slate-200 bg-white p-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <strong class="text-brand-navy">${escapeHtml(opinion.alias || (isSpanish ? 'Anónimo' : 'Anónimo'))}</strong>
+                        <time class="text-xs text-slate-500">${escapeHtml(new Date(opinion.created_at).toLocaleDateString(isSpanish ? 'es' : 'pt'))}</time>
+                    </div>
+                    ${opinion.rating ? `<p class="mt-2">${formatOpinionStars(opinion.rating)}</p>` : ''}
+                    <p class="mt-2 whitespace-pre-line text-slate-700">${escapeHtml(opinion.comment)}</p>
+                </article>
+            `).join('');
+
+            const ratingSummary = section.querySelector('#opinion-rating-summary');
+            if (ratingSummary) {
+                const ratingCount = Number(result.rating_count) || 0;
+                const average = result.average_rating == null ? '—' : Number(result.average_rating).toFixed(1);
+                const counts = result.rating_counts || {};
+                const rows = [5, 4, 3, 2, 1].map(rating => {
+                    const count = Number(counts[rating]) || 0;
+                    const percentage = ratingCount ? Math.round(count / ratingCount * 100) : 0;
+                    return `
+                        <div class="grid grid-cols-[2.5rem_1fr_2.5rem] items-center gap-2 text-sm">
+                            <span>${rating} ★</span>
+                            <span class="h-2 overflow-hidden rounded-full bg-slate-200"><span class="block h-full bg-amber-400" style="width:${percentage}%"></span></span>
+                            <span class="text-right text-slate-600">${count}</span>
+                        </div>
+                    `;
+                }).join('');
+                ratingSummary.innerHTML = `
+                    <div class="flex flex-wrap items-baseline gap-2">
+                        <span class="text-3xl font-extrabold text-brand-navy">${average}</span>
+                        ${ratingCount ? formatOpinionStars(Math.round(Number(result.average_rating) || 0)) : ''}
+                        <span class="text-sm text-slate-600">${ratingCount} ${isSpanish ? 'votos' : 'votos'}</span>
+                    </div>
+                    <div class="mt-4 space-y-2">${rows}</div>
+                `;
+            }
+        }
+
+        async function loadPublicOpinions(targetType, targetId) {
+            const section = document.getElementById('public-opinions');
+            if (!section) return;
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_public_opinions`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPABASE_PUBLISHABLE_KEY,
+                        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ p_target_type: targetType, p_target_id: String(targetId) })
+                });
+                if (!response.ok) {
+                    const details = await response.text();
+                    throw new Error(`Supabase (${response.status}): ${details}`);
+                }
+                renderPublicOpinions(section, await response.json());
+            } catch (error) {
+                console.error('No se pudieron cargar las opiniones:', error);
+                section.querySelector('[data-opinion-list-status]').textContent = currentLang === 'es'
+                    ? 'No se pudieron cargar las opiniones. Inténtalo más tarde.'
+                    : 'Não foi possível carregar as opiniões. Tente novamente mais tarde.';
+                const summary = section.querySelector('#opinion-rating-summary');
+                if (summary) summary.textContent = currentLang === 'es'
+                    ? 'No se pudieron cargar las puntuaciones.'
+                    : 'Não foi possível carregar as pontuações.';
+            }
+        }
+
+        async function loadClassifiedRatingBoard() {
+            const list = document.getElementById('classified-rating-board-list');
+            const status = document.getElementById('classified-rating-board-status');
+            if (!list || !status) return;
+
+            const isSpanish = currentLang === 'es';
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_classified_rating_board`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPABASE_PUBLISHABLE_KEY,
+                        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!response.ok) {
+                    const details = await response.text();
+                    throw new Error(`Supabase (${response.status}): ${details}`);
+                }
+
+                const rankedAds = await response.json();
+                if (!Array.isArray(rankedAds)) throw new Error('Supabase devolvió un ranking con formato no válido.');
+                if (!rankedAds.length) {
+                    status.textContent = isSpanish
+                        ? 'Todavía no hay puntuaciones aprobadas. ¡Sé la primera persona en valorar un anuncio!'
+                        : 'Ainda não há pontuações aprovadas. Seja a primeira pessoa a avaliar um anúncio!';
+                    list.innerHTML = '';
+                    return;
+                }
+
+                status.textContent = isSpanish
+                    ? 'Los 10 anuncios mejor valorados según las puntuaciones aprobadas.'
+                    : 'Os 10 anúncios mais bem avaliados segundo as pontuações aprovadas.';
+                list.innerHTML = rankedAds.map((ad, index) => {
+                    const average = Number(ad.average_rating) || 0;
+                    const ratingCount = Number(ad.rating_count) || 0;
+                    const detailUrl = `detalle.html?tipo=anuncio&id=${encodeURIComponent(ad.id)}`;
+                    return `
+                        <li>
+                            <a href="${detailUrl}" class="flex h-full items-start gap-3 rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 font-bold text-amber-800">#${index + 1}</span>
+                                <span class="min-w-0">
+                                    <strong class="block truncate text-brand-navy">${escapeHtml(ad.title)}</strong>
+                                    <span class="mt-1 block text-xs text-slate-600">${escapeHtml(ad.category)}</span>
+                                    <span class="mt-2 flex flex-wrap items-center gap-2">
+                                        ${formatOpinionStars(Math.round(average))}
+                                        <span class="text-sm font-bold text-slate-700">${average.toFixed(1)}/5</span>
+                                        <span class="text-xs text-slate-500">(${ratingCount} ${isSpanish ? 'votos' : 'votos'})</span>
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('No se pudo cargar el ranking de clasificados:', error);
+                status.textContent = isSpanish
+                    ? 'No se pudo cargar el ranking de estrellas. Inténtalo más tarde.'
+                    : 'Não foi possível carregar o ranking de estrelas. Tente novamente mais tarde.';
+                list.innerHTML = '';
+            }
+        }
+
+        async function handlePublicOpinionSubmit(event) {
+            const form = event.target.closest('form[data-opinion-form]');
+            if (!form) return;
+
+            event.preventDefault();
+            const section = form.closest('#public-opinions');
+            const targetType = section.dataset.opinionTargetType;
+            const targetId = section.dataset.opinionTargetId;
+            const status = form.querySelector('[data-opinion-form-status]');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const selectedRating = form.querySelector('input[name="opinion-rating"]:checked');
+            const payload = {
+                p_target_type: targetType,
+                p_target_id: targetId,
+                p_alias: form.elements.alias.value.trim() || null,
+                p_comment: form.elements.comment.value.trim(),
+                p_rating: targetType === 'classified' ? Number(selectedRating?.value) || null : null
+            };
+
+            if (payload.p_comment.length < 2 || payload.p_comment.length > 1000
+                || (payload.p_alias && payload.p_alias.length > 50)
+                || (targetType === 'classified' && (!payload.p_rating || payload.p_rating > 5))) {
+                status.textContent = currentLang === 'es'
+                    ? 'Revisa el comentario, el alias y la puntuación.'
+                    : 'Verifique o comentário, o nome/apelido e a pontuação.';
+                return;
+            }
+
+            submitButton.disabled = true;
+            try {
+                const voterKey = getOpinionVoterKey();
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/submit_public_opinion`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPABASE_PUBLISHABLE_KEY,
+                        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ...payload, p_voter_key: voterKey })
+                });
+                if (!response.ok) {
+                    const details = await response.text();
+                    throw new Error(`Supabase (${response.status}): ${details}`);
+                }
+
+                if (targetType === 'classified') {
+                    writeLocalStorage(opinionSubmittedKey(targetType, targetId), 'true');
+                }
+                form.reset();
+                if (targetType === 'classified') {
+                    form.querySelectorAll('input, textarea, button').forEach(control => {
+                        control.disabled = true;
+                    });
+                    status.textContent = currentLang === 'es'
+                        ? 'Recibimos tu opinión y puntuación. Aparecerán después de ser aprobadas.'
+                        : 'Recebemos a sua opinião e pontuação. Serão publicadas depois de aprovadas.';
+                } else {
+                    submitButton.disabled = false;
+                    status.textContent = currentLang === 'es'
+                        ? 'Recibimos tu opinión. Aparecerá después de ser aprobada.'
+                        : 'Recebemos a sua opinião. Será publicada depois de aprovada.';
+                }
+            } catch (error) {
+                console.error('No se pudo enviar la opinión:', error);
+                status.textContent = error instanceof Error && error.message.includes('Supabase (')
+                    ? currentLang === 'es'
+                        ? 'No se pudo enviar. Puede que ya hayas enviado una opinión desde este navegador o que el servicio aún no esté configurado.'
+                        : 'Não foi possível enviar. Talvez já tenha enviado uma opinião neste navegador ou o serviço ainda não esteja configurado.'
+                    : error.message;
+                submitButton.disabled = false;
+            }
+        }
+
         function renderDetail() {
             const container = document.getElementById('detail-content');
             if (!container) return;
@@ -1129,10 +1424,12 @@
                             <h2 class="font-serif text-2xl font-bold text-brand-navy">${escapeHtml(labels.detail_description)}</h2>
                             <p class="text-lg text-slate-700 leading-relaxed mt-3">${escapeHtml(description)}</p>
                             <a href="contactos.html" class="inline-block bg-brand-navy text-white font-bold px-5 py-3 rounded-lg mt-8 hover:bg-slate-800">${escapeHtml(labels.btn_reserve)}</a>
+                            ${publicOpinionSectionHTML('event', event.id)}
                         </article>
                     </div>
                 `;
                 document.title = `${title} | @sere en Luanda`;
+                loadPublicOpinions('event', event.id);
                 return;
             }
 
@@ -1157,10 +1454,12 @@
                                 ${paragraphs.map(paragraph => `<p class="text-lg text-slate-700 leading-relaxed">${paragraph}</p>`).join('')}
                                 ${milestones ? `<div class="space-y-5 pt-4">${milestones}</div>` : ''}
                             </div>
+                            ${publicOpinionSectionHTML('culture', culture.id)}
                         </article>
                     </div>
                 `;
                 document.title = `${title} | @sere en Luanda`;
+                loadPublicOpinions('culture', culture.id);
                 return;
             }
 
@@ -1201,10 +1500,12 @@
                                 <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>${escapeHtml(labels.detail_contact)}: ${escapeHtml(ad.contact)}
                             </a>
                             ${editButton}
+                            ${publicOpinionSectionHTML('classified', ad.id, true)}
                         </article>
                     </div>
                 `;
                 document.title = `${ad.title} | @sere en Luanda`;
+                loadPublicOpinions('classified', ad.id);
                 return;
             }
 
@@ -1481,6 +1782,9 @@
         }
 
         window.onload = function() {
+            document.addEventListener('submit', event => {
+                if (event.target.matches('form[data-opinion-form]')) handlePublicOpinionSubmit(event);
+            });
             document.addEventListener('click', event => {
                 const image = event.target.closest('img[data-classified-id][data-image-index]');
                 if (!image) return;
