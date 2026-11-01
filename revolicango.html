@@ -103,7 +103,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
-                            <span class="badge-gradient text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Clasificados de Luanda</span>
+                            <span class="badge-gradient text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider" data-i18n="classifieds_badge">Clasificados de Luanda</span>
                             <h1 class="font-serif text-3xl sm:text-4xl font-extrabold mt-1">RevolicAngo</h1>
                             <p class="text-slate-300 text-xs sm:text-sm font-light" data-i18n="revolic_sub">El portal de compra, venta, alquileres y servicios de la comunidad.</p>
                         </div>
@@ -147,12 +147,12 @@
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wider text-amber-700">RevolicAngo</p>
-                            <h2 id="classified-rating-board-title" class="mt-1 font-serif text-2xl font-bold text-brand-navy">Clasificados mejor valorados</h2>
-                            <p class="mt-1 text-sm text-slate-600">Ranking según las puntuaciones aprobadas de la comunidad.</p>
+                            <h2 id="classified-rating-board-title" class="mt-1 font-serif text-2xl font-bold text-brand-navy" data-i18n="classified_rating_title">Clasificados mejor valorados</h2>
+                            <p class="mt-1 text-sm text-slate-600" data-i18n="classified_rating_description">Ranking según las puntuaciones aprobadas de la comunidad.</p>
                         </div>
                         <span class="text-2xl text-amber-500" aria-hidden="true">★★★★★</span>
                     </div>
-                    <p id="classified-rating-board-status" class="mt-5 text-sm text-slate-600" role="status">Cargando puntuaciones…</p>
+                    <p id="classified-rating-board-status" class="mt-5 text-sm text-slate-600" role="status" data-i18n="classified_rating_loading">Cargando puntuaciones…</p>
                     <ol id="classified-rating-board-list" class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"></ol>
                 </div>
             </section>
@@ -269,7 +269,7 @@
     <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
         <div class="bg-brand-navy text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700">
             <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
-            <span id="toast-message" class="text-xs font-bold">¡Operación completada con éxito!</span>
+            <span id="toast-message" class="text-xs font-bold" data-i18n="toast_default">¡Operación completada con éxito!</span>
         </div>
     </div>
 <!-- FOOTER -->
@@ -301,10 +301,10 @@
                 <div>
                     <h4 class="text-sm font-bold uppercase text-brand-gold tracking-wider mb-4" data-i18n="footer_subpages">Categorías RevolicAngo</h4>
                     <ul class="space-y-2 text-xs text-slate-300 font-medium">
-                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Veh%C3%ADculos'" class="hover:text-brand-terracotta">Vehículos</a></li>
-                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Inmobiliaria'" class="hover:text-brand-terracotta">Inmobiliaria</a></li>
-                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Tecnolog%C3%ADa'" class="hover:text-brand-terracotta">Tecnología</a></li>
-                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Empleos'" class="hover:text-brand-terracotta">Empleos</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Veh%C3%ADculos'" class="hover:text-brand-terracotta" data-i18n="cat_vehiculos">Vehículos</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Inmobiliaria'" class="hover:text-brand-terracotta" data-i18n="cat_inmobiliaria">Inmobiliaria</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Tecnolog%C3%ADa'" class="hover:text-brand-terracotta" data-i18n="cat_tecnologia">Tecnología</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Empleos'" class="hover:text-brand-terracotta" data-i18n="cat_empleos">Empleos</a></li>
                     </ul>
                 </div>
 
@@ -320,7 +320,7 @@
             </div>
 
             <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-500 gap-2">
-                <div>&copy; 2026 @sere en Luanda. Todos los derechos reservados.</div>
+                <div>&copy; 2026 @sere en Luanda. <span data-i18n="footer_rights">Todos los derechos reservados.</span></div>
                 <div class="flex gap-4">
                     <span data-i18n="footer_tag">Unidad, Cultura y Hermandad</span>
                 </div>
@@ -328,6 +328,6 @@
         </div>
     </footer>
 <script src="image-compression.js" defer></script>
-<script src="script.js?v=site-content-v1" defer></script>
+<script src="script.js?v=site-content-pt-PT-v3" defer></script>
 </body>
 </html>

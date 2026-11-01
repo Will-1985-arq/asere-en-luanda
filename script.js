@@ -78,6 +78,12 @@
                 detail_open: "Ver evento",
                 detail_not_found: "No encontramos este contenido.",
                 detail_home: "Volver al inicio",
+                category_all_heading: "Todos los Clasificados",
+                classifieds_badge: "Clasificados de Luanda",
+                classified_rating_title: "Clasificados mejor valorados",
+                classified_rating_description: "Ranking según las puntuaciones aprobadas de la comunidad.",
+                classified_rating_loading: "Cargando puntuaciones…",
+                toast_default: "¡Operación completada con éxito!",
                 site_content_load_error: "No se pudo cargar el contenido actualizado. Se muestra el contenido de respaldo; inténtalo de nuevo más tarde.",
                 site_content_empty: "No hay contenido publicado en esta sección.",
 
@@ -100,7 +106,7 @@
                 home_event_title: "Taller de Sazones Criollos: Asados y Salsas",
                 home_event_date: "Jueves, 5 de noviembre de 2026",
                 home_event_desc: "Aprende los secretos del adobo tradicional cubano combinados con productos locales angolanos.",
-                see_agenda: "Ver Agenda Cultural Completa",
+                see_agenda: "Ver a agenda cultural completa",
 
                 about_title: "Quiénes somos",
                 about_subtitle: "Un puente de hermandad, cultura y apoyo mutuo en Luanda.",
@@ -133,6 +139,7 @@
                 btn_reserve: "Solicitar Info",
 
                 culture_header: "Cultura, Argot y Tradición",
+                culture_badge: "Patrimonio e Identidad",
                 culture_subheader: "Explora la historia, tradiciones y las manifestaciones artísticas que hermanan a Cuba y Angola.",
                 culture_tab_historia: "Historia",
                 culture_tab_tradiciones: "Tradiciones y Folklor",
@@ -245,7 +252,8 @@
                 footer_links: "Navegación",
                 footer_subpages: "Categorías RevolicAngo",
                 footer_contact: "Contacto Directo",
-                footer_tag: "Unidad, Cultura y Hermandad"
+                footer_tag: "Unidad, Cultura y Hermandad",
+                footer_rights: "Todos los derechos reservados."
             },
             pt: {
                 tagline: "Cuba e Angola unidas",
@@ -255,13 +263,13 @@
                 nav_culture: "Cultura",
                 nav_revolicango: "RevolicAngo",
                 nav_contact: "Contactos",
-                btn_publish: "Publicar Anúncio",
-                search_label: "Buscar anúncios",
-                search_placeholder: "Buscar veículos, telefones, arrendamentos, empregos...",
-                contact_name_placeholder: "Seu nome",
+                btn_publish: "Publicar anúncio",
+                search_label: "Pesquisar anúncios",
+                search_placeholder: "Pesquisar veículos, telemóveis, casas para arrendar, empregos...",
+                contact_name_placeholder: "O seu nome",
                 contact_phone_placeholder: "+244...",
-                contact_email_placeholder: "exemplo@correo.com",
-                contact_message_placeholder: "Escreva sua mensagem aqui...",
+                contact_email_placeholder: "exemplo@dominio.pt",
+                contact_message_placeholder: "Escreva a sua mensagem aqui...",
                 ad_title_placeholder: "Ex.: Venda de Toyota Corolla em excelente estado",
                 ad_price_placeholder: "Ex.: 150.000 Kz ou consultar",
                 ad_contact_placeholder: "+244 936 962 161",
@@ -280,114 +288,121 @@
                 detail_open: "Ver evento",
                 detail_not_found: "Não foi possível encontrar este conteúdo.",
                 detail_home: "Voltar ao início",
-                site_content_load_error: "Não foi possível carregar o conteúdo atualizado. A apresentar o conteúdo de reserva; tente novamente mais tarde.",
+                category_all_heading: "Todos os anúncios",
+                classifieds_badge: "Classificados de Luanda",
+                classified_rating_title: "Anúncios mais bem avaliados",
+                classified_rating_description: "Classificação com base nas avaliações aprovadas pela comunidade.",
+                classified_rating_loading: "A carregar as avaliações…",
+                toast_default: "Operação concluída com êxito!",
+                culture_badge: "Património e identidade",
+                site_content_load_error: "Não foi possível carregar o conteúdo atualizado. A apresentar o conteúdo predefinido; tente novamente mais tarde.",
                 site_content_empty: "Não há conteúdo publicado nesta secção.",
 
                 hero_badge: "O ponto de encontro para a comunidade em Luanda",
                 hero_title: "O calor de Cuba com o coração de Angola",
-                hero_desc: "Conectamos a comunidade cubana e angolana em Luanda. Descubra a sua cultura, participe em eventos, encontre serviços profissionais e consulte classificados no RevolicAngo.",
-                hero_btn_revolicango: "Explorar RevolicAngo",
-                hero_btn_events: "Próximos Eventos",
-                hero_box_title: "Comunidade em Movimento",
-                hero_box_btn: "Publicar Anúncio Agora",
+                hero_desc: "Unimos as comunidades cubana e angolana em Luanda. Descubra as suas culturas, participe em eventos, encontre serviços profissionais e consulte os anúncios do RevolicAngo.",
+                hero_btn_revolicango: "Explorar o RevolicAngo",
+                hero_btn_events: "Próximos eventos",
+                hero_box_title: "Comunidade em movimento",
+                hero_box_btn: "Publicar anúncio agora",
                 stat_classifieds: "Anúncios no RevolicAngo",
                 stat_active: "Rede Comunitária Ativa",
-                stat_bilingual: "Espanhol & Português",
+                stat_bilingual: "Espanhol e português",
                 stat_location: "Luanda, Angola",
 
-                home_revolic_sub: "Mercado e Classificados",
-                home_revolic_title: "Destaques no RevolicAngo",
+                home_revolic_sub: "Mercado de anúncios",
+                home_revolic_title: "Anúncios em destaque no RevolicAngo",
                 view_all: "Ver todas as categorias",
-                home_event_tag: "Próximo Encontro",
-                home_event_title: "Workshop de Tempero Crioulo: Assados e Molhos",
+                home_event_tag: "Próximo evento",
+                home_event_title: "Oficina de temperos crioulos: assados e molhos",
                 home_event_date: "Quinta-feira, 5 de novembro de 2026",
-                home_event_desc: "Aprenda os segredos do tempero tradicional cubano combinados com produtos locais angolanos.",
-                see_agenda: "Ver Agenda Cultural Completa",
+                home_event_desc: "Aprenda os segredos da marinada tradicional cubana, combinada com produtos locais angolanos.",
+                see_agenda: "Ver a agenda cultural completa",
 
-                about_title: "Quem Somos",
-                about_subtitle: "Uma ponte de fraternidade, cultura e apoio mútuo em Luanda.",
-                about_badge: "A Nossa História",
+                about_title: "Quem somos",
+                about_subtitle: "Uma ponte de amizade, cultura e apoio mútuo em Luanda.",
+                about_badge: "A nossa história",
                 about_heading: "Unindo duas terras irmãs",
-                about_text_1: "O @sere em Luanda nasce com o propósito de oferecer um espaço comum para os profissionais, colaboradores, famílias e empreendedores cubanos radicados em Angola, bem como para os irmãos angolanos que amam a cultura caribenha.",
-                about_text_2: "Através da nossa plataforma, facilitamos o intercâmbio de informação, divulgação de eventos socioculturais e comércio de bens e serviços éticos através do RevolicAngo.",
-                mission_title: "Os Nossos Pilares",
+                about_text_1: "O @sere em Luanda nasceu para oferecer um espaço comum a profissionais, cooperantes, famílias e empreendedores cubanos residentes em Angola, bem como a angolanos que apreciam a cultura caribenha.",
+                about_text_2: "Através da nossa plataforma, facilitamos a partilha de informação, a divulgação de eventos socioculturais e o comércio responsável de bens e serviços no RevolicAngo.",
+                mission_title: "Os nossos pilares",
                 pilar_1_title: "Integração Cultural",
-                pilar_1_desc: "Promover o respeito, a música, tradições e gastronomia que unem Cuba e Angola.",
+                pilar_1_desc: "Promover o respeito, a música, as tradições e a gastronomia que unem Cuba e Angola.",
                 pilar_2_title: "Apoio Comunitário",
-                pilar_2_desc: "Fornecer orientação útil aos recém-chegados e informações sobre procedimentos essenciais.",
+                pilar_2_desc: "Orientar quem acaba de chegar e fornecer informações sobre procedimentos essenciais.",
                 pilar_3_title: "Dinamismo Económico",
-                pilar_3_desc: "Conectar oferta e procura de bens, veículos, arrendamentos e serviços qualificados.",
+                pilar_3_desc: "Ligar quem procura a quem oferece bens, veículos, casas para arrendar e serviços especializados.",
 
-                events_header: "Eventos & Agenda Cultural",
-                events_subheader: "Concertos, workshops, encontros sociais e datas comemorativas.",
-                event_tag_music: "Música & Dança",
+                events_header: "Eventos e agenda cultural",
+                events_subheader: "Concertos, oficinas, encontros e datas comemorativas.",
+                event_tag_music: "Música e dança",
                 event_tag_gastro: "Gastronomia",
-                event_tag_sports: "Desporto & Família",
-                event_1_title: "Grande Gala Rueda de Casino & Kizomba",
-                event_1_desc: "Intercâmbio de ritmos caribenhos e angolanos. Workshops de dança para iniciantes e avançados.",
-                event_2_title: "Workshop de Tempero Crioulo: Assados e Molhos",
-                event_2_desc: "Aprenda os segredos do tempero tradicional cubano combinados com produtos locais angolanos.",
-                event_3_title: "Torneio Amigável de Dominó & Jogos de Tradição",
-                event_3_desc: "Tarde de dominó em duplas, refeição em família e ambiente fraterno para todas as idades.",
-                btn_reserve: "Solicitar Info",
+                event_tag_sports: "Desporto e família",
+                event_1_title: "Grande gala de Rueda de Casino e Kizomba",
+                event_1_desc: "Encontro de ritmos caribenhos e angolanos. Aulas de dança para principiantes e avançados.",
+                event_2_title: "Oficina de temperos crioulos: assados e molhos",
+                event_2_desc: "Aprenda os segredos da marinada tradicional cubana, combinada com produtos locais angolanos.",
+                event_3_title: "Torneio amigável de dominó e jogos tradicionais",
+                event_3_desc: "Tarde de dominó em duplas, refeição em família e convívio para todas as idades.",
+                btn_reserve: "Pedir informações",
 
-                culture_header: "Cultura, Gíria e Tradição",
-                culture_subheader: "Explore a história, tradições e manifestações artísticas que unem Cuba e Angola.",
+                culture_header: "Cultura, expressões e tradição",
+                culture_subheader: "Explore a história, as tradições e as manifestações artísticas que unem Cuba e Angola.",
                 culture_tab_historia: "História",
                 culture_tab_tradiciones: "Tradições e Folclore",
                 culture_tab_arte: "Arte",
                 historia_badge: "Laços Indissolúveis",
                 historia_title: "História partilhada entre Cuba e Angola",
-                historia_desc_1: "A relação entre Cuba e Angola é um laço único forjado na solidariedade, respeito mútuo e raízes africanas que viajaram pelo Atlântico para regressar décadas depois em cooperação médica, educativa e cultural.",
-                historia_desc_2: "Desde a década de 1970, milhares de profissionais, colaboradores, educadores e médicos construíram pontes humanas de amizade sincera. Hoje em Luanda, esta memória histórica permanece viva através da comunidade cubana perfeitamente integrada.",
-                historia_milestones_title: "Marcos da Nossa Fraternidade",
-                hito_1_t: "Raízes Ancestrais Bantus",
-                hito_1_d: "A marcante presença da cultura bantu de Angola na música, religião e folclore do Caribe cubano.",
-                hito_2_t: "Cooperação Médica e Educativa",
-                hito_2_d: "Formação de gerações de profissionais angolanos e colaboração contínua em hospitais e institutos.",
-                hito_3_t: "Integração Familiar e Social",
-                hito_3_d: "Lares mistos cubano-angolanos que enriquecem o quotidiano de Luanda com tradições partilhadas.",
+                historia_desc_1: "A relação entre Cuba e Angola é um laço singular, forjado na solidariedade, no respeito mútuo e nas raízes africanas que atravessaram o Atlântico e regressaram, décadas depois, através de projetos de cooperação médica, educativa e cultural.",
+                historia_desc_2: "Desde a década de 1970, milhares de profissionais, cooperantes, educadores e médicos construíram pontes de amizade. Hoje, em Luanda, esta memória histórica mantém-se viva numa comunidade cubana próspera e plenamente integrada na sociedade angolana.",
+                historia_milestones_title: "Marcos da nossa amizade",
+                hito_1_t: "Raízes ancestrais bantu",
+                hito_1_d: "A forte presença da cultura bantu de Angola na música, na religião e no folclore das Caraíbas cubanas.",
+                hito_2_t: "Cooperação médica e educativa",
+                hito_2_d: "Formação de várias gerações de profissionais angolanos e cooperação contínua em hospitais e institutos.",
+                hito_3_t: "Integração familiar e social",
+                hito_3_d: "Famílias cubano-angolanas que enriquecem o quotidiano de Luanda com tradições partilhadas.",
 
-                tradiciones_title: "Tradições, Festividades e Folclore",
-                tradiciones_sub: "Costumes partilhados, gastronomia de fusão, reuniões familiares e expressões linguísticas que definem o estilo de vida comunitário em Luanda.",
-                trad_gastro_title: "Temperos Crioulos & Muamba",
-                trad_gastro_desc: "Encontro gastronómico inesquecível: arroz congrí, mandioca com mojo e leitão assado convivem com caldeirada de peixe, funge e muamba de galinha.",
-                trad_domino_title: "O Dominó e as Kizombadas",
-                trad_domino_desc: "Tardes de dominó em duplas nos quintais de Luanda, acompanhadas de boa música, conversas animadas e ambiente festivo entre amigos.",
-                trad_carnaval_title: "Carnaval de Luanda & Comparsas",
-                trad_carnaval_desc: "O ritmo percussivo dos tambores, a dança alegre e o colorido dos trajes conectam o Carnaval de Luanda às tradicionais congas caribenhas.",
+                tradiciones_title: "Tradições, festividades e folclore",
+                tradiciones_sub: "Costumes partilhados, gastronomia de fusão, convívios familiares e expressões que definem a vida comunitária em Luanda.",
+                trad_gastro_title: "Temperos crioulos e muamba",
+                trad_gastro_desc: "Um encontro gastronómico inesquecível: arroz congrí, mandioca com mojo e leitão assado convivem com caldeirada de peixe, funge e muamba de galinha.",
+                trad_domino_title: "O dominó e as kizombadas",
+                trad_domino_desc: "Tardes de dominó em duplas nos quintais de Luanda, acompanhadas por boa música, conversas animadas e um ambiente festivo entre amigos.",
+                trad_carnaval_title: "Carnaval de Luanda e grupos carnavalescos",
+                trad_carnaval_desc: "O ritmo dos tambores, a dança e a cor dos trajes aproximam o Carnaval de Luanda das tradicionais parrandas e congas das Caraíbas.",
 
-                arte_title: "Arte e Expressões Criativas",
-                arte_sub: "Descubra o talento, projetos colaborativos e manifestações artísticas de ambas as nações.",
-                art_cat_all: "Todas as Artes",
+                arte_title: "Arte e expressão criativa",
+                arte_sub: "Descubra o talento, os projetos de colaboração e as manifestações artísticas dos dois países.",
+                art_cat_all: "Todas as artes",
                 art_cat_lit: "Literatura",
                 art_cat_mus: "Música",
                 art_cat_cine: "Cinema",
-                art_cat_vis: "Artes Visuais e Plásticas",
+                art_cat_vis: "Artes visuais e plásticas",
                 art_cat_danza: "Dança",
                 art_cat_teatro: "Teatro",
 
-                art_lit_title: "Poesia e Narrativa Afro-Caribenha",
-                art_lit_desc: "O encontro de versos de Nicolás Guillén e Agostinho Neto. Apresentações de livros, workshops literários e leituras de poesia bilingue em Luanda.",
-                art_mus_title: "Fusão de Son, Timba, Semba e Kizomba",
-                art_mus_desc: "A clave cubana e a cadência angolana conectam orquestras e grupos locais que animam as noites culturais de Miramar e Talatona.",
-                art_cine_title: "Mostras de Documentários e Debate",
+                art_lit_title: "Poesia e narrativa afro-caribenha",
+                art_lit_desc: "O encontro dos versos de Nicolás Guillén e Agostinho Neto. Apresentações de livros, oficinas literárias e leituras de poesia bilingue em Luanda.",
+                art_mus_title: "Fusão de son, timba, semba e kizomba",
+                art_mus_desc: "A clave cubana e a cadência angolana unem orquestras e grupos locais que animam as noites culturais de Miramar e Talatona.",
+                art_cine_title: "Mostras de documentários e sessões de debate",
                 art_cine_desc: "Exibição de longas-metragens históricas, documentários sobre intercâmbio cultural e curtas-metragens contemporâneas de jovens criadores.",
-                art_vis_title: "Pintura, Escultura e Muralismo Urbano",
-                art_vis_desc: "Exposições plásticas de artistas caribenhos e africanos. Telas coloridas, esculturas em madeira e murais que embelezam as ruas de Luanda.",
-                art_danza_title: "Rueda de Casino e Danças Tradicionais",
-                art_danza_desc: "Academias e encontros populares onde Salsa, Casino, Kizomba, Kuduro e Dança Afro se combinam em espetáculos dinâmicos.",
-                art_teatro_title: "Teatro Comunitário e Performance",
-                art_teatro_desc: "Obras dramatúrgicas sobre histórias de migração, superação e fraternidade. Grupos teatrais comunitários em centros culturais da cidade.",
+                art_vis_title: "Pintura, escultura e muralismo urbano",
+                art_vis_desc: "Exposições de artes plásticas de artistas caribenhos e africanos. Pinturas coloridas, esculturas em madeira e murais que embelezam as ruas de Luanda.",
+                art_danza_title: "Rueda de Casino e danças tradicionais",
+                art_danza_desc: "Academias e encontros populares onde a salsa, o casino, a kizomba, o kuduro e a dança afro se combinam em espetáculos dinâmicos.",
+                art_teatro_title: "Teatro comunitário e expressão performativa",
+                art_teatro_desc: "Peças sobre migração, superação e amizade. Grupos de teatro comunitário apresentam-se em centros culturais da cidade.",
 
-                glossary_title: "Glossário Cubano - Angolano",
-                glossary_sub: "Conheça os termos mais populares usados no dia a dia em Luanda.",
-                glossary_1: "Amigo próximo, compadre, irmão de vida.",
-                glossary_2: "Saudação quotidiana para perguntar o que há de novo ou como vai tudo.",
-                glossary_3: "Expressão usada quando algo está excelente, divertido ou animado.",
-                glossary_4: "Reunião festiva com boa comida, música alegre e dança entre amigos.",
-                glossary_5: "Transporte coletivo urbano caraterístico do quotidiano.",
-                glossary_6: "Habilidade para resolver imprevistos de forma engenhosa e rápida.",
+                glossary_title: "Glossário cubano-angolano",
+                glossary_sub: "Conheça algumas das expressões mais usadas no dia a dia em Luanda.",
+                glossary_1: "Amigo chegado, compadre, irmão de coração.",
+                glossary_2: "Saudação do dia a dia para perguntar o que há de novo ou como está tudo.",
+                glossary_3: "Expressão usada quando algo é excelente, divertido ou animado.",
+                glossary_4: "Convívio festivo com boa comida, música e dança entre amigos.",
+                glossary_5: "Transporte coletivo urbano típico do quotidiano.",
+                glossary_6: "Capacidade de resolver imprevistos de forma engenhosa e rápida.",
 
                 revolic_sub: "O portal de compra, venda, arrendamento e serviços da comunidade.",
                 cat_all: "Todos",
@@ -403,51 +418,52 @@
                 classifieds_loading: "A carregar anúncios…",
                 classifieds_load_error: "Não foi possível carregar os anúncios. Atualize a página para tentar novamente.",
                 no_ads_title: "Nenhum anúncio encontrado",
-                no_ads_desc: "Seja o primeiro a publicar um anúncio nesta categoria.",
+                no_ads_desc: "Seja a primeira pessoa a publicar um anúncio nesta categoria.",
 
-                contact_header: "Contactos & Atendimento",
-                contact_subheader: "Estamos aqui para ouvir, aconselhar e conectar com você em Luanda.",
-                contact_info_title: "Informação Direta",
-                click_chat: "Clique para conversar diretamente",
-                label_phone: "Telefone Direto",
+                contact_header: "Contactos e atendimento",
+                contact_subheader: "Estamos aqui para o ouvir, aconselhar e ajudar a criar ligações em Luanda.",
+                contact_info_title: "Informação direta",
+                click_chat: "Clique para falar connosco diretamente",
+                label_phone: "Telefone direto",
                 label_location: "Localização",
                 contact_form_title: "Envie-nos uma Mensagem",
-                form_name: "Nome Completo",
+                form_name: "Nome completo",
                 form_phone: "Telefone / WhatsApp",
                 form_email: "Correio Eletrónico",
                 form_subject: "Assunto",
-                opt_general: "Consulta Geral",
-                opt_revolicango: "Suporte Anúncios RevolicAngo",
-                opt_events: "Proposta de Eventos / Cultura",
-                opt_commercial: "Publicidade e Parcerias",
+                opt_general: "Pedido geral",
+                opt_revolicango: "Apoio a anúncios do RevolicAngo",
+                opt_events: "Proposta de evento ou atividade cultural",
+                opt_commercial: "Publicidade e parcerias",
                 form_msg: "Mensagem",
-                btn_send: "Enviar Mensagem",
+                btn_send: "Enviar mensagem",
 
-                modal_title: "Publicar Anúncio no RevolicAngo",
-                modal_sub: "Alcance toda a comunidade de Luanda rapidamente.",
-                modal_field_title: "Título do Anúncio *",
+                modal_title: "Publicar anúncio no RevolicAngo",
+                modal_sub: "Chegue rapidamente a toda a comunidade de Luanda.",
+                modal_field_title: "Título do anúncio *",
                 modal_field_cat: "Categoria *",
                 modal_field_price: "Preço (AOA ou USD)",
-                modal_field_phone: "Telefone / WhatsApp de Contacto *",
+                modal_field_phone: "Telefone / WhatsApp para contacto *",
                 modal_field_loc: "Município / Zona em Luanda",
-                modal_field_img: "Imagem do seu dispositivo (Opcional)",
-                modal_img_help: "Até 10 imagens JPG, PNG ou WebP de até 20 MB cada. São comprimidas para no máximo 100 KB antes do envio. Ao editar, se não escolher novas, as anteriores serão mantidas.",
+                modal_field_img: "Imagem do seu dispositivo (opcional)",
+                modal_img_help: "Até 10 imagens JPG, PNG ou WebP, com um máximo de 20 MB cada. Antes do envio, são comprimidas para um máximo de 100 KB. Ao editar, se não selecionar novas imagens, as anteriores serão mantidas.",
                 modal_field_desc: "Descrição detalhada *",
                 ad_contact_consent: "Aceito que o meu telefone e os dados deste anúncio sejam publicados e fiquem visíveis publicamente.",
                 btn_edit_classified: "Editar anúncio (uma vez, nos primeiros 5 minutos)",
                 btn_save_classified_edits: "Guardar correção",
-                btn_publish_classified: "Publicar Anúncio",
+                btn_publish_classified: "Publicar anúncio",
                 event_month_oct: "OUT",
                 event_month_nov: "NOV",
                 event_month_dec: "DEZ",
                 btn_cancel: "Cancelar",
-                btn_submit_ad: "Publicar Anúncio",
+                btn_submit_ad: "Publicar anúncio",
 
                 footer_about: "Comunidade e diretório informativo para unir laços culturais e comerciais em Angola.",
                 footer_links: "Navegação",
                 footer_subpages: "Categorias RevolicAngo",
-                footer_contact: "Contacto Direto",
-                footer_tag: "Unidade, Cultura e Fraternidade"
+                footer_contact: "Contacto direto",
+                footer_tag: "Unidade, Cultura e Fraternidade",
+                footer_rights: "Todos os direitos reservados."
             }
         };
 
@@ -529,7 +545,7 @@
         function formatSiteEventDate(item, options = {}) {
             const date = siteEventDate(item);
             return date
-                ? new Intl.DateTimeFormat(currentLang === 'es' ? 'es' : 'pt', options).format(date)
+                ? new Intl.DateTimeFormat(currentLang === 'es' ? 'es' : 'pt-PT', options).format(date)
                 : '';
         }
 
@@ -812,9 +828,11 @@
         /* ================= LANGUAGE SWITCHER ================= */
         function setLanguage(lang) {
             currentLang = lang;
-            document.documentElement.lang = lang;
+            document.documentElement.lang = lang === 'pt' ? 'pt-PT' : 'es';
             writeLocalStorage('community-language', lang);
             const localizedTexts = translations[lang] || translations.es;
+            const ogLocale = document.querySelector('meta[property="og:locale"]');
+            if (ogLocale) ogLocale.content = lang === 'pt' ? 'pt_PT' : 'es_ES';
 
             // Update button UI states
             if (lang === 'es') {
@@ -868,6 +886,26 @@
 
             const pageHeading = document.querySelector('main h1');
             if (pageHeading) document.title = `${pageHeading.textContent.trim()} | @sere en Luanda`;
+            const categoryHeading = document.getElementById('category-heading');
+            if (categoryHeading) categoryHeading.textContent = currentCategory === 'all'
+                ? localizedTexts.category_all_heading
+                : localizedClassifiedCategory(currentCategory);
+            const pageDescriptionKeys = {
+                'index.html': 'hero_desc',
+                'quienes-somos.html': 'about_subtitle',
+                'eventos.html': 'events_subheader',
+                'cultura.html': 'culture_subheader',
+                'revolicango.html': 'revolic_sub',
+                'contactos.html': 'contact_subheader'
+            };
+            const pageFile = window.location.pathname.split('/').pop() || 'index.html';
+            const description = localizedTexts[pageDescriptionKeys[pageFile]];
+            if (description) {
+                ['meta[name="description"]', 'meta[property="og:description"]', 'meta[name="twitter:description"]']
+                    .forEach(selector => document.querySelector(selector)?.setAttribute('content', description));
+                ['meta[property="og:title"]', 'meta[name="twitter:title"]']
+                    .forEach(selector => document.querySelector(selector)?.setAttribute('content', document.title));
+            }
             upgradeInertLinks();
 
             // Re-render classifieds to update labels
@@ -893,6 +931,22 @@
         }
 
         /* ================= REVOLICANGO CLASSIFIEDS CONTROLLER ================= */
+        function localizedClassifiedCategory(category) {
+            const categoryKeys = {
+                'Vehículos': 'cat_vehiculos',
+                Inmobiliaria: 'cat_inmobiliaria',
+                Tecnología: 'cat_tecnologia',
+                Empleos: 'cat_empleos',
+                'Ropa y Accesorios': 'cat_ropa',
+                Servicios: 'cat_servicios',
+                Electrodomésticos: 'cat_electro',
+                Hogar: 'cat_hogar',
+                General: 'cat_general'
+            };
+            const key = categoryKeys[category];
+            return key ? translations[currentLang][key] : category;
+        }
+
         function selectCategory(cat) {
             currentCategory = cat;
 
@@ -922,7 +976,9 @@
 
             // Update heading
             const heading = document.getElementById('category-heading');
-            heading.textContent = cat === 'all' ? (currentLang === 'es' ? 'Todos los Clasificados' : 'Todos os Classificados') : `${cat}`;
+            heading.textContent = cat === 'all'
+                ? translations[currentLang].category_all_heading
+                : localizedClassifiedCategory(cat);
 
             renderClassifieds();
         }
@@ -1014,7 +1070,7 @@
                     contact: row.contact,
                     location: row.location,
                     date: row.created_at
-                        ? new Date(row.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt')
+                        ? new Date(row.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt-PT')
                         : '',
                     images: Array.isArray(row.image_urls) && row.image_urls.length
                         ? row.image_urls
@@ -1347,7 +1403,7 @@
                 <article class="rounded-xl border border-slate-200 bg-white p-4">
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <strong class="text-brand-navy">${escapeHtml(opinion.alias || (isSpanish ? 'Anónimo' : 'Anónimo'))}</strong>
-                        <time class="text-xs text-slate-500">${escapeHtml(new Date(opinion.created_at).toLocaleDateString(isSpanish ? 'es' : 'pt'))}</time>
+                        <time class="text-xs text-slate-500">${escapeHtml(new Date(opinion.created_at).toLocaleDateString(isSpanish ? 'es' : 'pt-PT'))}</time>
                     </div>
                     ${opinion.rating ? `<p class="mt-2">${formatOpinionStars(opinion.rating)}</p>` : ''}
                     <p class="mt-2 whitespace-pre-line text-slate-700">${escapeHtml(opinion.comment)}</p>
@@ -1456,7 +1512,7 @@
                                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 font-bold text-amber-800">#${index + 1}</span>
                                 <span class="min-w-0">
                                     <strong class="block truncate text-brand-navy">${escapeHtml(ad.title)}</strong>
-                                    <span class="mt-1 block text-xs text-slate-600">${escapeHtml(ad.category)}</span>
+                                    <span class="mt-1 block text-xs text-slate-600">${escapeHtml(localizedClassifiedCategory(ad.category))}</span>
                                     <span class="mt-2 flex flex-wrap items-center gap-2">
                                         ${formatOpinionStars(Math.round(average))}
                                         <span class="text-sm font-bold text-slate-700">${average.toFixed(1)}/5</span>
@@ -1500,7 +1556,7 @@
                 || (targetType === 'classified' && (!payload.p_rating || payload.p_rating > 5))) {
                 status.textContent = currentLang === 'es'
                     ? 'Revisa el comentario, el alias y la puntuación.'
-                    : 'Verifique o comentário, o nome/apelido e a pontuação.';
+                    : 'Verifique o comentário, o nome ou apelido e a pontuação.';
                 return;
             }
 
@@ -1669,7 +1725,7 @@
                 const backUrl = event.id === 'home-event' ? 'index.html' : 'eventos.html';
                 const when = event.whenKey
                     ? labels[event.whenKey] || translations.es[event.whenKey]
-                    : `${labels[event.monthKey] || translations.es[event.monthKey]} ${event.day} | ${event.time} hrs`;
+                    : `${labels[event.monthKey] || translations.es[event.monthKey]} ${event.day} | ${event.time} ${currentLang === 'es' ? 'hrs' : 'h'}`;
                 container.innerHTML = `
                     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
                         <a href="${backUrl}" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
@@ -1726,7 +1782,7 @@
 
             if (ad) {
                 const title = escapeHtml(ad.title);
-                const category = escapeHtml(ad.category);
+                const category = escapeHtml(localizedClassifiedCategory(ad.category));
                 const description = escapeHtml(ad.description);
                 const imageUrls = Array.isArray(ad.images) && ad.images.length
                     ? ad.images
@@ -1886,7 +1942,7 @@
                 || location.length > 100 || description.length > 2000) {
                 showToast(currentLang === 'es'
                     ? 'Revisa la longitud de los campos e inténtalo de nuevo.'
-                    : 'Verifique o tamanho dos campos e tente novamente.', true);
+                    : 'Verifique se os campos respeitam o limite de caracteres e tente novamente.', true);
                 return;
             }
 
@@ -1900,7 +1956,7 @@
             if (imageFiles.length > 10) {
                 showToast(currentLang === 'es'
                     ? 'Puedes elegir como máximo 10 imágenes por anuncio.'
-                    : 'Pode escolher no máximo 10 imagens por anúncio.', true);
+                    : 'Pode selecionar até 10 imagens por anúncio.', true);
                 return;
             }
 
@@ -1963,7 +2019,7 @@
                     price: result.price || (currentLang === 'es' ? 'Consultar' : 'A consultar'),
                     contact: result.contact,
                     location: result.location,
-                    date: new Date(result.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt'),
+                    date: new Date(result.created_at).toLocaleDateString(currentLang === 'es' ? 'es' : 'pt-PT'),
                     images: Array.isArray(result.image_urls) && result.image_urls.length
                         ? result.image_urls
                         : result.image_url ? [result.image_url] : [],

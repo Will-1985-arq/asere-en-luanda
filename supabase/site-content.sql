@@ -81,26 +81,26 @@ insert into public.site_content (
 ) values
 (
     'event-1', 'event', 'event',
-    'Gran Gala Rueda de Casino & Kizomba', 'Grande Gala Rueda de Casino & Kizomba',
+    'Gran Gala Rueda de Casino & Kizomba', 'Grande gala de Rueda de Casino e Kizomba',
     'Intercambio de ritmos caribeños y angolanos. Talleres de baile para principiantes y avanzados.',
-    'Intercâmbio de ritmos caribenhos e angolanos. Workshops de dança para iniciantes e avançados.',
-    'Música & Baile', 'Música & Dança', 'Club Marítimo de Luanda', 'Club Marítimo de Luanda',
+    'Encontro de ritmos caribenhos e angolanos. Aulas de dança para principiantes e avançados.',
+    'Música & Baile', 'Música e dança', 'Club Marítimo de Luanda', 'Club Marítimo de Luanda',
     '2026-10-18', '18:00', 10, true, false, false
 ),
 (
     'event-2', 'event', 'event',
-    'Taller de Sazones Criollos: Asados y Salsas', 'Workshop de Tempero Crioulo: Assados e Molhos',
+    'Taller de Sazones Criollos: Asados y Salsas', 'Oficina de temperos crioulos: assados e molhos',
     'Aprende los secretos del adobo tradicional cubano combinados con productos locales angolanos.',
-    'Aprenda os segredos do tempero tradicional cubano combinados com produtos locais angolanos.',
+    'Aprenda os segredos da marinada tradicional cubana, combinada com produtos locais angolanos.',
     'Gastronomía', 'Gastronomia', 'Espacio Cultural Maianga, Luanda', 'Espaço Cultural Maianga, Luanda',
     '2026-11-05', '12:00', 20, true, true, true
 ),
 (
     'event-3', 'event', 'event',
-    'Torneo Amistoso de Dominazo & Pelota de Cintas', 'Torneio Amigável de Dominó & Jogos de Tradição',
+    'Torneo Amistoso de Dominazo & Pelota de Cintas', 'Torneio amigável de dominó e jogos tradicionais',
     'Tarde de dominó por parejas, comida en familia y ambiente fraternal para todas las edades.',
-    'Tarde de dominó em duplas, refeição em família e ambiente fraterno para todas as idades.',
-    'Deportes & Familia', 'Desporto & Família', 'Parque de la Chicala, Luanda', 'Parque da Chicala, Luanda',
+    'Tarde de dominó em duplas, refeição em família e convívio para todas as idades.',
+    'Deportes & Familia', 'Desporto e família', 'Parque de la Chicala, Luanda', 'Parque da Chicala, Luanda',
     '2026-12-12', '10:00', 30, true, true, false
 )
 on conflict (id) do nothing;
@@ -115,109 +115,109 @@ insert into public.site_content (
     'Historia compartida entre Cuba y Angola', 'História partilhada entre Cuba e Angola',
     'La relación entre Cuba y Angola es un vínculo único forjado en la solidaridad, el respeto mutuo y las raíces africanas que viajaron a través del Atlántico para regresar décadas después en proyectos de cooperación médica, educativa y cultural.' || E'\n\n' ||
     'Desde la década de 1970, miles de profesionales, colaboradores, educadores y médicos han construido puentes humanos de amistad sincera. Hoy en día en Luanda, esta memoria histórica se mantiene viva a través de la próspera comunidad cubana perfectamente integrada en la sociedad angolana.',
-    'A relação entre Cuba e Angola é um laço único forjado na solidariedade, respeito mútuo e raízes africanas que viajaram pelo Atlântico para regressar décadas depois em cooperação médica, educativa e cultural.' || E'\n\n' ||
-    'Desde a década de 1970, milhares de profissionais, colaboradores, educadores e médicos construíram pontes humanas de amizade sincera. Hoje em Luanda, esta memória histórica permanece viva através da comunidade cubana perfeitamente integrada.',
+    'A relação entre Cuba e Angola é um laço singular, forjado na solidariedade, no respeito mútuo e nas raízes africanas que atravessaram o Atlântico e regressaram, décadas depois, através de projetos de cooperação médica, educativa e cultural.' || E'\n\n' ||
+    'Desde a década de 1970, milhares de profissionais, cooperantes, educadores e médicos construíram pontes de amizade. Hoje, em Luanda, esta memória histórica mantém-se viva numa comunidade cubana próspera e plenamente integrada na sociedade angolana.',
     null, null, null,
     '[{"title":"Raíces Ancestrales Bantú","body":"La marcada presencia de la cultura bantú de Angola en la música, religión y folclore del Caribe cubano."},{"title":"Cooperación Médica y Educativa","body":"Formación de generaciones de profesionales angolanos y colaboración continua en hospitales e institutos."},{"title":"Integración Familiar y Social","body":"Hogares mixtos cubano-angolanos que enriquecen el día a día de Luanda con tradiciones compartidas."}]'::jsonb,
-    '[{"title":"Raízes Ancestrais Bantus","body":"A marcante presença da cultura bantu de Angola na música, religião e folclore do Caribe cubano."},{"title":"Cooperação Médica e Educativa","body":"Formação de gerações de profissionais angolanos e colaboração contínua em hospitais e institutos."},{"title":"Integração Familiar e Social","body":"Lares mistos cubano-angolanos que enriquecem o quotidiano de Luanda com tradições partilhadas."}]'::jsonb,
+    '[{"title":"Raízes ancestrais bantu","body":"A forte presença da cultura bantu de Angola na música, na religião e no folclore das Caraíbas cubanas."},{"title":"Cooperação médica e educativa","body":"Formação de várias gerações de profissionais angolanos e cooperação contínua em hospitais e institutos."},{"title":"Integração familiar e social","body":"Famílias cubano-angolanas que enriquecem o quotidiano de Luanda com tradições partilhadas."}]'::jsonb,
     10, true
 ),
 (
     'trad-gastro', 'culture', 'tradition',
-    'Sazones Criollos & Muamba', 'Temperos Crioulos & Muamba',
+    'Sazones Criollos & Muamba', 'Temperos crioulos e muamba',
     'Encuentro gastronómico inolvidable: el arroz congrí, la yuca con mojo y el lechón asado conviven con la caldeirada de pescado, el funge y la muamba de gallina.',
     'Encontro gastronómico inesquecível: arroz congrí, mandioca com mojo e leitão assado convivem com caldeirada de peixe, funge e muamba de galinha.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 20, true
 ),
 (
     'trad-domino', 'culture', 'tradition',
-    'El Dominó y las Kizombadas', 'O Dominó e as Kizombadas',
+    'El Dominó y las Kizombadas', 'O dominó e as kizombadas',
     'Tardes de dominó por parejas en los patios de Luanda, acompañadas de buena música, conversaciones animadas y ambiente festivo entre amigos.',
-    'Tardes de dominó em duplas nos quintais de Luanda, acompanhadas de boa música, conversas animadas e ambiente festivo entre amigos.',
+    'Tardes de dominó em duplas nos quintais de Luanda, acompanhadas por boa música, conversas animadas e um ambiente festivo entre amigos.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 30, true
 ),
 (
     'trad-carnaval', 'culture', 'tradition',
-    'Carnaval de Luanda & Comparsas', 'Carnaval de Luanda & Comparsas',
+    'Carnaval de Luanda & Comparsas', 'Carnaval de Luanda e grupos carnavalescos',
     'El ritmo percutivo de los tambores, la danza alegre y el colorido de los vestuarios conectan el Carnaval de Luanda con las tradicionales parrandas y congas caribeñas.',
-    'O ritmo percussivo dos tambores, a dança alegre e o colorido dos trajes conectam o Carnaval de Luanda às tradicionais congas caribenhas.',
+    'O ritmo dos tambores, a dança e a cor dos trajes aproximam o Carnaval de Luanda das tradicionais parrandas e congas das Caraíbas.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 40, true
 ),
 (
     'glossary-1', 'culture', 'glossary', 'Asere ↔ Kamba', 'Asere ↔ Kamba',
-    'Amigo entrañable, compadre, hermano de la vida.', 'Amigo próximo, compadre, irmão de vida.',
+    'Amigo entrañable, compadre, hermano de la vida.',     'Amigo chegado, compadre, irmão de coração.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 50, true
 ),
 (
     'glossary-2', 'culture', 'glossary', '¿Qué bolá? ↔ Mambo cómo ''stá?', '¿Qué bolá? ↔ Mambo cómo ''stá?',
     'Saludo cotidiano para preguntar qué hay de nuevo o cómo va todo.',
-    'Saudação quotidiana para perguntar o que há de novo ou como vai tudo.',
+    'Saudação do dia a dia para perguntar o que há de novo ou como está tudo.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 60, true
 ),
 (
     'glossary-3', 'culture', 'glossary', 'Tremendo ambiente ↔ Tá a bater!', 'Tremendo ambiente ↔ Tá a bater!',
     'Expresión utilizada cuando algo está excelente, divertido o animado.',
-    'Expressão usada quando algo está excelente, divertido ou animado.',
+    'Expressão usada quando algo é excelente, divertido ou animado.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 70, true
 ),
 (
     'glossary-4', 'culture', 'glossary', 'Fiesta ↔ Kizombada', 'Festa ↔ Kizombada',
     'Reunión festiva con buena comida, música alegre y baile entre amigos.',
-    'Reunião festiva com boa comida, música alegre e dança entre amigos.',
+    'Convívio festivo com boa comida, música e dança entre amigos.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 80, true
 ),
 (
     'glossary-5', 'culture', 'glossary', 'Guagua ↔ Candongueiro', 'Guagua ↔ Candongueiro',
     'Transporte colectivo urbano característico del paisaje diario.',
-    'Transporte coletivo urbano caraterístico do quotidiano.',
+    'Transporte coletivo urbano típico do quotidiano.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 90, true
 ),
 (
     'glossary-6', 'culture', 'glossary', 'Resolver ↔ Desrascar', 'Resolver ↔ Desrascar',
     'Habilidad para solucionar imprevistos de forma ingeniosa e inmediata.',
-    'Habilidade para resolver imprevistos de forma engenhosa e rápida.',
+    'Capacidade de resolver imprevistos de forma engenhosa e rápida.',
     null, null, null, '[]'::jsonb, '[]'::jsonb, 100, true
 ),
 (
     'art-literature', 'culture', 'art',
-    'Poesía y Narrativa Afro-Caribeña', 'Poesia e Narrativa Afro-Caribenha',
+    'Poesía y Narrativa Afro-Caribeña', 'Poesia e narrativa afro-caribenha',
     'El encuentro de versos de Nicolás Guillén y Agostinho Neto. Presentaciones de libros, talleres literarios comunitarios y lecturas de poesía bilingüe en Luanda.',
-    'O encontro de versos de Nicolás Guillén e Agostinho Neto. Apresentações de livros, workshops literários e leituras de poesia bilingue em Luanda.',
+    'O encontro dos versos de Nicolás Guillén e Agostinho Neto. Apresentações de livros, oficinas literárias e leituras de poesia bilingue em Luanda.',
     'Literatura', 'Literatura', 'literatura', '[]'::jsonb, '[]'::jsonb, 110, true
 ),
 (
     'art-music', 'culture', 'art',
-    'Fusión de Son, Timba, Semba y Kizomba', 'Fusão de Son, Timba, Semba e Kizomba',
+    'Fusión de Son, Timba, Semba y Kizomba', 'Fusão de son, timba, semba e kizomba',
     'La clave cubana y la cadencia angolana conectan orquestas y agrupaciones locales que llenan de alegría las noches culturales de Miramar y Talatona.',
-    'A clave cubana e a cadência angolana conectam orquestras e grupos locais que animam as noites culturais de Miramar e Talatona.',
+    'A clave cubana e a cadência angolana unem orquestras e grupos locais que animam as noites culturais de Miramar e Talatona.',
     'Música', 'Música', 'musica', '[]'::jsonb, '[]'::jsonb, 120, true
 ),
 (
     'art-cinema', 'culture', 'art',
-    'Muestras de Documentales y Cine Debate', 'Mostras de Documentários e Debate',
+    'Muestras de Documentales y Cine Debate', 'Mostras de documentários e sessões de debate',
     'Proyección de largometrajes históricos, documentales sobre el intercambio cultural y cortometrajes contemporáneos dirigidos por jóvenes creadores.',
     'Exibição de longas-metragens históricas, documentários sobre intercâmbio cultural e curtas-metragens contemporâneas de jovens criadores.',
     'Cine', 'Cinema', 'cine', '[]'::jsonb, '[]'::jsonb, 130, true
 ),
 (
     'art-visual', 'culture', 'art',
-    'Pintura, Escultura y Muralismo Urbano', 'Pintura, Escultura e Muralismo Urbano',
+    'Pintura, Escultura y Muralismo Urbano', 'Pintura, escultura e muralismo urbano',
     'Exposiciones plásticas de artistas caribeños y africanos. Lienzos coloridos, esculturas en madera y murales que engalanan las calles luandenses.',
-    'Exposições plásticas de artistas caribenhos e africanos. Telas coloridas, esculturas em madeira e murais que embelezam as ruas de Luanda.',
-    'Artes Visuales y Plásticas', 'Artes Visuais e Plásticas', 'visuales', '[]'::jsonb, '[]'::jsonb, 140, true
+    'Exposições de artes plásticas de artistas caribenhos e africanos. Pinturas coloridas, esculturas em madeira e murais que embelezam as ruas de Luanda.',
+    'Artes Visuales y Plásticas', 'Artes visuais e plásticas', 'visuales', '[]'::jsonb, '[]'::jsonb, 140, true
 ),
 (
     'art-dance', 'culture', 'art',
-    'Rueda de Casino y Danzas Tradicionales', 'Rueda de Casino e Danças Tradicionais',
+    'Rueda de Casino y Danzas Tradicionales',     'Rueda de Casino e danças tradicionais',
     'Academias y encuentros populares donde la Salsa, el Casino, la Kizomba, el Kuduro y la Danza Afro se combinan en espectáculos dinámicos.',
-    'Academias e encontros populares onde Salsa, Casino, Kizomba, Kuduro e Dança Afro se combinam em espetáculos dinâmicos.',
+    'Academias e encontros populares onde a salsa, o casino, a kizomba, o kuduro e a dança afro se combinam em espetáculos dinâmicos.',
     'Danza', 'Dança', 'danza', '[]'::jsonb, '[]'::jsonb, 150, true
 ),
 (
     'art-theatre', 'culture', 'art',
-    'Teatro Comunitario y Performance', 'Teatro Comunitário e Performance',
+    'Teatro Comunitario y Performance',     'Teatro comunitário e expressão performativa',
     'Obras dramatúrgicas que abordan historias de migración, superación y hermandad. Grupos teatrales comunitarios en centros culturales de la ciudad.',
-    'Obras dramatúrgicas sobre histórias de migração, superação e fraternidade. Grupos teatrais comunitários em centros culturais da cidade.',
+    'Peças sobre migração, superação e amizade. Grupos de teatro comunitário apresentam-se em centros culturais da cidade.',
     'Teatro', 'Teatro', 'teatro', '[]'::jsonb, '[]'::jsonb, 160, true
 )
 on conflict (id) do nothing;

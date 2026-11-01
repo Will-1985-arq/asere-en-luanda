@@ -287,7 +287,7 @@
     <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
         <div class="bg-brand-navy text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700">
             <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
-            <span id="toast-message" class="text-xs font-bold">¡Operación completada con éxito!</span>
+            <span id="toast-message" class="text-xs font-bold" data-i18n="toast_default">¡Operación completada con éxito!</span>
         </div>
     </div>
 <!-- FOOTER -->
@@ -319,10 +319,10 @@
                 <div>
                     <h4 class="text-sm font-bold uppercase text-brand-gold tracking-wider mb-4" data-i18n="footer_subpages">Categorías RevolicAngo</h4>
                     <ul class="space-y-2 text-xs text-slate-300 font-medium">
-                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Veh%C3%ADculos'" class="hover:text-brand-terracotta">Vehículos</a></li>
-                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Inmobiliaria'" class="hover:text-brand-terracotta">Inmobiliaria</a></li>
-                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Tecnolog%C3%ADa'" class="hover:text-brand-terracotta">Tecnología</a></li>
-                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Empleos'" class="hover:text-brand-terracotta">Empleos</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Veh%C3%ADculos'" class="hover:text-brand-terracotta" data-i18n="cat_vehiculos">Vehículos</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Inmobiliaria'" class="hover:text-brand-terracotta" data-i18n="cat_inmobiliaria">Inmobiliaria</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Tecnolog%C3%ADa'" class="hover:text-brand-terracotta" data-i18n="cat_tecnologia">Tecnología</a></li>
+                        <li><a href="javascript:void(0)" onclick="window.location.href='revolicango.html?category=Empleos'" class="hover:text-brand-terracotta" data-i18n="cat_empleos">Empleos</a></li>
                     </ul>
                 </div>
 
@@ -338,7 +338,7 @@
             </div>
 
             <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-500 gap-2">
-                <div>&copy; 2026 @sere en Luanda. Todos los derechos reservados.</div>
+                <div>&copy; 2026 @sere en Luanda. <span data-i18n="footer_rights">Todos los derechos reservados.</span></div>
                 <div class="flex gap-4">
                     <span data-i18n="footer_tag">Unidad, Cultura y Hermandad</span>
                 </div>
@@ -346,6 +346,6 @@
         </div>
     </footer>
 <script src="image-compression.js" defer></script>
-<script src="script.js?v=site-content-v1" defer></script>
+<script src="script.js?v=site-content-pt-PT-v3" defer></script>
 </body>
 </html>

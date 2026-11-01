@@ -10,6 +10,8 @@ Para activar el contenido dinámico, abre **SQL Editor** en el proyecto Supabase
 
 Luego abre **Table Editor → site_content**. La web solo lee las filas con `is_published = true`; las políticas RLS no permiten que los visitantes creen o modifiquen contenido. Edita o crea filas desde tu sesión autenticada de Supabase:
 
+Para sustituir las traducciones portuguesas iniciales por portugués de Portugal, ejecuta una vez `supabase/site-content-portuguese-pt-PT.sql` en una consulta nueva. Solo cambia cada campo que aún conserva exactamente el texto inicial de la migración; conserva los campos que ya hayas editado.
+
 - Para eventos, usa `content_type = event`, `section = event`, completa títulos y descripciones en español y portugués, fecha, hora y ubicación en ambos idiomas. `is_listed` controla si aparece en la agenda; `is_published` controla si el contenido puede verse y recibir opiniones. `is_featured` muestra un único evento destacado en Inicio. Si cambias el destacado, quita primero la marca del anterior.
 - Para Cultura, usa `content_type = culture` y una sección `history`, `tradition`, `glossary` o `art`. Completa los campos `title_es`, `title_pt`, `description_es` y `description_pt`. En la sección `art`, añade también `art_category` (un identificador corto en minúsculas, como `musica`) y sus nombres visibles en `category_es` y `category_pt`. La historia admite hitos bilingües en `milestones_es` y `milestones_pt` como listas JSON de objetos `{"title":"…","body":"…"}`.
 - `sort_order` controla el orden dentro de cada sección. Para ocultar una publicación sin borrarla, cambia `is_published` a `false`.
