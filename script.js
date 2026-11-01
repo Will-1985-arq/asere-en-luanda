@@ -38,13 +38,13 @@
         let currentCategory = 'all';
 
         const classifiedsData = [];
+        let sharedClassifiedsStatus = 'loading';
         /* ================= I18N DICTIONARY ================= */
         const translations = {
             es: {
                 tagline: "Cuba y Angola unidas",
                 nav_home: "Inicio",
                 nav_about: "Quiénes somos",
-                nav_news: "Noticias",
                 nav_events: "Eventos",
                 nav_culture: "Cultura",
                 nav_revolicango: "RevolicAngo",
@@ -77,7 +77,7 @@
 
                 hero_badge: "El punto de encuentro para la comunidad en Luanda",
                 hero_title: "La calidez de Cuba con el corazón de Angola",
-                hero_desc: "Conectamos la vibrante comunidad cubana y angolana en Luanda. Encuentra eventos culturales, noticias relevantes, servicios profesionales y clasificados en RevolicAngo.",
+                hero_desc: "Conectamos la comunidad cubana y angolana en Luanda. Descubre su cultura, participa en eventos, encuentra servicios profesionales y consulta clasificados en RevolicAngo.",
                 hero_btn_revolicango: "Explorar RevolicAngo",
                 hero_btn_events: "Próximos Eventos",
                 hero_box_title: "Comunidad en Movimiento",
@@ -91,14 +91,10 @@
                 home_revolic_title: "Destacados en RevolicAngo",
                 view_all: "Ver todas las categorías",
                 home_event_tag: "Próximo Encuentro",
-                home_event_title: "Noche de Timba y Semba en Miramar",
-                home_event_date: "Domingo, 18 de octubre",
-                home_event_desc: "Disfruta de la mejor fusión musical caribeña y angolana con orquesta en vivo, gastronomía criolla y excelente ambiente en el corazón de Luanda.",
+                home_event_title: "Taller de Sazones Criollos: Asados y Salsas",
+                home_event_date: "Jueves, 5 de noviembre de 2026",
+                home_event_desc: "Aprende los secretos del adobo tradicional cubano combinados con productos locales angolanos.",
                 see_agenda: "Ver Agenda Cultural Completa",
-                home_news_tag: "Noticias Recientes",
-                home_news_title: "Guía Consular y Trámites para la Comunidad",
-                home_news_desc: "Actualización de requerimientos, renovación de pasaportes y orientaciones legales para residentes cubanos en Luanda y provincias vecinas.",
-                read_news: "Leer Sección de Noticias",
 
                 about_title: "Quiénes somos",
                 about_subtitle: "Un puente de hermandad, cultura y apoyo mutuo en Luanda.",
@@ -113,35 +109,6 @@
                 pilar_2_desc: "Brindar orientación útil a recién llegados e información sobre trámites esenciales.",
                 pilar_3_title: "Dinamismo Económico",
                 pilar_3_desc: "Conectar oferta y demanda de bienes, vehículos, alquileres y servicios calificados.",
-
-                news_header: "Noticias & Actualidad",
-                news_subheader: "Información relevante para residentes e interesados en Luanda.",
-                cat_consular: "Consular & Vuelos",
-                cat_health: "Salud & Bienestar",
-                cat_entrepreneur: "Emprendimiento",
-                cat_international: "Internacional",
-                news_1_title: "Actualizaciones en itinerarios de vuelos Luanda - La Habana",
-                news_1_body: "Conoce los horarios actualizados y recomendaciones para los trayectos directos y escalas entre Luanda y La Habana para esta temporada.",
-                news_2_title: "Jornada Médica de Orientación en Luanda",
-                news_2_body: "Especialistas de la salud ofrecen charlas preventivas sobre la temporada de lluvias en Angola y cuidados de nutrición familiar.",
-                news_3_title: "Éxito en la feria de gastronomía caribeña en Talatona",
-                news_3_body: "Emprendedores culinarios destacan con recetas tradicionales como el lechón asado, congrí y tostones, recibidos con entusiasmo local.",
-                news_4_title: "El mundo vuelve a pronunciarse mayoritariamente contra el bloqueo a Cuba",
-                news_4_summary: "La ONU volvió a pronunciarse mayoritariamente a favor de poner fin al bloqueo contra Cuba, en una votación de especial interés para las comunidades cubana y angolana.",
-                news_4_body_1: "La Asamblea General de la ONU respaldó una vez más una resolución para exigir la conclusión de las sanciones económicas, comerciales y financieras aplicadas por la administración estadounidense contra la isla. La iniciativa obtuvo un amplio apoyo internacional con 130 votos favorables, superando ampliamente a los 17 sufragios en contra y las 25 abstenciones registradas.",
-                news_4_body_2: "Durante las discusiones previas, varios representantes estatales recalcaron el impacto negativo de estas medidas sobre los ciudadanos cubanos, así como la vigencia de disposiciones con alcance extraterritorial. En respuesta a la decisión adoptada, el mandatario Miguel Díaz-Canel señaló mediante su perfil en redes sociales que la comunidad internacional ratificó su rechazo a dicho cerco económico a pesar de los intentos de coerción por parte de Washington.",
-                news_4_image_alt: "Imagen de Granma que acompaña la noticia sobre la votación en la ONU",
-                news_source_link: "Consultar el artículo original en el periódico Granma",
-                news_5_title: "La salud como puente solidario: El impacto de la Feria de la Salud en la UGS",
-                news_5_summary: "La Feria de la Salud de la Universidad Gregório Semedo, el 30 de octubre, reunirá consultas gratuitas, prevención del cáncer de mama y actividades culturales para la comunidad de Luanda.",
-                news_5_body_1: "La celebración de la Feria de la Salud en la Universidad Gregório Semedo (UGS), prevista para este 30 de octubre, trasciende el ámbito puramente académico para convertirse en un ejercicio de responsabilidad social y hermandad comunitaria en Luanda. En el marco del Octubre Rosa, la iniciativa sitúa la prevención y el diagnóstico temprano del cáncer de mama en el centro de la conversación pública, un desafío de salud global que exige la movilización de toda la sociedad.",
-                news_5_body_2: "Para la comunidad angolana y la amplia representación de residentes extranjeros —con una destacada y solidaria presencia de profesionales de la salud cubanos—, este evento representa un espacio de encuentro y bienestar accesible. La participación de médicos cubanos reafirma una larga tradición de cooperación internacionalista y humanista, poniendo la experiencia médica al servicio de diversos sectores de la población luandense de forma totalmente gratuita.",
-                news_5_schedule_intro: "El impacto de la feria se despliega en dos tiempos fundamentales:",
-                news_5_schedule_1: "Prevención y atención directa: de 9:00 a 15:00, consultas médicas gratuitas ofrecerán orientación clínica esencial para el bienestar familiar.",
-                news_5_schedule_2: "Sensibilización cultural y artística: a partir de las 17:00, la música y el teatro servirán para concienciar y recordar que la prevención es un acto de amor y vida.",
-                news_5_body_3: "Integrar a familias, estudiantes y profesionales en un mismo propósito fortalece el tejido social de Luanda y demuestra que la salud comunitaria se construye con educación, solidaridad y el compromiso activo de todos.",
-                news_5_image_alt: "Cartel de la Feria de la Salud en la Universidad Gregório Semedo",
-                btn_read_more: "Leer más",
 
                 events_header: "Eventos y agenda cultural",
                 events_subheader: "Conciertos, talleres, encuentros sociales y fechas patrias.",
@@ -228,6 +195,8 @@
                 cat_electro: "Electrodomésticos",
                 cat_hogar: "Hogar",
                 cat_general: "General",
+                classifieds_loading: "Cargando clasificados…",
+                classifieds_load_error: "No se pudieron cargar los anuncios. Recarga la página para intentarlo de nuevo.",
                 no_ads_title: "No se encontraron anuncios",
                 no_ads_desc: "Sé el primero en publicar un clasificado en esta categoría.",
 
@@ -276,7 +245,6 @@
                 tagline: "Cuba e Angola unidas",
                 nav_home: "Início",
                 nav_about: "Quem Somos",
-                nav_news: "Notícias",
                 nav_events: "Eventos",
                 nav_culture: "Cultura",
                 nav_revolicango: "RevolicAngo",
@@ -309,7 +277,7 @@
 
                 hero_badge: "O ponto de encontro para a comunidade em Luanda",
                 hero_title: "O calor de Cuba com o coração de Angola",
-                hero_desc: "Conectamos a vibrante comunidade cubana e angolana em Luanda. Encontre eventos culturais, notícias relevantes, serviços profissionais e classificados no RevolicAngo.",
+                hero_desc: "Conectamos a comunidade cubana e angolana em Luanda. Descubra a sua cultura, participe em eventos, encontre serviços profissionais e consulte classificados no RevolicAngo.",
                 hero_btn_revolicango: "Explorar RevolicAngo",
                 hero_btn_events: "Próximos Eventos",
                 hero_box_title: "Comunidade em Movimento",
@@ -323,14 +291,10 @@
                 home_revolic_title: "Destaques no RevolicAngo",
                 view_all: "Ver todas as categorias",
                 home_event_tag: "Próximo Encontro",
-                home_event_title: "Noite de Timba e Semba em Miramar",
-                home_event_date: "Domingo, 18 de outubro",
-                home_event_desc: "Aproveite a melhor fusão musical caribenha e angolana com orquestra ao vivo, gastronomia típica e excelente ambiente no coração de Luanda.",
+                home_event_title: "Workshop de Tempero Crioulo: Assados e Molhos",
+                home_event_date: "Quinta-feira, 5 de novembro de 2026",
+                home_event_desc: "Aprenda os segredos do tempero tradicional cubano combinados com produtos locais angolanos.",
                 see_agenda: "Ver Agenda Cultural Completa",
-                home_news_tag: "Notícias Recentes",
-                home_news_title: "Guia Consular e Trâmites para a Comunidade",
-                home_news_desc: "Atualização de requisitos, renovação de passaportes e orientações legais para residentes cubanos em Luanda e províncias vizinhas.",
-                read_news: "Ler Secção de Notícias",
 
                 about_title: "Quem Somos",
                 about_subtitle: "Uma ponte de fraternidade, cultura e apoio mútuo em Luanda.",
@@ -345,35 +309,6 @@
                 pilar_2_desc: "Fornecer orientação útil aos recém-chegados e informações sobre procedimentos essenciais.",
                 pilar_3_title: "Dinamismo Económico",
                 pilar_3_desc: "Conectar oferta e procura de bens, veículos, arrendamentos e serviços qualificados.",
-
-                news_header: "Notícias & Atualidade",
-                news_subheader: "Informação relevante para residentes e interessados em Luanda.",
-                cat_consular: "Consular & Voos",
-                cat_health: "Saúde & Bem-estar",
-                cat_entrepreneur: "Empreendedorismo",
-                cat_international: "Internacional",
-                news_1_title: "Atualizações nos itinerários de voos Luanda - Havana",
-                news_1_body: "Conheça os horários atualizados e recomendações para os trajetos diretos e escalas entre Luanda e Havana para esta temporada.",
-                news_2_title: "Jornada Médica de Orientação em Luanda",
-                news_2_body: "Especialistas de saúde oferecem palestras preventivas sobre a época de chuvas em Angola e cuidados de nutrição familiar.",
-                news_3_title: "Sucesso na feira de gastronomia caribenha em Talatona",
-                news_3_body: "Empreendedores culinários destacam-se com receitas tradicionais como leitão assado, congrí e tostones, acolhidos com entusiasmo.",
-                news_4_title: "O mundo volta a pronunciar-se maioritariamente contra o bloqueio a Cuba",
-                news_4_summary: "A ONU voltou a pronunciar-se maioritariamente a favor do fim do bloqueio contra Cuba, numa votação de especial interesse para as comunidades cubana e angolana.",
-                news_4_body_1: "A Assembleia Geral da ONU voltou a apoiar uma resolução para exigir o fim das sanções económicas, comerciais e financeiras impostas pela administração dos Estados Unidos contra a ilha. A iniciativa obteve amplo apoio internacional, com 130 votos a favor, superando os 17 votos contra e as 25 abstenções registadas.",
-                news_4_body_2: "Durante os debates, vários representantes dos Estados destacaram o impacto negativo destas medidas sobre os cidadãos cubanos, bem como a vigência de disposições com alcance extraterritorial. Em resposta à decisão, o Presidente Miguel Díaz-Canel afirmou nas redes sociais que a comunidade internacional voltou a rejeitar o cerco económico, apesar das tentativas de coerção por parte de Washington.",
-                news_4_image_alt: "Imagem do Granma que acompanha a notícia sobre a votação na ONU",
-                news_source_link: "Consultar o artigo original no jornal Granma",
-                news_5_title: "A saúde como ponte solidária: o impacto da Feira da Saúde na UGS",
-                news_5_summary: "A Feira da Saúde da Universidade Gregório Semedo, a 30 de outubro, reunirá consultas gratuitas, prevenção do cancro da mama e atividades culturais para a comunidade de Luanda.",
-                news_5_body_1: "A realização da Feira da Saúde na Universidade Gregório Semedo (UGS), prevista para 30 de outubro, vai além do âmbito académico e torna-se um exercício de responsabilidade social e fraternidade comunitária em Luanda. No âmbito do Outubro Rosa, a iniciativa coloca a prevenção e o diagnóstico precoce do cancro da mama no centro da conversa pública, um desafio global de saúde que exige a mobilização de toda a sociedade.",
-                news_5_body_2: "Para a comunidade angolana e os muitos residentes estrangeiros — incluindo uma presença solidária de profissionais de saúde cubanos —, este evento representa um espaço acessível de encontro e bem-estar. A participação de médicos cubanos reafirma uma longa tradição de cooperação internacionalista e humanista, colocando a experiência médica ao serviço de diversos setores da população de Luanda, totalmente gratuita.",
-                news_5_schedule_intro: "O impacto da feira desenrola-se em dois momentos fundamentais:",
-                news_5_schedule_1: "Prevenção e atendimento direto: das 9h às 15h, consultas médicas gratuitas oferecerão orientação clínica essencial para o bem-estar das famílias.",
-                news_5_schedule_2: "Sensibilização cultural e artística: a partir das 17h, a música e o teatro serão usados para sensibilizar e lembrar que a prevenção é um ato de amor e de vida.",
-                news_5_body_3: "Reunir famílias, estudantes e profissionais em torno de um objetivo comum fortalece o tecido social de Luanda e demonstra que a saúde comunitária se constrói com educação, solidariedade e o compromisso ativo de todos.",
-                news_5_image_alt: "Cartaz da Feira da Saúde na Universidade Gregório Semedo",
-                btn_read_more: "Ler mais",
 
                 events_header: "Eventos & Agenda Cultural",
                 events_subheader: "Concertos, workshops, encontros sociais e datas comemorativas.",
@@ -457,6 +392,8 @@
                 cat_electro: "Eletrodomésticos",
                 cat_hogar: "Lar e Casa",
                 cat_general: "Geral",
+                classifieds_loading: "A carregar anúncios…",
+                classifieds_load_error: "Não foi possível carregar os anúncios. Atualize a página para tentar novamente.",
                 no_ads_title: "Nenhum anúncio encontrado",
                 no_ads_desc: "Seja o primeiro a publicar um anúncio nesta categoria.",
 
@@ -506,16 +443,8 @@
             }
         };
 
-        const newsArticles = [
-            { id: 'news-1', categoryKey: 'cat_consular', titleKey: 'news_1_title', bodyKey: 'news_1_body', date: '02 Oct 2026', readingMinutes: 3 },
-            { id: 'news-2', categoryKey: 'cat_health', titleKey: 'news_2_title', bodyKey: 'news_2_body', date: '28 Sep 2026', readingMinutes: 4 },
-            { id: 'news-3', categoryKey: 'cat_entrepreneur', titleKey: 'news_3_title', bodyKey: 'news_3_body', date: '20 Sep 2026', readingMinutes: 2 },
-            { id: 'news-4', categoryKey: 'cat_international', titleKey: 'news_4_title', bodyKeys: ['news_4_body_1', 'news_4_body_2'], date: '28 Oct 2026', readingMinutes: 2, sourceUrl: 'https://www.granma.cu/cuba-no-es-una-amenaza/2026-10-28/el-mundo-ha-vuelto-a-pronunciarse-mayoritariamente-contra-el-bloqueo-a-cuba-28-10-2026-11-10-18' },
-            { id: 'news-5', categoryKey: 'cat_health', titleKey: 'news_5_title', summaryKey: 'news_5_summary', bodyKeys: ['news_5_body_1', 'news_5_body_2', 'news_5_body_3'], listIntroKey: 'news_5_schedule_intro', listKeys: ['news_5_schedule_1', 'news_5_schedule_2'], listAfterParagraphs: 2, date: '29 Oct 2026', readingMinutes: 3, image: 'feria-saude-ugs.jpg', imageAltKey: 'news_5_image_alt' }
-        ];
-
         const eventArticles = [
-            { id: 'home-event', titleKey: 'home_event_title', categoryKey: 'home_event_tag', bodyKey: 'home_event_desc', whenKey: 'home_event_date', location: 'Miramar, Luanda' },
+            { id: 'home-event', titleKey: 'home_event_title', categoryKey: 'event_tag_gastro', bodyKey: 'home_event_desc', whenKey: 'home_event_date', location: 'Espacio Cultural Maianga, Luanda' },
             { id: 'event-1', titleKey: 'event_1_title', categoryKey: 'event_tag_music', bodyKey: 'event_1_desc', monthKey: 'event_month_oct', day: '18', time: '18:00', location: 'Club Marítimo de Luanda' },
             { id: 'event-2', titleKey: 'event_2_title', categoryKey: 'event_tag_gastro', bodyKey: 'event_2_desc', monthKey: 'event_month_nov', day: '05', time: '12:00', location: 'Espacio Cultural Maianga, Luanda' },
             { id: 'event-3', titleKey: 'event_3_title', categoryKey: 'event_tag_sports', bodyKey: 'event_3_desc', monthKey: 'event_month_dec', day: '12', time: '10:00', location: 'Parque de la Chicala, Luanda' }
@@ -751,11 +680,28 @@
 
         function renderClassifieds() {
             const statCount = document.getElementById('classifieds-stat-count');
-            if (statCount) statCount.textContent = classifiedsData.length;
+            if (statCount) statCount.textContent = sharedClassifiedsStatus === 'loaded'
+                ? classifiedsData.length
+                : sharedClassifiedsStatus === 'loading' ? '…' : '—';
 
             const grid = document.getElementById('classifieds-grid');
             const noAds = document.getElementById('no-classifieds');
             if (!grid || !noAds) return;
+            const loading = document.getElementById('classifieds-loading');
+            const loadError = document.getElementById('classifieds-load-error');
+            const count = document.getElementById('classifieds-count');
+            if (loading) loading.classList.toggle('hidden', sharedClassifiedsStatus !== 'loading');
+            if (loadError) loadError.classList.toggle('hidden', sharedClassifiedsStatus !== 'error');
+            if (count) count.textContent = sharedClassifiedsStatus === 'loading'
+                ? translations[currentLang].classifieds_loading
+                : sharedClassifiedsStatus === 'error' ? '—' : '';
+
+            if (sharedClassifiedsStatus !== 'loaded') {
+                grid.innerHTML = '';
+                noAds.classList.add('hidden');
+                return;
+            }
+
             const searchVal = (document.getElementById('classified-search')?.value || '').toLowerCase();
 
             let items = classifiedsData.filter(item => {
@@ -767,7 +713,7 @@
             });
 
             // Update counter
-            document.getElementById('classifieds-count').textContent = `${items.length} ${currentLang === 'es' ? 'anuncios' : 'anúncios'}`;
+            if (count) count.textContent = `${items.length} ${currentLang === 'es' ? 'anuncios' : 'anúncios'}`;
 
             if (items.length === 0) {
                 grid.innerHTML = '';
@@ -824,6 +770,7 @@
                 }));
 
                 classifiedsData.splice(0, classifiedsData.length, ...sharedAds);
+                sharedClassifiedsStatus = 'loaded';
                 renderClassifieds();
                 renderHomeFeaturedAds();
                 renderDetail();
@@ -833,6 +780,8 @@
                     beginClassifiedEdit(requestedEditId);
                 }
             } catch (error) {
+                sharedClassifiedsStatus = 'error';
+                renderClassifieds();
                 console.error('No se pudieron cargar los anuncios compartidos:', error);
                 showToast(currentLang === 'es'
                     ? 'No se pudieron cargar los anuncios. Inténtalo de nuevo más tarde.'
@@ -1347,6 +1296,25 @@
             }
         }
 
+        function updateDetailMetadata(title, description) {
+            const pageTitle = `${title} | @sere en Luanda`;
+            const pageDescription = description.replace(/\s+/g, ' ').trim().slice(0, 160);
+            document.title = pageTitle;
+
+            const metadata = {
+                'meta[name="description"]': pageDescription,
+                'meta[property="og:title"]': pageTitle,
+                'meta[property="og:description"]': pageDescription,
+                'meta[property="og:url"]': window.location.href,
+                'meta[name="twitter:title"]': pageTitle,
+                'meta[name="twitter:description"]': pageDescription
+            };
+            Object.entries(metadata).forEach(([selector, content]) => {
+                const element = document.querySelector(selector);
+                if (element) element.setAttribute('content', content);
+            });
+        }
+
         function renderDetail() {
             const container = document.getElementById('detail-content');
             if (!container) return;
@@ -1355,53 +1323,9 @@
             const type = params.get('tipo');
             const id = params.get('id');
             const labels = translations[currentLang] || translations.es;
-            const article = type === 'noticia' ? newsArticles.find(item => item.id === id) : null;
             const event = type === 'evento' ? eventArticles.find(item => item.id === id) : null;
             const culture = type === 'cultura' ? cultureArticles.find(item => item.id === id) : null;
             const ad = type === 'anuncio' ? classifiedsData.find(item => String(item.id) === id) : null;
-
-            if (article) {
-                const title = labels[article.titleKey] || translations.es[article.titleKey];
-                const category = labels[article.categoryKey] || translations.es[article.categoryKey];
-                const paragraphs = (article.bodyKeys || [article.bodyKey])
-                    .map(key => labels[key] || translations.es[key])
-                    .filter(Boolean);
-                const listAfterParagraphs = article.listKeys
-                    ? Math.min(article.listAfterParagraphs ?? paragraphs.length, paragraphs.length)
-                    : paragraphs.length;
-                const renderParagraphs = items => items
-                    .map(paragraph => `<p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(paragraph)}</p>`)
-                    .join('');
-                const schedule = article.listKeys
-                    ? `<p class="text-lg text-slate-700 leading-relaxed">${escapeHtml(labels[article.listIntroKey] || translations.es[article.listIntroKey])}</p>
-                       <ul class="list-disc space-y-3 pl-6 text-lg text-slate-700 leading-relaxed">${article.listKeys.map(key => `<li>${escapeHtml(labels[key] || translations.es[key])}</li>`).join('')}</ul>`
-                    : '';
-                const image = article.image
-                    ? `<img src="${escapeHtml(article.image)}" alt="${escapeHtml(labels[article.imageAltKey] || translations.es[article.imageAltKey])}" class="w-full max-h-[28rem] object-cover rounded-2xl mb-7" loading="lazy" decoding="async">`
-                    : '';
-                container.innerHTML = `
-                    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-                        <a href="index.html" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_home)}</a>
-                        <article class="mt-8">
-                            <div class="flex flex-wrap items-center gap-3 text-sm text-slate-600">
-                                <span class="bg-brand-navy/10 text-brand-navy px-3 py-1 rounded-full font-bold">${escapeHtml(category)}</span>
-                                <time>${escapeHtml(article.date)}</time>
-                                <span>${escapeHtml(labels.detail_reading)}: ${article.readingMinutes} min</span>
-                            </div>
-                            <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-navy mt-5">${escapeHtml(title)}</h1>
-                            <div class="border-t border-slate-200 mt-8 pt-6">
-                                ${image}
-                                ${renderParagraphs(paragraphs.slice(0, listAfterParagraphs))}
-                                ${schedule}
-                                ${renderParagraphs(paragraphs.slice(listAfterParagraphs))}
-                                ${article.sourceUrl ? `<a href="${escapeHtml(article.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="inline-block mt-5 text-sm font-bold text-brand-terracotta hover:text-brand-navy">${escapeHtml(labels.news_source_link || translations.es.news_source_link)}</a>` : ''}
-                            </div>
-                        </article>
-                    </div>
-                `;
-                document.title = `${title} | @sere en Luanda`;
-                return;
-            }
 
             if (event) {
                 const title = labels[event.titleKey] || translations.es[event.titleKey];
@@ -1428,7 +1352,7 @@
                         </article>
                     </div>
                 `;
-                document.title = `${title} | @sere en Luanda`;
+                updateDetailMetadata(title, description);
                 loadPublicOpinions('event', event.id);
                 return;
             }
@@ -1458,7 +1382,9 @@
                         </article>
                     </div>
                 `;
-                document.title = `${title} | @sere en Luanda`;
+                updateDetailMetadata(title, culture.bodyKeys
+                    .map(key => labels[key] || translations.es[key] || '')
+                    .join(' '));
                 loadPublicOpinions('culture', culture.id);
                 return;
             }
@@ -1504,7 +1430,7 @@
                         </article>
                     </div>
                 `;
-                document.title = `${ad.title} | @sere en Luanda`;
+                updateDetailMetadata(ad.title, ad.description);
                 loadPublicOpinions('classified', ad.id);
                 return;
             }
@@ -1515,6 +1441,7 @@
                     <a href="index.html" class="inline-block mt-6 text-brand-terracotta font-bold hover:text-brand-navy">${escapeHtml(labels.detail_home)}</a>
                 </div>
             `;
+            updateDetailMetadata(labels.detail_not_found, labels.detail_not_found);
         }
 
         /* ================= MODAL & FORM HANDLERS ================= */
