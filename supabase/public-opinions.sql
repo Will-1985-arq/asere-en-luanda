@@ -64,15 +64,28 @@ begin
             raise exception 'El anuncio o la puntuación no son válidos.';
         end if;
     elsif p_target_type = 'event' then
-        if p_target_id <> all (array['home-event', 'event-1', 'event-2', 'event-3']) or p_rating is not null then
+        if p_rating is not null
+            or (
+                p_target_id <> 'home-event'
+                and not exists (
+                    select 1
+                      from public.site_content
+                     where id = p_target_id
+                       and content_type = 'event'
+                       and is_published
+                )
+            ) then
             raise exception 'El evento seleccionado no es válido.';
         end if;
     elsif p_target_type = 'culture' then
-        if p_target_id <> all (array[
-            'historia', 'trad-gastro', 'trad-domino', 'trad-carnaval',
-            'glossary-1', 'glossary-2', 'glossary-3', 'glossary-4', 'glossary-5', 'glossary-6',
-            'art-literature', 'art-music', 'art-cinema', 'art-visual', 'art-dance', 'art-theatre'
-        ]) or p_rating is not null then
+        if p_rating is not null
+            or not exists (
+                select 1
+                  from public.site_content
+                 where id = p_target_id
+                   and content_type = 'culture'
+                   and is_published
+            ) then
             raise exception 'La publicación cultural seleccionada no es válida.';
         end if;
     end if;
@@ -137,15 +150,24 @@ begin
             ) then
             raise exception 'El anuncio seleccionado no existe.';
         end if;
-    elsif p_target_type = 'event' and p_target_id <> all (
-        array['home-event', 'event-1', 'event-2', 'event-3']
-    ) then
+    elsif p_target_type = 'event'
+        and p_target_id <> 'home-event'
+        and not exists (
+            select 1
+              from public.site_content
+             where id = p_target_id
+               and content_type = 'event'
+               and is_published
+        ) then
         raise exception 'El evento seleccionado no existe.';
-    elsif p_target_type = 'culture' and p_target_id <> all (array[
-        'historia', 'trad-gastro', 'trad-domino', 'trad-carnaval',
-        'glossary-1', 'glossary-2', 'glossary-3', 'glossary-4', 'glossary-5', 'glossary-6',
-        'art-literature', 'art-music', 'art-cinema', 'art-visual', 'art-dance', 'art-theatre'
-    ]) then
+    elsif p_target_type = 'culture'
+        and not exists (
+            select 1
+              from public.site_content
+             where id = p_target_id
+               and content_type = 'culture'
+               and is_published
+        ) then
         raise exception 'La publicación cultural seleccionada no existe.';
     end if;
 

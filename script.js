@@ -39,6 +39,10 @@
 
         const classifiedsData = [];
         let sharedClassifiedsStatus = 'loading';
+        let siteContent = [];
+        let siteContentLoaded = false;
+        let siteContentError = false;
+        let currentArtCategory = 'all';
         /* ================= I18N DICTIONARY ================= */
         const translations = {
             es: {
@@ -74,6 +78,8 @@
                 detail_open: "Ver evento",
                 detail_not_found: "No encontramos este contenido.",
                 detail_home: "Volver al inicio",
+                site_content_load_error: "No se pudo cargar el contenido actualizado. Se muestra el contenido de respaldo; inténtalo de nuevo más tarde.",
+                site_content_empty: "No hay contenido publicado en esta sección.",
 
                 hero_badge: "El punto de encuentro para la comunidad en Luanda",
                 hero_title: "La calidez de Cuba con el corazón de Angola",
@@ -274,6 +280,8 @@
                 detail_open: "Ver evento",
                 detail_not_found: "Não foi possível encontrar este conteúdo.",
                 detail_home: "Voltar ao início",
+                site_content_load_error: "Não foi possível carregar o conteúdo atualizado. A apresentar o conteúdo de reserva; tente novamente mais tarde.",
+                site_content_empty: "Não há conteúdo publicado nesta secção.",
 
                 hero_badge: "O ponto de encontro para a comunidade em Luanda",
                 hero_title: "O calor de Cuba com o coração de Angola",
@@ -507,6 +515,248 @@
                 else if (directMatch) anchor.href = directMatch[1];
             });
         }
+
+        function localizedSiteText(item, field) {
+            return item[`${field}_${currentLang}`] || item[`${field}_es`] || '';
+        }
+
+        function siteEventDate(item) {
+            const [year, month, day] = String(item.event_date || '').split('-').map(Number);
+            if (!year || !month || !day) return null;
+            return new Date(year, month - 1, day, 12);
+        }
+
+        function formatSiteEventDate(item, options = {}) {
+            const date = siteEventDate(item);
+            return date
+                ? new Intl.DateTimeFormat(currentLang === 'es' ? 'es' : 'pt', options).format(date)
+                : '';
+        }
+
+        function formatSiteEventTime(item) {
+            const time = String(item.event_time || '').slice(0, 5);
+            return time ? `${time} ${currentLang === 'es' ? 'hrs' : 'h'}` : '';
+        }
+
+        function renderSiteContentError() {
+            const message = siteContentError ? translations[currentLang].site_content_load_error : '';
+            document.querySelectorAll('#site-content-error').forEach(status => {
+                status.textContent = message;
+                status.classList.toggle('hidden', !siteContentError);
+            });
+
+            const detail = document.getElementById('detail-content');
+            if (!detail) return;
+            let notice = detail.querySelector('.site-content-error');
+            if (!siteContentError) {
+                notice?.remove();
+                return;
+            }
+            if (!notice) {
+                notice = document.createElement('p');
+                notice.className = 'site-content-error text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl p-4';
+                notice.setAttribute('role', 'status');
+                notice.setAttribute('aria-live', 'polite');
+                detail.prepend(notice);
+            }
+            notice.textContent = message;
+        }
+
+        function renderSiteEventCard(item) {
+            const day = formatSiteEventDate(item, { day: '2-digit' });
+            const month = formatSiteEventDate(item, { month: 'short' }).replace('.', '').toUpperCase();
+            const category = localizedSiteText(item, 'category');
+            const title = localizedSiteText(item, 'title');
+            const location = localizedSiteText(item, 'location');
+            const time = formatSiteEventTime(item);
+            return `
+                <article class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+                    ${item.image_url ? `<img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(title)}" class="w-full md:w-40 h-40 md:h-28 object-cover rounded-xl" loading="lazy">` : ''}
+                    <div class="flex items-center gap-6">
+                        <div class="bg-brand-navy text-white rounded-2xl w-20 h-20 flex flex-col items-center justify-center shrink-0 font-bold">
+                            <span class="text-xs uppercase">${escapeHtml(month)}</span>
+                            <span class="text-2xl font-extrabold">${escapeHtml(day)}</span>
+                        </div>
+                        <div class="space-y-2">
+                            <span class="bg-slate-100 text-slate-700 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase">${escapeHtml(category)}</span>
+                            <h2 class="font-serif text-xl font-bold text-brand-navy"><a href="detalle.html?tipo=evento&id=${encodeURIComponent(item.id)}" class="hover:text-brand-terracotta">${escapeHtml(title)}</a></h2>
+                            <p class="text-sm text-slate-600"><i class="fa-solid fa-location-dot text-brand-navy mr-1"></i> ${escapeHtml(location)} | ${escapeHtml(time)}</p>
+                        </div>
+                    </div>
+                    <a href="detalle.html?tipo=evento&id=${encodeURIComponent(item.id)}" class="text-brand-terracotta font-bold text-sm hover:underline shrink-0">${escapeHtml(translations[currentLang].detail_open)}</a>
+                </article>
+            `;
+        }
+
+        function renderCultureCard(item, icon, categoryLabel = '') {
+            return `
+                <a href="detalle.html?tipo=cultura&id=${encodeURIComponent(item.id)}" class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                    ${item.image_url ? `<img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(localizedSiteText(item, 'title'))}" class="w-full h-40 object-cover rounded-xl mb-4" loading="lazy">` : ''}
+                    <span class="flex items-center gap-4">
+                        <span class="w-12 h-12 rounded-xl bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center text-xl"><i class="fa-solid ${icon}" aria-hidden="true"></i></span>
+                        <span>
+                            ${categoryLabel ? `<span class="block text-xs font-bold uppercase text-brand-terracotta">${escapeHtml(categoryLabel)}</span>` : ''}
+                            <span class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta">${escapeHtml(localizedSiteText(item, 'title'))}</span>
+                        </span>
+                    </span>
+                </a>
+            `;
+        }
+
+        function renderDynamicSiteContent() {
+            if (!siteContentLoaded) return;
+            const events = siteContent.filter(item => item.content_type === 'event');
+            const listedEvents = events
+                .filter(item => item.is_listed)
+                .sort((a, b) => String(a.event_date).localeCompare(String(b.event_date)) || a.sort_order - b.sort_order);
+            const eventList = document.getElementById('events-list');
+            if (eventList) {
+                eventList.innerHTML = listedEvents.length
+                    ? listedEvents.map(renderSiteEventCard).join('')
+                    : `<p class="text-slate-600 bg-white rounded-xl border border-slate-200 p-6">${escapeHtml(translations[currentLang].site_content_empty)}</p>`;
+            }
+
+            const featured = events.find(item => item.is_featured);
+            const featuredLink = document.getElementById('home-featured-event');
+            const featuredDate = document.getElementById('home-featured-event-date');
+            const featuredDescription = document.getElementById('home-featured-event-description');
+            const featuredImage = document.getElementById('home-featured-event-image');
+            const featuredSpotlight = document.getElementById('home-event-spotlight');
+            if (featuredSpotlight) featuredSpotlight.classList.toggle('hidden', !featured);
+            if (featured) {
+                if (featuredLink) {
+                    featuredLink.textContent = localizedSiteText(featured, 'title');
+                    featuredLink.href = 'detalle.html?tipo=evento&id=home-event';
+                }
+                if (featuredDate) {
+                    featuredDate.textContent = formatSiteEventDate(featured, {
+                        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                    });
+                }
+                if (featuredDescription) featuredDescription.textContent = localizedSiteText(featured, 'description');
+                if (featuredImage) {
+                    if (featured.image_url) {
+                        featuredImage.src = featured.image_url;
+                        featuredImage.alt = localizedSiteText(featured, 'title');
+                        featuredImage.classList.remove('hidden');
+                    } else {
+                        featuredImage.removeAttribute('src');
+                        featuredImage.alt = '';
+                        featuredImage.classList.add('hidden');
+                    }
+                }
+            }
+
+            const culture = siteContent.filter(item => item.content_type === 'culture');
+            const history = culture.find(item => item.section === 'history');
+            const historyCard = document.getElementById('culture-history-card');
+            if (history && historyCard) {
+                historyCard.href = `detalle.html?tipo=cultura&id=${encodeURIComponent(history.id)}`;
+                historyCard.innerHTML = `
+                    <span class="w-14 h-14 rounded-xl bg-brand-navy/10 text-brand-navy flex items-center justify-center text-2xl shrink-0"><i class="fa-solid fa-landmark" aria-hidden="true"></i></span>
+                    <span>
+                        <span class="block text-xs font-bold uppercase text-brand-terracotta">${escapeHtml(currentLang === 'es' ? 'Lazos Indisolubles' : 'Laços Indissolúveis')}</span>
+                        <span class="block font-serif text-2xl font-bold text-brand-navy hover:text-brand-terracotta">${escapeHtml(localizedSiteText(history, 'title'))}</span>
+                    </span>
+                `;
+            }
+
+            const traditionIcons = {
+                'trad-gastro': 'fa-utensils',
+                'trad-domino': 'fa-dice',
+                'trad-carnaval': 'fa-drum'
+            };
+            const traditionGrid = document.getElementById('culture-tradition-cards');
+            if (traditionGrid) {
+                const traditions = culture.filter(item => item.section === 'tradition');
+                traditionGrid.innerHTML = traditions.length
+                    ? traditions.map(item => renderCultureCard(item, traditionIcons[item.id] || 'fa-masks-theater')).join('')
+                    : `<p class="text-slate-600">${escapeHtml(translations[currentLang].site_content_empty)}</p>`;
+            }
+
+            const glossaryGrid = document.getElementById('culture-glossary-cards');
+            if (glossaryGrid) {
+                const glossary = culture.filter(item => item.section === 'glossary');
+                glossaryGrid.innerHTML = glossary.length
+                    ? glossary.map(item => `
+                        <a href="detalle.html?tipo=cultura&id=${encodeURIComponent(item.id)}" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta">
+                            ${escapeHtml(localizedSiteText(item, 'title'))}
+                        </a>
+                    `).join('')
+                    : `<p class="text-slate-600">${escapeHtml(translations[currentLang].site_content_empty)}</p>`;
+            }
+
+            const artItems = culture.filter(item => item.section === 'art');
+            const artCategories = [...new Map(artItems.map(item => [
+                item.art_category,
+                localizedSiteText(item, 'category')
+            ]))];
+            const artFilters = document.getElementById('art-category-filters');
+            if (artFilters) {
+                artFilters.innerHTML = `
+                    <button onclick="filterArtCategory('all')" id="art-cat-all" class="art-pill px-4 py-2 rounded-xl bg-brand-navy text-white shrink-0 transition-all">${escapeHtml(translations[currentLang].art_cat_all)}</button>
+                    ${artCategories.map(([slug, label]) => `
+                        <button onclick="filterArtCategory('${escapeHtml(slug)}')" id="art-cat-${escapeHtml(slug)}" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all">${escapeHtml(label)}</button>
+                    `).join('')}
+                `;
+            }
+
+            const artGrid = document.getElementById('art-items-grid');
+            if (artGrid) {
+                artGrid.innerHTML = artItems.length
+                    ? artItems.map(item => `
+                        <a href="detalle.html?tipo=cultura&id=${encodeURIComponent(item.id)}" class="art-card block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta" data-art-cat="${escapeHtml(item.art_category)}">
+                            ${item.image_url ? `<img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(localizedSiteText(item, 'title'))}" class="w-full h-40 object-cover rounded-xl mb-4" loading="lazy">` : ''}
+                            <div class="flex items-center justify-between"><span class="bg-brand-terracotta/10 text-brand-terracotta text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">${escapeHtml(localizedSiteText(item, 'category'))}</span><i class="fa-solid fa-palette text-brand-terracotta text-lg" aria-hidden="true"></i></div>
+                            <h3 class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta mt-4">${escapeHtml(localizedSiteText(item, 'title'))}</h3>
+                        </a>
+                    `).join('')
+                    : `<p class="text-slate-600">${escapeHtml(translations[currentLang].site_content_empty)}</p>`;
+            }
+            if (artFilters && artGrid) filterArtCategory(currentArtCategory);
+        }
+
+        async function loadSiteContent() {
+            const detailType = new URLSearchParams(window.location.search).get('tipo');
+            const needsSiteContent = document.getElementById('events-list')
+                || document.getElementById('page-cultura')
+                || document.getElementById('home-featured-event')
+                || (document.getElementById('detail-content') && ['evento', 'cultura'].includes(detailType));
+            if (!needsSiteContent) return;
+
+            const query = new URLSearchParams({
+                select: '*',
+                is_published: 'eq.true',
+                order: 'content_type.asc,sort_order.asc,event_date.asc.nullslast',
+                limit: '500'
+            });
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/site_content?${query}`, {
+                    headers: {
+                        apikey: SUPABASE_PUBLISHABLE_KEY,
+                        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+                    }
+                });
+                if (!response.ok) {
+                    const details = await response.text();
+                    throw new Error(`Supabase (${response.status}): ${details}`);
+                }
+
+                const rows = await response.json();
+                if (!Array.isArray(rows)) throw new Error('Supabase devolvió un formato de contenido inesperado.');
+                siteContent = rows;
+                siteContentLoaded = true;
+                siteContentError = false;
+                renderDynamicSiteContent();
+                renderDetail();
+                renderSiteContentError();
+            } catch (error) {
+                console.error('No se pudo cargar el contenido del sitio:', error);
+                siteContentError = true;
+                renderSiteContentError();
+            }
+        }
+
         /* ================= CULTURA SUB-PAGES CONTROLLER ================= */
         function selectCultureTab(tabName) {
             // Hide all subview containers inside cultura
@@ -535,6 +785,7 @@
 
         /* ================= ARTE CATEGORY FILTER ================= */
         function filterArtCategory(category) {
+            currentArtCategory = category;
             // Reset pills styling
             document.querySelectorAll('.art-pill').forEach(pill => {
                 pill.classList.remove('bg-brand-navy', 'text-white');
@@ -622,7 +873,9 @@
             // Re-render classifieds to update labels
             renderClassifieds();
             renderHomeFeaturedAds();
+            renderDynamicSiteContent();
             renderDetail();
+            renderSiteContentError();
             loadClassifiedRatingBoard();
         }
 
@@ -1323,9 +1576,91 @@
             const type = params.get('tipo');
             const id = params.get('id');
             const labels = translations[currentLang] || translations.es;
-            const event = type === 'evento' ? eventArticles.find(item => item.id === id) : null;
-            const culture = type === 'cultura' ? cultureArticles.find(item => item.id === id) : null;
+            const dynamicEvent = siteContentLoaded && type === 'evento'
+                ? id === 'home-event'
+                    ? siteContent.find(item => item.content_type === 'event' && item.is_featured)
+                    : siteContent.find(item => item.content_type === 'event' && item.id === id)
+                : null;
+            const dynamicCulture = siteContentLoaded && type === 'cultura'
+                ? siteContent.find(item => item.content_type === 'culture' && item.id === id)
+                : null;
+            const event = !siteContentLoaded && type === 'evento' ? eventArticles.find(item => item.id === id) : null;
+            const culture = !siteContentLoaded && type === 'cultura' ? cultureArticles.find(item => item.id === id) : null;
             const ad = type === 'anuncio' ? classifiedsData.find(item => String(item.id) === id) : null;
+
+            if (dynamicEvent) {
+                const title = localizedSiteText(dynamicEvent, 'title');
+                const category = localizedSiteText(dynamicEvent, 'category');
+                const description = localizedSiteText(dynamicEvent, 'description');
+                const date = formatSiteEventDate(dynamicEvent, {
+                    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                });
+                const when = [date, formatSiteEventTime(dynamicEvent)].filter(Boolean).join(' | ');
+                const location = localizedSiteText(dynamicEvent, 'location');
+                const opinionId = id === 'home-event' ? 'home-event' : dynamicEvent.id;
+                container.innerHTML = `
+                    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+                        <a href="${id === 'home-event' ? 'index.html' : 'eventos.html'}" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
+                        <article class="mt-8">
+                            ${category ? `<p class="text-sm font-bold text-brand-terracotta uppercase">${escapeHtml(category)}</p>` : ''}
+                            <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-navy mt-2">${escapeHtml(title)}</h1>
+                            ${dynamicEvent.image_url ? `<img src="${escapeHtml(dynamicEvent.image_url)}" alt="${escapeHtml(title)}" class="w-full max-h-96 object-cover rounded-2xl mt-6" loading="lazy">` : ''}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-y border-slate-200 py-5 my-7 text-sm">
+                                <p><span class="block text-slate-500">${escapeHtml(labels.detail_when)}</span><strong class="text-brand-navy">${escapeHtml(when)}</strong></p>
+                                <p><span class="block text-slate-500">${escapeHtml(labels.detail_where)}</span><strong class="text-brand-navy">${escapeHtml(location)}</strong></p>
+                            </div>
+                            <h2 class="font-serif text-2xl font-bold text-brand-navy">${escapeHtml(labels.detail_description)}</h2>
+                            <p class="text-lg text-slate-700 leading-relaxed mt-3 whitespace-pre-line">${escapeHtml(description)}</p>
+                            <a href="contactos.html" class="inline-block bg-brand-navy text-white font-bold px-5 py-3 rounded-lg mt-8 hover:bg-slate-800">${escapeHtml(labels.btn_reserve)}</a>
+                            ${publicOpinionSectionHTML('event', opinionId)}
+                        </article>
+                    </div>
+                `;
+                updateDetailMetadata(title, description);
+                loadPublicOpinions('event', opinionId);
+                return;
+            }
+
+            if (dynamicCulture) {
+                const title = localizedSiteText(dynamicCulture, 'title');
+                const description = localizedSiteText(dynamicCulture, 'description');
+                const category = localizedSiteText(dynamicCulture, 'category');
+                const sectionTab = dynamicCulture.section === 'art'
+                    ? 'arte'
+                    : dynamicCulture.section === 'history' ? 'historia' : 'tradiciones';
+                const artFilter = dynamicCulture.section === 'art'
+                    ? `&arte=${encodeURIComponent(dynamicCulture.art_category)}`
+                    : '';
+                const paragraphs = description.split(/\n{2,}/).map(paragraph => `
+                    <p class="text-lg text-slate-700 leading-relaxed whitespace-pre-line">${escapeHtml(paragraph)}</p>
+                `).join('');
+                const milestones = (dynamicCulture[`milestones_${currentLang}`] || dynamicCulture.milestones_es || [])
+                    .filter(item => item && typeof item.title === 'string' && typeof item.body === 'string')
+                    .map(item => `
+                        <div class="border-l-2 border-brand-terracotta pl-4">
+                            <h2 class="font-serif text-xl font-bold text-brand-navy">${escapeHtml(item.title)}</h2>
+                            <p class="text-slate-700 leading-relaxed mt-2">${escapeHtml(item.body)}</p>
+                        </div>
+                    `).join('');
+                container.innerHTML = `
+                    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+                        <a href="cultura.html?tab=${encodeURIComponent(sectionTab)}${artFilter}" class="inline-flex items-center gap-2 text-sm font-bold text-brand-terracotta hover:text-brand-navy">&larr; ${escapeHtml(labels.detail_back)}</a>
+                        <article class="mt-8">
+                            ${category ? `<p class="text-sm font-bold text-brand-terracotta uppercase">${escapeHtml(category)}</p>` : ''}
+                            <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-navy mt-2">${escapeHtml(title)}</h1>
+                            ${dynamicCulture.image_url ? `<img src="${escapeHtml(dynamicCulture.image_url)}" alt="${escapeHtml(title)}" class="w-full max-h-96 object-cover rounded-2xl mt-6" loading="lazy">` : ''}
+                            <div class="border-t border-slate-200 mt-8 pt-6 space-y-5">
+                                ${paragraphs}
+                                ${milestones ? `<div class="space-y-5 pt-4">${milestones}</div>` : ''}
+                            </div>
+                            ${publicOpinionSectionHTML('culture', dynamicCulture.id)}
+                        </article>
+                    </div>
+                `;
+                updateDetailMetadata(title, description);
+                loadPublicOpinions('culture', dynamicCulture.id);
+                return;
+            }
 
             if (event) {
                 const title = labels[event.titleKey] || translations.es[event.titleKey];
@@ -1728,6 +2063,7 @@
             renderClassifieds();
             renderHomeFeaturedAds();
             loadSharedClassifieds();
+            loadSiteContent();
             const requestedCategory = new URLSearchParams(window.location.search).get('category');
             if (requestedCategory) selectCategory(requestedCategory);
             const requestedParams = new URLSearchParams(window.location.search);

@@ -190,8 +190,12 @@
                 <!-- QUICK CULTURE & NEWS HIGHLIGHTS -->
                 <div class="grid grid-cols-1 gap-8">
                     <!-- Event spotlight -->
-                    <div class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-                        <h3 class="font-serif text-2xl font-bold text-brand-navy"><a href="detalle.html?tipo=evento&id=home-event" class="hover:text-brand-terracotta transition-colors" data-i18n="home_event_title">Taller de Sazones Criollos: Asados y Salsas</a></h3>
+                    <div id="home-event-spotlight" class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
+                        <h3 class="font-serif text-2xl font-bold text-brand-navy"><a id="home-featured-event" href="detalle.html?tipo=evento&id=home-event" class="hover:text-brand-terracotta transition-colors" data-i18n="home_event_title">Taller de Sazones Criollos: Asados y Salsas</a></h3>
+                        <img id="home-featured-event-image" class="hidden max-h-80 w-full rounded-2xl object-cover" alt="">
+                        <p id="home-featured-event-date" class="text-sm font-semibold text-brand-terracotta" data-i18n="home_event_date">Jueves, 5 de noviembre de 2026</p>
+                        <p id="home-featured-event-description" class="text-slate-600 leading-relaxed" data-i18n="home_event_desc">Aprende los secretos del adobo tradicional cubano combinados con productos locales angolanos.</p>
+                        <p id="site-content-error" class="hidden text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl p-4" role="status" aria-live="polite"></p>
                         <button onclick="navigateTo('eventos')" class="w-full py-2.5 rounded-xl border border-slate-200 font-bold text-xs uppercase tracking-wider text-brand-navy hover:bg-slate-50 transition-colors" data-i18n="see_agenda">Ver Agenda Cultural Completa</button>
                     </div>
                 </div>
@@ -342,6 +346,6 @@
         </div>
     </footer>
 <script src="image-compression.js" defer></script>
-<script src="script.js?v=20261031-public-opinions" defer></script>
+<script src="script.js?v=site-content-v1" defer></script>
 </body>
 </html>

@@ -129,10 +129,11 @@
 
             <!-- SUB-PAGE CONTENT CONTAINER -->
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <p id="site-content-error" class="hidden mb-6 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl p-4" role="status" aria-live="polite"></p>
                 
                 <!-- SUB-PAGE 1: HISTORIA -->
                 <div id="subpage-historia" class="culture-subview space-y-10">
-                    <a href="detalle.html?tipo=cultura&id=historia" class="flex items-center gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
+                    <a id="culture-history-card" href="detalle.html?tipo=cultura&id=historia" class="flex items-center gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
                         <span class="w-14 h-14 rounded-xl bg-brand-navy/10 text-brand-navy flex items-center justify-center text-2xl shrink-0"><i class="fa-solid fa-landmark" aria-hidden="true"></i></span>
                         <span>
                             <span class="block text-xs font-bold uppercase text-brand-terracotta" data-i18n="historia_badge">Lazos Indisolubles</span>
@@ -148,7 +149,7 @@
                     </div>
 
                     <!-- TRADITIONS CARDS GRID -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div id="culture-tradition-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <a href="detalle.html?tipo=cultura&id=trad-gastro" class="block bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-terracotta">
                             <span class="flex items-center gap-4"><span class="w-12 h-12 rounded-xl bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center text-xl"><i class="fa-solid fa-utensils" aria-hidden="true"></i></span><span class="font-serif font-bold text-xl text-brand-navy hover:text-brand-terracotta" data-i18n="trad_gastro_title">Sazones Criollos & Muamba</span></span>
                         </a>
@@ -173,7 +174,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                        <div id="culture-glossary-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
                             <a href="detalle.html?tipo=cultura&id=glossary-1" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>Asere</span><span class="text-brand-terracotta mx-2">↔</span><span>Kamba</span></a>
                             <a href="detalle.html?tipo=cultura&id=glossary-2" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>¿Qué bolá?</span><span class="text-brand-terracotta mx-2">↔</span><span>Mambo cómo 'stá?</span></a>
                             <a href="detalle.html?tipo=cultura&id=glossary-3" class="p-4 bg-slate-50 rounded-xl border border-slate-200 font-bold text-brand-navy hover:text-brand-terracotta"><span>Tremendo ambiente</span><span class="text-brand-terracotta mx-2">↔</span><span>Tá a bater!</span></a>
@@ -193,7 +194,7 @@
                     </div>
 
                     <!-- CATEGORÍAS DE ARTE (PILLS DE FILTRADO INTERACTIVO) -->
-                    <div class="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar text-xs font-bold">
+                    <div id="art-category-filters" class="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar text-xs font-bold">
                         <button onclick="filterArtCategory('all')" id="art-cat-all" class="art-pill px-4 py-2 rounded-xl bg-brand-navy text-white shrink-0 transition-all" data-i18n="art_cat_all">Todas las Artes</button>
                         <button onclick="filterArtCategory('literatura')" id="art-cat-literatura" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all"><i class="fa-solid fa-book-open mr-1.5 text-brand-terracotta"></i><span data-i18n="art_cat_lit">Literatura</span></button>
                         <button onclick="filterArtCategory('musica')" id="art-cat-musica" class="art-pill px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0 transition-all"><i class="fa-solid fa-music mr-1.5 text-brand-navy"></i><span data-i18n="art_cat_mus">Música</span></button>
@@ -391,6 +392,6 @@
         </div>
     </footer>
 <script src="image-compression.js" defer></script>
-<script src="script.js?v=20261031-public-opinions" defer></script>
+<script src="script.js?v=site-content-v1" defer></script>
 </body>
 </html>
