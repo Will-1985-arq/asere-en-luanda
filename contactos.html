@@ -12,6 +12,8 @@
     <meta property="og:url" content="https://will-1985-arq.github.io/asere-en-luanda/contactos.html">
     <meta property="og:locale" content="es_ES">
     <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Contactos | Asere en Luanda">
+    <meta name="twitter:description" content="Comunícate con el equipo de Asere en Luanda y participa en la comunidad.">
     <!-- Google Fonts: Plus Jakarta Sans & Playfair Display for elegant tropical aesthetic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +25,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased">
+    <a class="skip-link" href="#main-content" data-i18n="skip_to_content">Saltar al contenido</a>
 <!-- HEADER & NAVBAR -->
     <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,7 +75,7 @@
                         <button onclick="setLanguage('es')" id="lang-es-mob" class="px-2 py-0.5 text-xs font-bold rounded bg-white text-brand-navy">ES</button>
                         <button onclick="setLanguage('pt')" id="lang-pt-mob" class="px-2 py-0.5 text-xs font-bold rounded text-slate-500">PT</button>
                     </div>
-                    <button onclick="toggleMobileMenu()" class="p-2 rounded-xl text-brand-navy hover:bg-slate-100 focus:outline-none">
+                    <button onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú" class="p-2 rounded-xl text-brand-navy hover:bg-slate-100 focus:outline-none">
                         <i id="mobile-menu-icon" class="fa-solid fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -96,7 +99,7 @@
             </div>
         </div>
     </header>
-<main class="flex-grow">
+<main id="main-content" class="flex-grow">
 <section id="page-contactos" class="view-page">
             <div class="bg-brand-navy text-white py-12">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -198,7 +201,7 @@
         </section>
 </main>
 <!-- MODAL: PUBLICAR ANUNCIO (REVOLICANGO) -->
-    <div id="ad-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div id="ad-modal" role="dialog" aria-modal="true" aria-labelledby="ad-modal-title" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
             <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10">
                 <div class="flex items-center gap-3">
@@ -206,11 +209,11 @@
                         <i class="fa-solid fa-bullhorn"></i>
                     </div>
                     <div>
-                        <h3 class="font-serif font-bold text-xl text-brand-navy" data-i18n="modal_title">Publicar Anuncio en RevolicAngo</h3>
+                        <h3 id="ad-modal-title" class="font-serif font-bold text-xl text-brand-navy" data-i18n="modal_title">Publicar Anuncio en RevolicAngo</h3>
                         <p class="text-xs text-slate-500" data-i18n="modal_sub">Llega a toda la comunidad de Luanda de forma rápida.</p>
                     </div>
                 </div>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-lg">
+                <button onclick="closeModal()" aria-label="Cerrar formulario" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-lg">
                     &times;
                 </button>
             </div>

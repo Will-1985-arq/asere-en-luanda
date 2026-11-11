@@ -12,6 +12,8 @@
     <meta property="og:url" content="https://will-1985-arq.github.io/asere-en-luanda/">
     <meta property="og:locale" content="es_ES">
     <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Asere en Luanda | Comunidad cubana en Angola">
+    <meta name="twitter:description" content="Conecta con la comunidad cubana y angoleña en Luanda: participa en eventos, descubre la cultura y encuentra clasificados en RevolicAngo.">
     <meta name="facebook-domain-verification" content="p8j8qnkv076i72dv2fby7ky4pupa99" />
     <meta name="google-site-verification" content="1FC9KdtZmFKQemZ7s5GP_QwNe0fpwWk0KfKXHImiugs" />
     <!-- Google Fonts: Plus Jakarta Sans & Playfair Display for elegant tropical aesthetic -->
@@ -25,6 +27,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased">
+    <a class="skip-link" href="#main-content" data-i18n="skip_to_content">Saltar al contenido</a>
 <!-- HEADER & NAVBAR -->
     <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,7 +77,7 @@
                         <button onclick="setLanguage('es')" id="lang-es-mob" class="px-2 py-0.5 text-xs font-bold rounded bg-white text-brand-navy">ES</button>
                         <button onclick="setLanguage('pt')" id="lang-pt-mob" class="px-2 py-0.5 text-xs font-bold rounded text-slate-500">PT</button>
                     </div>
-                    <button onclick="toggleMobileMenu()" class="p-2 rounded-xl text-brand-navy hover:bg-slate-100 focus:outline-none">
+                    <button onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú" class="p-2 rounded-xl text-brand-navy hover:bg-slate-100 focus:outline-none">
                         <i id="mobile-menu-icon" class="fa-solid fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -98,7 +101,7 @@
             </div>
         </div>
     </header>
-<main class="flex-grow">
+<main id="main-content" class="flex-grow">
 <section id="page-inicio" class="view-page">
             <!-- HERO BANNER -->
             <div class="gradient-hero text-white relative overflow-hidden py-16 lg:py-24">
@@ -191,10 +194,10 @@
                 <div class="grid grid-cols-1 gap-8">
                     <!-- Event spotlight -->
                     <div id="home-event-spotlight" class="bg-white p-8 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-                        <h3 class="font-serif text-2xl font-bold text-brand-navy"><a id="home-featured-event" href="detalle.html?tipo=evento&id=home-event" class="hover:text-brand-terracotta transition-colors" data-i18n="home_event_title">Taller de Sazones Criollos: Asados y Salsas</a></h3>
+                        <h3 class="font-serif text-2xl font-bold text-brand-navy"><a id="home-featured-event" href="eventos.html" class="hover:text-brand-terracotta transition-colors" data-i18n="home_event_title">Próximos eventos de la comunidad</a></h3>
                         <img id="home-featured-event-image" class="hidden max-h-80 w-full rounded-2xl object-cover" alt="">
-                        <p id="home-featured-event-date" class="text-sm font-semibold text-brand-terracotta" data-i18n="home_event_date">Jueves, 5 de noviembre de 2026</p>
-                        <p id="home-featured-event-description" class="text-slate-600 leading-relaxed" data-i18n="home_event_desc">Aprende los secretos del adobo tradicional cubano combinados con productos locales angolanos.</p>
+                        <p id="home-featured-event-date" class="hidden text-sm font-semibold text-brand-terracotta" data-i18n="home_event_date">Consulta la agenda actualizada</p>
+                        <p id="home-featured-event-description" class="hidden text-slate-600 leading-relaxed" data-i18n="home_event_desc">Consulta la agenda cultural de la comunidad y descubre las próximas actividades.</p>
                         <p id="site-content-error" class="hidden text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl p-4" role="status" aria-live="polite"></p>
                         <button onclick="navigateTo('eventos')" class="w-full py-2.5 rounded-xl border border-slate-200 font-bold text-xs uppercase tracking-wider text-brand-navy hover:bg-slate-50 transition-colors" data-i18n="see_agenda">Ver Agenda Cultural Completa</button>
                     </div>
@@ -204,7 +207,7 @@
         </section>
 </main>
 <!-- MODAL: PUBLICAR ANUNCIO (REVOLICANGO) -->
-    <div id="ad-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div id="ad-modal" role="dialog" aria-modal="true" aria-labelledby="ad-modal-title" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
             <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10">
                 <div class="flex items-center gap-3">
@@ -212,11 +215,11 @@
                         <i class="fa-solid fa-bullhorn"></i>
                     </div>
                     <div>
-                        <h3 class="font-serif font-bold text-xl text-brand-navy" data-i18n="modal_title">Publicar Anuncio en RevolicAngo</h3>
+                        <h3 id="ad-modal-title" class="font-serif font-bold text-xl text-brand-navy" data-i18n="modal_title">Publicar Anuncio en RevolicAngo</h3>
                         <p class="text-xs text-slate-500" data-i18n="modal_sub">Llega a toda la comunidad de Luanda de forma rápida.</p>
                     </div>
                 </div>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-lg">
+                <button onclick="closeModal()" aria-label="Cerrar formulario" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-lg">
                     &times;
                 </button>
             </div>

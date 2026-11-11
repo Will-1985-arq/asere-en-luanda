@@ -12,6 +12,8 @@
     <meta property="og:url" content="https://will-1985-arq.github.io/asere-en-luanda/eventos.html">
     <meta property="og:locale" content="es_ES">
     <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Eventos en Luanda | Asere en Luanda">
+    <meta name="twitter:description" content="Consulta fiestas y actividades culturales de la comunidad en Luanda.">
     <!-- Google Fonts: Plus Jakarta Sans & Playfair Display for elegant tropical aesthetic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +25,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased">
+    <a class="skip-link" href="#main-content" data-i18n="skip_to_content">Saltar al contenido</a>
 <!-- HEADER & NAVBAR -->
     <header class="sticky top-0 z-40 glass-header border-b border-slate-200/80 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,7 +75,7 @@
                         <button onclick="setLanguage('es')" id="lang-es-mob" class="px-2 py-0.5 text-xs font-bold rounded bg-white text-brand-navy">ES</button>
                         <button onclick="setLanguage('pt')" id="lang-pt-mob" class="px-2 py-0.5 text-xs font-bold rounded text-slate-500">PT</button>
                     </div>
-                    <button onclick="toggleMobileMenu()" class="p-2 rounded-xl text-brand-navy hover:bg-slate-100 focus:outline-none">
+                    <button onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú" class="p-2 rounded-xl text-brand-navy hover:bg-slate-100 focus:outline-none">
                         <i id="mobile-menu-icon" class="fa-solid fa-bars text-xl"></i>
                     </button>
                 </div>
@@ -96,7 +99,7 @@
             </div>
         </div>
     </header>
-<main class="flex-grow">
+<main id="main-content" class="flex-grow">
 <section id="page-eventos" class="view-page">
             <div class="bg-brand-navy text-white py-12">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -108,44 +111,13 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-6">
                 <!-- EVENTS LIST -->
                 <div id="events-list" class="space-y-4">
-                    
-                    <article class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
-                        <div class="flex items-center gap-6">
-                            <div class="bg-brand-navy text-white rounded-2xl w-20 h-20 flex flex-col items-center justify-center shrink-0 font-bold">
-                                <span class="text-xs uppercase" data-i18n="event_month_nov">NOV</span>
-                                <span class="text-2xl font-extrabold">05</span>
-                            </div>
-                            <div class="space-y-2">
-                                <span class="bg-slate-100 text-slate-700 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase" data-i18n="event_tag_gastro">Gastronomía</span>
-                                <h2 class="font-serif text-xl font-bold text-brand-navy"><a href="detalle.html?tipo=evento&id=event-2" class="hover:text-brand-terracotta" data-i18n="event_2_title">Taller de Sazones Criollos: Asados y Salsas</a></h2>
-                                <p class="text-sm text-slate-600"><i class="fa-solid fa-location-dot text-brand-navy mr-1"></i> Espacio Cultural Maianga, Luanda | 12:00 hrs</p>
-                            </div>
-                            <p id="site-content-error" class="hidden text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl p-4" role="status" aria-live="polite"></p>
-                        </div>
-                        <a href="detalle.html?tipo=evento&id=event-2" class="text-brand-terracotta font-bold text-sm hover:underline shrink-0" data-i18n="detail_open">Ver evento</a>
-                    </article>
-
-                    <article class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
-                        <div class="flex items-center gap-6">
-                            <div class="bg-brand-green text-white rounded-2xl w-20 h-20 flex flex-col items-center justify-center shrink-0 font-bold">
-                                <span class="text-xs uppercase" data-i18n="event_month_dec">DIC</span>
-                                <span class="text-2xl font-extrabold">12</span>
-                            </div>
-                            <div class="space-y-2">
-                                <span class="bg-slate-100 text-slate-700 font-bold text-[10px] px-2.5 py-0.5 rounded-full uppercase" data-i18n="event_tag_sports">Deportes & Familia</span>
-                                <h2 class="font-serif text-xl font-bold text-brand-navy"><a href="detalle.html?tipo=evento&id=event-3" class="hover:text-brand-terracotta" data-i18n="event_3_title">Torneo Amistoso de Dominazo & Pelota de Cintas</a></h2>
-                                <p class="text-sm text-slate-600"><i class="fa-solid fa-location-dot text-brand-green mr-1"></i> Parque de la Chicala, Luanda | 10:00 hrs</p>
-                            </div>
-                        </div>
-                        <a href="detalle.html?tipo=evento&id=event-3" class="text-brand-terracotta font-bold text-sm hover:underline shrink-0" data-i18n="detail_open">Ver evento</a>
-                    </article>
-
+                    <p class="text-slate-600 bg-white rounded-xl border border-slate-200 p-6" role="status" aria-live="polite" data-i18n="site_content_loading">Cargando la agenda actualizada…</p>
                 </div>
             </div>
         </section>
 </main>
 <!-- MODAL: PUBLICAR ANUNCIO (REVOLICANGO) -->
-    <div id="ad-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div id="ad-modal" role="dialog" aria-modal="true" aria-labelledby="ad-modal-title" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
             <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10">
                 <div class="flex items-center gap-3">
@@ -153,11 +125,11 @@
                         <i class="fa-solid fa-bullhorn"></i>
                     </div>
                     <div>
-                        <h3 class="font-serif font-bold text-xl text-brand-navy" data-i18n="modal_title">Publicar Anuncio en RevolicAngo</h3>
+                        <h3 id="ad-modal-title" class="font-serif font-bold text-xl text-brand-navy" data-i18n="modal_title">Publicar Anuncio en RevolicAngo</h3>
                         <p class="text-xs text-slate-500" data-i18n="modal_sub">Llega a toda la comunidad de Luanda de forma rápida.</p>
                     </div>
                 </div>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-lg">
+                <button onclick="closeModal()" aria-label="Cerrar formulario" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-lg">
                     &times;
                 </button>
             </div>

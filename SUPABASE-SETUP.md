@@ -12,13 +12,13 @@ Luego abre **Table Editor → site_content**. La web solo lee las filas con `is_
 
 Para sustituir las traducciones portuguesas iniciales por portugués de Portugal, ejecuta una vez `supabase/site-content-portuguese-pt-PT.sql` en una consulta nueva. Solo cambia cada campo que aún conserva exactamente el texto inicial de la migración; conserva los campos que ya hayas editado.
 
-- Para eventos, usa `content_type = event`, `section = event`, completa títulos y descripciones en español y portugués, fecha, hora y ubicación en ambos idiomas. `is_listed` controla si aparece en la agenda; `is_published` controla si el contenido puede verse y recibir opiniones. `is_featured` muestra un único evento destacado en Inicio. Si cambias el destacado, quita primero la marca del anterior.
+- Para eventos, usa `content_type = event`, `section = event`, completa títulos y descripciones en español y portugués, fecha, hora y ubicación en ambos idiomas. `is_listed` controla si aparece en la agenda; `is_published` controla si el contenido puede verse y recibir opiniones. Solo se muestran en la agenda y en Inicio eventos cuya fecha sea hoy o posterior. `is_featured` destaca un evento futuro en Inicio; si no hay ninguno marcado, se muestra el próximo evento listado. Si cambias el destacado, quita primero la marca del anterior.
 - Para Cultura, usa `content_type = culture` y una sección `history`, `tradition`, `glossary` o `art`. Completa los campos `title_es`, `title_pt`, `description_es` y `description_pt`. En la sección `art`, añade también `art_category` (un identificador corto en minúsculas, como `musica`) y sus nombres visibles en `category_es` y `category_pt`. La historia admite hitos bilingües en `milestones_es` y `milestones_pt` como listas JSON de objetos `{"title":"…","body":"…"}`.
 - `sort_order` controla el orden dentro de cada sección. Para ocultar una publicación sin borrarla, cambia `is_published` a `false`.
 - `image_url` es opcional; debe ser una URL pública que empiece por `https://` o `http://`. Puedes dejarla vacía si no quieres imagen.
 - Cada publicación nueva necesita un `id` único, corto, en minúsculas y con guiones, por ejemplo `evento-feria-2027`. No cambies el ID de una publicación que ya tenga opiniones asociadas.
 
-Los textos y las imágenes que ves hoy se cargan inicialmente con la migración. La web vuelve a consultar Supabase al abrir o recargar la página. Si Supabase no está configurado o no responde, conserva el contenido estático de respaldo y muestra un aviso en español o portugués.
+Los textos y las imágenes que ves hoy se cargan inicialmente con la migración. La web vuelve a consultar Supabase al abrir o recargar la página. Si Supabase no responde, las secciones culturales conservan el contenido estático de respaldo y se muestra un aviso en español o portugués. La agenda no presenta eventos estáticos con fechas potencialmente vencidas.
 
 ## Flujo de anuncios
 

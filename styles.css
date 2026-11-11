@@ -38,6 +38,23 @@ body {
             color: #1E293B;
             overflow-x: hidden;
         }
+        body.modal-open {
+            overflow: hidden;
+        }
+        .skip-link {
+            position: fixed;
+            top: -4rem;
+            left: 1rem;
+            z-index: 100;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            background: #0F2A4A;
+            color: #fff;
+            font-weight: 700;
+        }
+        .skip-link:focus {
+            top: 1rem;
+        }
         p.text-xs {
             font-size: 0.875rem;
             line-height: 1.5;
@@ -70,4 +87,15 @@ body {
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #CBD5E1;
             border-radius: 4px;
+        }
+        @media (max-width: 639px) {
+            #ad-modal > div {
+                max-height: 90vh;
+                max-height: 90dvh;
+            }
+            #ad-modal input:not([type="checkbox"]),
+            #ad-modal select,
+            #ad-modal textarea {
+                font-size: 16px;
+            }
         }

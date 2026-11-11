@@ -5,6 +5,7 @@
         const MAX_CLASSIFIED_IMAGE_INPUT_SIZE_BYTES = 20 * 1024 * 1024;
         const MAX_CLASSIFIED_IMAGE_STORAGE_SIZE_BYTES = 100 * 1024;
         let activeClassifiedEdit = null;
+        let modalReturnFocus = null;
         let classifiedGalleryReturnFocus = null;
         let classifiedEditCredentials = {};
         try {
@@ -86,6 +87,9 @@
                 toast_default: "¡Operación completada con éxito!",
                 site_content_load_error: "No se pudo cargar el contenido actualizado. Se muestra el contenido de respaldo; inténtalo de nuevo más tarde.",
                 site_content_empty: "No hay contenido publicado en esta sección.",
+                site_content_loading: "Cargando la agenda actualizada…",
+                site_events_empty: "No hay próximos eventos publicados. Vuelve pronto para consultar las novedades.",
+                skip_to_content: "Saltar al contenido",
 
                 hero_badge: "El punto de encuentro para la comunidad en Luanda",
                 hero_title: "La calidez de Cuba con el corazón de Angola",
@@ -103,9 +107,9 @@
                 home_revolic_title: "Destacados en RevolicAngo",
                 view_all: "Ver todas las categorías",
                 home_event_tag: "Próximo Encuentro",
-                home_event_title: "Taller de Sazones Criollos: Asados y Salsas",
-                home_event_date: "Jueves, 5 de noviembre de 2026",
-                home_event_desc: "Aprende los secretos del adobo tradicional cubano combinados con productos locales angolanos.",
+                home_event_title: "Próximos eventos de la comunidad",
+                home_event_date: "Consulta la agenda actualizada",
+                home_event_desc: "Consulta la agenda cultural de la comunidad y descubre las próximas actividades.",
                 see_agenda: "Ver a agenda cultural completa",
 
                 about_title: "Quiénes somos",
@@ -297,6 +301,9 @@
                 culture_badge: "Património e identidade",
                 site_content_load_error: "Não foi possível carregar o conteúdo atualizado. A apresentar o conteúdo predefinido; tente novamente mais tarde.",
                 site_content_empty: "Não há conteúdo publicado nesta secção.",
+                site_content_loading: "A carregar a agenda atualizada…",
+                site_events_empty: "Não há próximos eventos publicados. Volte em breve para consultar as novidades.",
+                skip_to_content: "Saltar para o conteúdo",
 
                 hero_badge: "O ponto de encontro para a comunidade em Luanda",
                 hero_title: "O calor de Cuba com o coração de Angola",
@@ -314,9 +321,9 @@
                 home_revolic_title: "Anúncios em destaque no RevolicAngo",
                 view_all: "Ver todas as categorias",
                 home_event_tag: "Próximo evento",
-                home_event_title: "Oficina de temperos crioulos: assados e molhos",
-                home_event_date: "Quinta-feira, 5 de novembro de 2026",
-                home_event_desc: "Aprenda os segredos da marinada tradicional cubana, combinada com produtos locais angolanos.",
+                home_event_title: "Próximos eventos da comunidade",
+                home_event_date: "Consulte a agenda atualizada",
+                home_event_desc: "Consulte a agenda cultural da comunidade e descubra as próximas atividades.",
                 see_agenda: "Ver a agenda cultural completa",
 
                 about_title: "Quem somos",
@@ -561,6 +568,11 @@
                 status.classList.toggle('hidden', !siteContentError);
             });
 
+            const eventList = document.getElementById('events-list');
+            if (eventList && siteContentError) {
+                eventList.innerHTML = `<p class="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl p-4" role="status" aria-live="polite">${escapeHtml(message)}</p>`;
+            }
+
             const detail = document.getElementById('detail-content');
             if (!detail) return;
             let notice = detail.querySelector('.site-content-error');
@@ -622,34 +634,41 @@
         function renderDynamicSiteContent() {
             if (!siteContentLoaded) return;
             const events = siteContent.filter(item => item.content_type === 'event');
-            const listedEvents = events
-                .filter(item => item.is_listed)
+            const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Africa/Luanda' });
+            const upcomingEvents = events
+                .filter(item => String(item.event_date || '') >= today)
                 .sort((a, b) => String(a.event_date).localeCompare(String(b.event_date)) || a.sort_order - b.sort_order);
+            const listedEvents = upcomingEvents.filter(item => item.is_listed);
             const eventList = document.getElementById('events-list');
             if (eventList) {
                 eventList.innerHTML = listedEvents.length
                     ? listedEvents.map(renderSiteEventCard).join('')
-                    : `<p class="text-slate-600 bg-white rounded-xl border border-slate-200 p-6">${escapeHtml(translations[currentLang].site_content_empty)}</p>`;
+                    : `<p class="text-slate-600 bg-white rounded-xl border border-slate-200 p-6">${escapeHtml(translations[currentLang].site_events_empty)}</p>`;
             }
 
-            const featured = events.find(item => item.is_featured);
+            const featured = listedEvents.find(item => item.is_featured) || listedEvents[0];
             const featuredLink = document.getElementById('home-featured-event');
             const featuredDate = document.getElementById('home-featured-event-date');
             const featuredDescription = document.getElementById('home-featured-event-description');
             const featuredImage = document.getElementById('home-featured-event-image');
             const featuredSpotlight = document.getElementById('home-event-spotlight');
-            if (featuredSpotlight) featuredSpotlight.classList.toggle('hidden', !featured);
+            if (featuredSpotlight) featuredSpotlight.classList.remove('hidden');
             if (featured) {
                 if (featuredLink) {
                     featuredLink.textContent = localizedSiteText(featured, 'title');
-                    featuredLink.href = 'detalle.html?tipo=evento&id=home-event';
+                    const eventId = featured.is_featured ? 'home-event' : featured.id;
+                    featuredLink.href = `detalle.html?tipo=evento&id=${encodeURIComponent(eventId)}`;
                 }
                 if (featuredDate) {
                     featuredDate.textContent = formatSiteEventDate(featured, {
                         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
                     });
+                    featuredDate.classList.remove('hidden');
                 }
-                if (featuredDescription) featuredDescription.textContent = localizedSiteText(featured, 'description');
+                if (featuredDescription) {
+                    featuredDescription.textContent = localizedSiteText(featured, 'description');
+                    featuredDescription.classList.remove('hidden');
+                }
                 if (featuredImage) {
                     if (featured.image_url) {
                         featuredImage.src = featured.image_url;
@@ -661,6 +680,14 @@
                         featuredImage.classList.add('hidden');
                     }
                 }
+            } else {
+                if (featuredLink) {
+                    featuredLink.textContent = translations[currentLang].home_event_title;
+                    featuredLink.href = 'eventos.html';
+                }
+                featuredDate?.classList.add('hidden');
+                featuredDescription?.classList.add('hidden');
+                featuredImage?.classList.add('hidden');
             }
 
             const culture = siteContent.filter(item => item.content_type === 'culture');
@@ -833,6 +860,26 @@
             const localizedTexts = translations[lang] || translations.es;
             const ogLocale = document.querySelector('meta[property="og:locale"]');
             if (ogLocale) ogLocale.content = lang === 'pt' ? 'pt_PT' : 'es_ES';
+            document.querySelectorAll('#lang-es, #lang-es-mob').forEach(button => {
+                button.setAttribute('aria-label', lang === 'es' ? 'Español' : 'Espanhol');
+                button.setAttribute('aria-pressed', String(lang === 'es'));
+            });
+            document.querySelectorAll('#lang-pt, #lang-pt-mob').forEach(button => {
+                button.setAttribute('aria-label', 'Português (Portugal)');
+                button.setAttribute('aria-pressed', String(lang === 'pt'));
+            });
+            const mobileMenu = document.getElementById('mobile-menu');
+            document.querySelectorAll('button[aria-controls="mobile-menu"]').forEach(button => {
+                const isOpen = mobileMenu && !mobileMenu.classList.contains('hidden');
+                button.setAttribute('aria-expanded', String(Boolean(isOpen)));
+                button.setAttribute('aria-label', isOpen
+                    ? (lang === 'es' ? 'Cerrar menú' : 'Fechar menu')
+                    : (lang === 'es' ? 'Abrir menú' : 'Abrir menu'));
+            });
+            document.querySelector('#ad-modal button[aria-label]')?.setAttribute(
+                'aria-label',
+                lang === 'es' ? 'Cerrar formulario' : 'Fechar formulário'
+            );
 
             // Update button UI states
             if (lang === 'es') {
@@ -924,9 +971,17 @@
             if (menu.classList.contains('hidden')) {
                 menu.classList.remove('hidden');
                 icon.className = "fa-solid fa-xmark text-xl";
+                document.querySelectorAll('button[aria-controls="mobile-menu"]').forEach(button => {
+                    button.setAttribute('aria-expanded', 'true');
+                    button.setAttribute('aria-label', currentLang === 'es' ? 'Cerrar menú' : 'Fechar menu');
+                });
             } else {
                 menu.classList.add('hidden');
                 icon.className = "fa-solid fa-bars text-xl";
+                document.querySelectorAll('button[aria-controls="mobile-menu"]').forEach(button => {
+                    button.setAttribute('aria-expanded', 'false');
+                    button.setAttribute('aria-label', currentLang === 'es' ? 'Abrir menú' : 'Abrir menu');
+                });
             }
         }
 
@@ -1839,18 +1894,36 @@
         function openModal() {
             const form = document.querySelector('#ad-modal form');
             const submitButton = form.querySelector('button[type="submit"]');
+            const modal = document.getElementById('ad-modal');
             if (!activeClassifiedEdit) {
                 form.reset();
                 submitButton.textContent = translations[currentLang].btn_publish_classified;
             } else {
                 submitButton.textContent = translations[currentLang].btn_save_classified_edits;
             }
-            document.getElementById('ad-modal').classList.remove('hidden');
+            if (modal.classList.contains('hidden')) {
+                const activeElement = document.activeElement;
+                const mobileMenu = document.getElementById('mobile-menu');
+                modalReturnFocus = activeElement instanceof HTMLElement
+                    ? mobileMenu?.contains(activeElement)
+                        ? document.querySelector('button[aria-controls="mobile-menu"]')
+                        : activeElement
+                    : null;
+            }
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            form.querySelector('input:not([type="file"]), select, textarea')?.focus();
         }
 
         function closeModal() {
             document.getElementById('ad-modal').classList.add('hidden');
+            document.body.classList.remove('modal-open');
             activeClassifiedEdit = null;
+            const focusTarget = modalReturnFocus?.isConnected
+                ? modalReturnFocus
+                : document.querySelector('#detail-content a[href], button[aria-controls="mobile-menu"]');
+            focusTarget?.focus();
+            modalReturnFocus = null;
         }
 
         async function uploadClassifiedImage(file) {
@@ -2100,6 +2173,35 @@
         }
 
         window.onload = function() {
+            const adModal = document.getElementById('ad-modal');
+            if (adModal) {
+                adModal.addEventListener('click', event => {
+                    if (event.target === adModal) closeModal();
+                });
+                document.addEventListener('keydown', event => {
+                    if (adModal.classList.contains('hidden')) return;
+                    if (event.key === 'Escape') {
+                        event.preventDefault();
+                        closeModal();
+                        return;
+                    }
+                    if (event.key !== 'Tab') return;
+
+                    const focusable = Array.from(adModal.querySelectorAll(
+                        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])'
+                    )).filter(element => element.getClientRects().length > 0);
+                    if (!focusable.length) return;
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+                    if (event.shiftKey && (document.activeElement === first || !adModal.contains(document.activeElement))) {
+                        event.preventDefault();
+                        last.focus();
+                    } else if (!event.shiftKey && (document.activeElement === last || !adModal.contains(document.activeElement))) {
+                        event.preventDefault();
+                        first.focus();
+                    }
+                });
+            }
             document.addEventListener('submit', event => {
                 if (event.target.matches('form[data-opinion-form]')) handlePublicOpinionSubmit(event);
             });
